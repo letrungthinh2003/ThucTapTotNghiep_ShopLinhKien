@@ -1,0 +1,165 @@
+﻿@model IEnumerable<LinhKienShop.Models.SanPham>
+
+@{
+    ViewData["Title"] = "Quản Lý Sản Phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-4">
+    <div class="card shadow">
+        <div class="card-header">
+            <h2 class="mb-0 text-center"><i class="fas fa-boxes me-2"></i><b>QUẢN LÝ SẢN PHẨM</b></h2>
+        </div>
+        <div class="card-body">
+            <!-- Thông báo thành công -->
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @TempData["Success"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            <!-- Nút thêm mới và tìm kiếm -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <a asp-action="Them" class="btn btn-warning btn-custom fw-bold text-dark shadow-sm">
+                    <i class="fas fa-plus-circle me-2"></i>Thêm sản phẩm mới
+                </a>
+                <div class="input-group" style="max-width: 400px;">
+                    <input type="text" class="form-control" placeholder="Tìm kiếm sản phẩm..." id="searchInput">
+                    <button class="btn btn-outline-secondary" type="button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Bảng danh sách sản phẩm -->
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th style="width: 80px;"><label asp-for="First().MaSanPham" class="control-label">Mã</label></th>
+                            <th><label asp-for="First().TenSanPham" class="control-label">Tên SP</label></th>
+                            <th><label asp-for="First().HinhSanPhamPath" class="control-label">Hình ảnh</label></th>
+                            <th><label asp-for="First().GiaGoc" class="control-label">Giá gốc</label></th>
+                            <th><label asp-for="First().GiaKhuyenMai" class="control-label">Giá KM</label></th>
+                            <th><label asp-for="First().SoLuong" class="control-label">Số lượng</label></th>
+                            <th><label asp-for="First().MaDanhMuc" class="control-label">Danh mục</label></th>
+                            <th><label asp-for="First().MaThuongHieu" class="control-label">Thương hiệu</label></th>
+                            <th><label asp-for="First().MaXuatXu" class="control-label">Xuất xứ</label></th>
+                            <th><label asp-for="First().NgayTao" class="control-label">Ngày tạo</label></th>
+                            <th><label asp-for="First().TrangThai" class="control-label">Trạng thái</label></th>
+                            <th>Tác vụ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.MaSanPham)</td>
+                                <td>@Html.DisplayFor(modelItem => item.TenSanPham)</td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(item.HinhSanPhamPath))
+                                    {
+                                        <img src="@item.HinhSanPhamPath" alt="@item.TenSanPham" style="max-width: 100px; max-height: 100px;" />
+                                    }
+                                    else
+                                    {
+                                        <span>Không có hình</span>
+                                    }
+                                </td>
+                                <td>@item.GiaGoc.ToString("N0") VNĐ</td>
+                                <td>@item.GiaKhuyenMai.ToString("N0") VNĐ</td>
+                                <td>@Html.DisplayFor(modelItem => item.SoLuong)</td>
+                                <td>@(item.MaDanhMucNavigation?.TenDanhMuc ?? "Không xác định")</td>
+                                <td>@(item.MaThuongHieuNavigation?.TenThuongHieu ?? "Không xác định")</td>
+                                <td>@(item.MaXuatXuNavigation?.TenXuatXu ?? "Không xác định")</td>
+                                <td>@Html.DisplayFor(modelItem => item.NgayTao, "{0:dd/MM/yyyy HH:mm}")</td>
+                                <td>
+                                    <form asp-action="ToggleTrangThai" method="post" class="d-inline">
+                                        <input type="hidden" name="id" value="@item.MaSanPham" />
+                                        <button type="submit" class="btn btn-sm @(item.TrangThai == "HoatDong" ? "btn-success" : "btn-danger")">
+                                            <i class="fas @(item.TrangThai == "HoatDong" ? "fa-check" : "fa-times") me-1"></i>
+                                            @(item.TrangThai == "HoatDong" ? "On" : "Off")
+                                        </button>
+                                    </form>
+                                </td>
+                                <td>
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <a asp-action="ChiTiet" asp-route-id="@item.MaSanPham" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-info-circle me-1"></i>Chi tiết
+                                        </a>
+                                        <a asp-action="Sua" asp-route-id="@item.MaSanPham" class="btn btn-success btn-sm">
+                                            <i class="fas fa-edit me-1"></i>Sửa
+                                        </a>
+                                        <a asp-action="Xoa" asp-route-id="@item.MaSanPham" class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash me-1"></i>Xóa
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Phân trang -->
+            <nav aria-label="Page navigation" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    @if (ViewBag.HasPrevious)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" asp-action="Index" asp-route-page="@(ViewBag.CurrentPage - 1)">Trước</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item disabled">
+                            <span class="page-link">Trước</span>
+                        </li>
+                    }
+
+                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                            <a class="page-link" asp-action="Index" asp-route-page="@i">@i</a>
+                        </li>
+                    }
+
+                    @if (ViewBag.HasNext)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" asp-action="Index" asp-route-page="@(ViewBag.CurrentPage + 1)">Sau</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item disabled">
+                            <span class="page-link">Sau</span>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<style>
+    .gap-2 {
+        gap: 8px; /* Khoảng cách giữa các nút là 8px */
+    }
+</style>
+
+@section Scripts {
+    <!-- Script tìm kiếm đơn giản -->
+    <script>
+        $(document).ready(function () {
+            $("#searchInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#tableBody tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                });
+            });
+        });
+    </script>
+}

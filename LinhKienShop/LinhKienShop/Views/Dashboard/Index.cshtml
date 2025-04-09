@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Đảm bảo sử dụng layout của bạn
+}
+
+<div class="row">
+    <div class="col-12">
+        <h1 class="mb-4">Dashboard</h1>
+    </div>
+
+    <!-- Statistic Cards -->
+    <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="card-title">Tổng Khách Hàng</h5>
+                        <h3>@ViewBag.TotalCustomers</h3> <!-- Hiển thị tổng khách hàng -->
+                    </div>
+                    <i class="fas fa-users fa-2x text-primary"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="card-title">Tổng Sản Phẩm</h5>
+                        <h3>@ViewBag.TotalProducts</h3> <!-- Hiển thị tổng sản phẩm -->
+                    </div>
+                    <i class="fas fa-box fa-2x text-success"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

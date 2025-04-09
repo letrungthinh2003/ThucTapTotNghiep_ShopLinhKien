@@ -1,0 +1,112 @@
+﻿@model IEnumerable<LinhKienShop.Models.NguoiDung>
+
+@{
+    ViewData["Title"] = "Danh sách Khách hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Danh sách khách hàng</h2>
+
+    <!-- Thông báo thành công -->
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["SuccessMessage"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <!-- Nút thêm và thanh tìm kiếm -->
+    <div class="row mb-3">
+        @* <div class="col-md-6">
+            <a asp-action="Them" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Thêm người dùng mới
+            </a>
+        </div> *@
+        <div class="col-md-6">
+            <form asp-action="Index" method="get" class="d-flex justify-content-end">
+                <input class="form-control me-2" type="search" name="searchString" placeholder="Tìm kiếm theo email hoặc tên" aria-label="Search" style="max-width: 300px;">
+                <button class="btn btn-outline-success" type="submit">Tìm</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bảng danh sách khách hàng-->
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.MaNguoiDung)</th>
+                            <th>@Html.DisplayNameFor(model => model.Email)</th>
+                            <th>@Html.DisplayNameFor(model => model.HoTen)</th>
+                            <th>@Html.DisplayNameFor(model => model.SoDienThoai)</th>
+                            <th>@Html.DisplayNameFor(model => model.DiaChi)</th>
+                            <th>@Html.DisplayNameFor(model => model.MaVaiTroNavigation.TenVaiTro)</th>
+                            <th>@Html.DisplayNameFor(model => model.NgayTao)</th>
+                            <th>@Html.DisplayNameFor(model => model.TrangThai)</th>
+                           @*  <th>Hành động</th> *@
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Any())
+                        {
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item.MaNguoiDung)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.HoTen)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.SoDienThoai)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.DiaChi)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.MaVaiTroNavigation.TenVaiTro)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.NgayTao, "{0:dd/MM/yyyy HH:mm}")</td>
+                                    <td>
+                                        <form asp-action="ToggleTrangThai" method="post" style="display:inline;">
+                                            <input type="hidden" name="id" value="@item.MaNguoiDung" />
+                                            <button type="submit" class="btn btn-sm @(item.TrangThai == "HoatDong" ? "btn-success" : "btn-danger")">
+                                                @item.TrangThai
+                                            </button>
+                                        </form>
+                                    </td>
+                                    @* <td>
+                                        <a asp-action="Sua" asp-route-id="@item.MaNguoiDung" class="btn btn-sm btn-warning">
+                                            <i class="fas fa-edit"></i> Sửa
+                                        </a>
+                                        <a asp-action="Xoa" asp-route-id="@item.MaNguoiDung" class="btn btn-sm btn-danger"
+                                           onclick="return confirm('Bạn có chắc muốn xóa người dùng này?');">
+                                            <i class="fas fa-trash"></i> Xóa
+                                        </a>
+                                    </td> *@
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="9" class="text-center">Không có khách hàng nào được tìm thấy.</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phân trang (nếu cần) -->
+    <!-- Bạn có thể thêm logic phân trang ở đây nếu muốn -->
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <!-- Thêm Font Awesome nếu chưa có trong _Layout.cshtml -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <!-- Script xác nhận xóa -->
+    <script>
+        $(document).ready(function () {
+            $('.alert').alert();
+        });
+    </script>
+}

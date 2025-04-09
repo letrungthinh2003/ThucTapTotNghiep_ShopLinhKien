@@ -1,0 +1,57 @@
+﻿@model LinhKienShop.Models.XuatXu;
+@{
+    ViewData["Title"] = "Quản Lý Xuất Xứ Sản Phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-4">
+    <div class="card shadow">
+        <div class="card-header">
+            <h2 class="mb-0 text-center"><i class="fas fa-list me-2"></i><b>QUẢN LÝ XUẤT XỨ SẢN PHẨM</b></h2>
+        </div>
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <a asp-action="them" class="btn btn-warning btn-custom fw-bold text-dark shadow-sm">
+                    <i class="fas fa-plus-circle me-2"></i>Thêm xuất xứ
+                </a>
+                <div class="input-group" style="max-width: 400px;">
+                    <input type="text" class="form-control" placeholder="Tìm kiếm xuất xứ..." id="searchInput">
+                    <button class="btn btn-outline-secondary" type="button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th><label asp-for="MaXuatXu" class="control-label">Mã Xuất Xứ</label></th>
+                            <th><label asp-for="TenXuatXu" class="control-label">Tên Xuất Xứ</label></th>
+                            <th>Tác vụ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        @{
+                            foreach (var item in ViewBag.xx)
+                            {
+                                <tr>
+                                    <td>@item.MaXuatXu</td>
+                                    <td>@item.TenXuatXu</td>
+                                    <td>
+                                        <a asp-action="Sua" asp-route-id="@item.MaXuatXu" class="btn btn-success btn-sm me-2">
+                                            <i class="fas fa-edit me-1"></i>Sửa
+                                        </a>
+                                        <a asp-action="Xoa" asp-route-id="@item.MaXuatXu" class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash me-1"></i>Xóa
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,409 @@
+﻿@model LinhKienShop.Models.SanPham
+
+@{
+    ViewData["Title"] = "Chi Tiết Sản Phẩm - " + Model.TenSanPham;
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<div class="container py-5">
+    <div class="row g-5">
+        <!-- Slider hình ảnh -->
+        <div class="col-lg-6">
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden">
+                <div id="productCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="@Model.HinhSanPhamPath" class="d-block w-100" alt="@Model.TenSanPham" style="height: 400px; object-fit: cover;">
+                        </div>
+                        @foreach (var hinh in Model.HinhChiTietSliders)
+                        {
+                            <div class="carousel-item">
+                                <img src="@hinh.LinkHinhAnh" class="d-block w-100" alt="Hình chi tiết" style="height: 400px; object-fit: cover;">
+                            </div>
+                        }
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#productCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#productCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+            <div class="d-flex flex-wrap gap-2 mt-3 justify-content-center">
+                <div class="thumbnail active border rounded-3 p-1">
+                    <img src="@Model.HinhSanPhamPath" alt="@Model.TenSanPham" style="width: 80px; height: 80px; object-fit: cover; cursor: pointer;" data-bs-target="#productCarousel" data-bs-slide-to="0">
+                </div>
+                @{
+                    int index = 1;
+                }
+                @foreach (var hinh in Model.HinhChiTietSliders)
+                {
+                    <div class="thumbnail border rounded-3 p-1">
+                        <img src="@hinh.LinkHinhAnh" alt="Hình chi tiết" style="width: 80px; height: 80px; object-fit: cover; cursor: pointer;" data-bs-target="#productCarousel" data-bs-slide-to="@index">
+                    </div>
+                    index++;
+                }
+            </div>
+        </div>
+
+        <!-- Thông tin sản phẩm -->
+        <div class="col-lg-6">
+            <div class="card shadow-lg border-0 rounded-4 p-4">
+                <h2 class="custom-title fw-bold mb-3"><i class="fas fa-headphones-alt me-2"></i>@Model.TenSanPham</h2>
+                <div class="tags mb-3">
+                    @if (Model.MaDanhMucNavigation != null)
+                    {
+                        <a href="@Url.Action("Index", "TrangChu", new { danhMucId = Model.MaDanhMuc })" class="badge bg-primary text-white text-decoration-none me-2">@Model.MaDanhMucNavigation.TenDanhMuc</a>
+                    }
+                    @if (Model.MaThuongHieuNavigation != null)
+                    {
+                        <a href="@Url.Action("Index", "TrangChu", new { thuongHieuId = Model.MaThuongHieu })" class="badge bg-primary text-white text-decoration-none">@Model.MaThuongHieuNavigation.TenThuongHieu</a>
+                    }
+                </div>
+                <div class="d-flex align-items-center mb-3">
+                    <span class="text-warning me-2">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                    </span>
+                    <span class="text-muted">(4.5/5 - 120 đánh giá)</span>
+                </div>
+                <div class="brand-origin mb-4">
+                    <p class="mb-2"><span class="fw-bold text-primary">Thương hiệu:</span> <span class="text-dark">@(Model.MaThuongHieuNavigation?.TenThuongHieu ?? "Không xác định")</span></p>
+                    <p class="mb-2"><span class="fw-bold text-primary">Xuất xứ:</span> <span class="text-dark">@(Model.MaXuatXuNavigation?.TenXuatXu ?? "Không xác định")</span></p>
+                    <p class="mb-0"><span class="fw-bold text-primary">Số lượng còn lại:</span> <span class="text-dark">@Model.SoLuong</span></p>
+                </div>
+                <div class="pricing mb-4">
+                    <span class="display-5 fw-bold text-danger">@Model.GiaKhuyenMai.ToString("N0") VNĐ</span>
+                    @if (Model.GiaGoc > Model.GiaKhuyenMai)
+                    {
+                        <span class="text-muted text-decoration-line-through ms-3">@Model.GiaGoc.ToString("N0") VNĐ</span>
+                        <span class="badge bg-success ms-2">Giảm @(((Model.GiaGoc - Model.GiaKhuyenMai) / Model.GiaGoc * 100).ToString("F0"))%</span>
+                    }
+                </div>
+                <!-- Số lượng với nút tăng giảm -->
+                <div class="quantity mb-4 d-flex align-items-center">
+                    <label class="me-3 fw-bold">Số lượng:</label>
+                    <div class="custom-quantity d-flex align-items-center">
+                        <button class="btn btn-outline-dark btn-sm quantity-btn" onclick="decreaseQuantity(event)" type="button"><i class="fas fa-minus"></i></button>
+                        <input type="number" class="form-control text-center mx-2" id="quantity" value="1" min="1" max="@Model.SoLuong" style="width: 70px;">
+                        <button class="btn btn-outline-dark btn-sm quantity-btn" onclick="increaseQuantity(event)" type="button"><i class="fas fa-plus"></i></button>
+                    </div>
+                </div>
+                <div class="d-flex gap-3">
+                    <button class="btn btn-success btn-lg rounded-pill flex-grow-1 transition-hover" onclick="addToCart(@Model.MaSanPham, $('#quantity').val())">
+                        <i class="fas fa-cart-plus me-2"></i>Thêm vào giỏ hàng
+                    </button>
+                    <button class="btn btn-primary btn-lg rounded-pill flex-grow-1 transition-hover" onclick="buyNow(@Model.MaSanPham, $('#quantity').val())">
+                        <i class="fas fa-shopping-bag me-2"></i>Mua ngay
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Thông số kỹ thuật và tin tức (7/3) -->
+        <div class="col-12 mt-5">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card shadow-lg border-0 rounded-4 p-4">
+                        <h3 class="custom-title fw-bold mb-4"><i class="fas fa-tools me-2"></i>Thông số kỹ thuật</h3>
+                        <div class="thong-so-ky-thuat">
+                            @Html.Raw(Model.ThongSoKyThuat)
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card shadow-lg border-0 rounded-4 p-4">
+                        <h3 class="custom-title fw-bold mb-4"><i class="fas fa-newspaper me-2"></i>Tin tức liên quan</h3>
+                        <ul class="list-unstyled">
+                            <li class="mb-3"><a href="#" class="text-decoration-none">Top 5 linh kiện đáng mua 2025</a></li>
+                            <li class="mb-3"><a href="#" class="text-decoration-none">Cách chọn linh kiện phù hợp</a></li>
+                            <li><a href="#" class="text-decoration-none">Xu hướng công nghệ mới</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Đánh giá và bình luận -->
+        <div class="col-12 mt-5">
+            <div class="card shadow-lg border-0 rounded-4 p-4">
+                <h3 class="custom-title fw-bold mb-4"><i class="fas fa-star-half-alt me-2"></i>Đánh giá & Bình luận</h3>
+                <div class="mb-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <h4 class="fw-bold me-3">4.5/5</h4>
+                        <span class="text-warning">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                        </span>
+                        <span class="text-muted ms-3">(120 đánh giá)</span>
+                    </div>
+                    <button class="btn btn-outline-primary rounded-pill" data-bs-toggle="modal" data-bs-target="#reviewModal">
+                        <i class="fas fa-pen me-2"></i>Viết đánh giá
+                    </button>
+                </div>
+                <div class="comments">
+                    <div class="comment mb-4 p-3 bg-light rounded-3 shadow-sm">
+                        <div class="d-flex align-items-center mb-2">
+                            <img src="https://via.placeholder.com/50" class="rounded-circle me-3" alt="Avatar">
+                            <div>
+                                <h6 class="fw-bold mb-0">Nguyễn Văn A</h6>
+                                <span class="text-muted small">2 ngày trước</span>
+                            </div>
+                        </div>
+                        <div class="text-warning mb-2">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                        </div>
+                        <p>Sản phẩm rất tốt, chất lượng ổn trong tầm giá.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slider sản phẩm tương tự -->
+        <div class="col-12 mt-5">
+            <div class="card shadow-lg border-0 rounded-4 p-4">
+                <h3 class="custom-title fw-bold mb-4"><i class="fas fa-clone me-2"></i>Sản phẩm tương tự</h3>
+                <div id="similarProductsCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        @{
+                            var similarProducts = ViewBag.SimilarProducts as List<LinhKienShop.Models.SanPham>;
+                            var chunks = similarProducts?.Select((item, index) => new { Item = item, Index = index })
+                            .GroupBy(x => x.Index / 4)
+                            .Select(g => g.Select(x => x.Item).ToList())
+                            .ToList() ?? new List<List<SanPham>>();
+                            bool isActive = true;
+                        }
+                        @foreach (var chunk in chunks)
+                        {
+                            <div class="carousel-item @(isActive ? "active" : "")">
+                                <div class="row">
+                                    @foreach (var item in chunk)
+                                    {
+                                        <div class="col-3">
+                                            <a asp-controller="TrangChu" asp-action="ChiTietSanPham" asp-route-id="@item.MaSanPham" class="text-decoration-none">
+                                                <div class="card product-card shadow-sm h-100 border-0 transition-hover grid-view">
+                                                    <div class="position-relative overflow-hidden rounded-top">
+                                                        <img src="@item.HinhSanPhamPath" class="card-img-top transition-scale" alt="@item.TenSanPham" style="height: 200px; object-fit: cover;">
+                                                    </div>
+                                                    <div class="card-body d-flex flex-column p-3">
+                                                        <h5 class="card-title text-truncate fw-semibold" title="@item.TenSanPham">@item.TenSanPham</h5>
+                                                        <p class="card-text text-muted mb-3">Giá: <span class="fw-bold text-danger">@item.GiaKhuyenMai.ToString("N0") VNĐ</span></p>
+                                                        <div class="mt-auto d-flex gap-2">
+                                                            <button type="button" class="btn btn-success btn-sm rounded-pill flex-grow-1" onclick="event.stopPropagation(); addToCart(@item.MaSanPham, 1)">
+                                                                <i class="fas fa-cart-plus me-2"></i>Thêm vào giỏ
+                                                            </button>
+                                                            <button type="button" class="btn btn-outline-info btn-sm rounded-pill" onclick="event.stopPropagation(); viewProduct(@item.MaSanPham)">
+                                                                <i class="fas fa-eye"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            isActive = false;
+                        }
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#similarProductsCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#similarProductsCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal đánh giá -->
+<div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 shadow-lg">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title fw-bold" id="reviewModalLabel"><i class="fas fa-star me-2"></i>Viết Đánh Giá</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Đánh giá của bạn:</label>
+                        <div class="star-rating">
+                            <i class="fas fa-star text-muted" data-rating="1"></i>
+                            <i class="fas fa-star text-muted" data-rating="2"></i>
+                            <i class="fas fa-star text-muted" data-rating="3"></i>
+                            <i class="fas fa-star text-muted" data-rating="4"></i>
+                            <i class="fas fa-star text-muted" data-rating="5"></i>
+                        </div>
+                        <input type="hidden" name="rating" id="ratingValue" value="0">
+                    </div>
+                    <div class="mb-3">
+                        <label for="comment" class="form-label fw-bold">Bình luận:</label>
+                        <textarea class="form-control" id="comment" rows="4" placeholder="Nhập nhận xét của bạn..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary rounded-pill w-100 transition-hover">Gửi đánh giá</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        background: linear-gradient(135deg, #ffffff, #f8f9fa);
+        transition: all 0.3s ease;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+    .custom-title {
+        color: #000000;
+        font-style: italic;
+    }
+
+    .transition-hover:hover {
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(0,123,255,0.4);
+    }
+
+    .carousel-inner img {
+        border-radius: 15px;
+    }
+
+    .thumbnail {
+        transition: all 0.3s ease;
+    }
+
+        .thumbnail.active, .thumbnail:hover {
+            border-color: #007bff;
+            box-shadow: 0 5px 15px rgba(0,123,255,0.3);
+        }
+
+    .quantity-btn {
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+        .quantity-btn:hover {
+            background-color: #007bff;
+            color: #fff;
+            border-color: #007bff;
+        }
+
+    .custom-quantity input {
+        border-radius: 8px;
+        height: 38px;
+    }
+
+    .thong-so-ky-thuat {
+        line-height: 1.6;
+        max-width: 100%;
+        overflow-x: auto;
+    }
+
+        .thong-so-ky-thuat img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+    .comment:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+
+    .star-rating i:hover, .star-rating i.active {
+        color: #ffca28 !important;
+    }
+
+    .brand-origin p {
+        font-size: 1.1rem;
+        line-height: 1.5;
+    }
+
+    .product-card {
+        cursor: pointer;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.star-rating i').on('click', function () {
+                const rating = $(this).data('rating');
+                $('#ratingValue').val(rating);
+                $('.star-rating i').removeClass('active').addClass('text-muted');
+                $(this).prevAll().addBack().removeClass('text-muted').addClass('active text-warning');
+            });
+
+            $('.thumbnail').on('click', function () {
+                $('.thumbnail').removeClass('active');
+                $(this).addClass('active');
+            });
+        });
+
+        function increaseQuantity(event) {
+            event.preventDefault();
+            let qty = parseInt($('#quantity').val());
+            let max = parseInt($('#quantity').attr('max'));
+            if (qty < max) {
+                $('#quantity').val(qty + 1);
+            }
+        }
+
+        function decreaseQuantity(event) {
+            event.preventDefault();
+            let qty = parseInt($('#quantity').val());
+            if (qty > 1) {
+                $('#quantity').val(qty - 1);
+            }
+        }
+
+        function addToCart(productId, quantity) {
+            $.ajax({
+                url: '/GioHang/ThemVaoGio',
+                type: 'POST',
+                data: { maSanPham: productId, soLuong: parseInt(quantity) },
+                success: function (response) {
+                    if (response.success) {
+                        alert(response.message); // Thông báo thêm thành công
+                        $('.cart-count').text(response.cartCount); // Cập nhật số lượng trên biểu tượng giỏ hàng
+                        // Không chuyển hướng ngay, để người dùng nhấp vào biểu tượng giỏ
+                    } else {
+                        alert(response.message); // Thông báo lỗi nếu có
+                    }
+                },
+                error: function () {
+                    alert('Có lỗi xảy ra khi thêm vào giỏ hàng.');
+                }
+            });
+        }
+
+        function buyNow(productId, quantity) {
+            // Logic cho "Mua ngay" (có thể thêm vào giỏ và chuyển hướng đến trang thanh toán)
+            addToCart(productId, quantity); // Gọi addToCart trước
+            setTimeout(() => {
+                window.location.href = '/GioHang/Index'; // Chuyển hướng đến trang giỏ hàng
+            }, 500); // Delay nhẹ để đảm bảo thêm vào giỏ hoàn tất
+        }
+
+        function viewProduct(productId) {
+            window.location.href = `/TrangChu/ChiTietSanPham/${productId}`;
+        }
+    </script>
+}

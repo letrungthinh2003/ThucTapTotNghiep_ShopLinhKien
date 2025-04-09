@@ -1,0 +1,116 @@
+﻿@model LinhKienShop.Models.SanPham
+
+@{
+    ViewData["Title"] = "Chi Tiết Sản Phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-4">
+    <div class="card shadow-lg border-0">
+        <div class="card-header bg-info text-white">
+            <h2 class="mb-0 text-center"><i class="fas fa-info-circle me-2"></i><b>CHI TIẾT SẢN PHẨM</b></h2>
+        </div>
+        <div class="card-body p-4 bg-light">
+            <div class="row">
+                <div class="col-md-4 text-center">
+                    @if (!string.IsNullOrEmpty(Model.HinhSanPhamPath))
+                    {
+                        <img src="@Model.HinhSanPhamPath" alt="@Model.TenSanPham" class="img-fluid rounded border shadow-sm" style="max-width: 300px; max-height: 300px;" />
+                    }
+                    else
+                    {
+                        <span class="text-muted">Không có hình</span>
+                    }
+                </div>
+                <div class="col-md-8">
+                    <dl class="row">
+                        <dt class="col-sm-4 font-weight-bold"><i class="fas fa-barcode me-2"></i>Mã sản phẩm:</dt>
+                        <dd class="col-sm-8">@Model.MaSanPham</dd>
+
+                        <dt class="col-sm-4 font-weight-bold"><i class="fas fa-box me-2"></i>Tên sản phẩm:</dt>
+                        <dd class="col-sm-8">@Model.TenSanPham</dd>
+
+                        <dt class="col-sm-4 font-weight-bold"><i class="fas fa-dollar-sign me-2"></i>Giá gốc:</dt>
+                        <dd class="col-sm-8">@Model.GiaGoc.ToString("N0") VNĐ</dd>
+
+                        <dt class="col-sm-4 font-weight-bold"><i class="fas fa-tag me-2"></i>Giá khuyến mãi:</dt>
+                        <dd class="col-sm-8">@Model.GiaKhuyenMai.ToString("N0") VNĐ</dd>
+
+                        <dt class="col-sm-4 font-weight-bold"><i class="fas fa-cubes me-2"></i>Số lượng:</dt>
+                        <dd class="col-sm-8">@Model.SoLuong</dd>
+
+                        <dt class="col-sm-4 font-weight-bold"><i class="fas fa-list me-2"></i>Danh mục:</dt>
+                        <dd class="col-sm-8">@(Model.MaDanhMucNavigation?.TenDanhMuc ?? "Không xác định")</dd>
+
+                        <dt class="col-sm-4 font-weight-bold"><i class="fas fa-copyright me-2"></i>Thương hiệu:</dt>
+                        <dd class="col-sm-8">@(Model.MaThuongHieuNavigation?.TenThuongHieu ?? "Không xác định")</dd>
+
+                        <dt class="col-sm-4 font-weight-bold"><i class="fas fa-globe me-2"></i>Xuất xứ:</dt>
+                        <dd class="col-sm-8">@(Model.MaXuatXuNavigation?.TenXuatXu ?? "Không xác định")</dd>
+
+                        <dt class="col-sm-4 font-weight-bold"><i class="fas fa-calendar-alt me-2"></i>Ngày tạo:</dt>
+                        <dd class="col-sm-8">@Model.NgayTao.ToString("dd/MM/yyyy HH:mm")</dd>
+
+                        <dt class="col-sm-4 font-weight-bold"><i class="fas fa-toggle-on me-2"></i>Trạng thái:</dt>
+                        <dd class="col-sm-8">@(Model.TrangThai == "HoatDong" ? "Hoạt động" : "Bị khóa")</dd>
+                    </dl>
+                </div>
+            </div>
+
+            <!-- Hiển thị hình ảnh chi tiết -->
+            <div class="mt-4">
+                <h5 class="font-weight-bold"><i class="fas fa-images me-2"></i>Hình ảnh chi tiết</h5>
+                @if (Model.HinhChiTietSliders.Any())
+                {
+                    <div class="d-flex flex-wrap gap-3">
+                        @foreach (var hinh in Model.HinhChiTietSliders)
+                        {
+                            <img src="@hinh.LinkHinhAnh" alt="Hình chi tiết" class="rounded border shadow-sm" style="max-width: 150px; max-height: 150px; object-fit: cover;" />
+                        }
+                    </div>
+                }
+                else
+                {
+                    <span class="text-muted">Không có hình ảnh chi tiết.</span>
+                }
+            </div>
+
+            <!-- Thông số kỹ thuật -->
+            <div class="mt-4">
+                <h5 class="font-weight-bold"><i class="fas fa-cogs me-2"></i>Thông số kỹ thuật</h5>
+                <div class="border rounded p-3 bg-white shadow-sm thong-so-ky-thuat">
+                    @Html.Raw(Model.ThongSoKyThuat)
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2 mt-4">
+                <a asp-action="Index" class="btn btn-secondary px-4 py-2">Quay lại</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .font-weight-bold {
+        font-weight: 600;
+    }
+
+    .thong-so-ky-thuat {
+        line-height: 1.6; /* Tăng khoảng cách dòng cho dễ đọc */
+        overflow-x: auto; /* Cho phép cuộn ngang nếu nội dung quá rộng */
+    }
+
+        .thong-so-ky-thuat p, .thong-so-ky-thuat ul, .thong-so-ky-thuat ol {
+            margin-bottom: 1rem; /* Khoảng cách giữa các đoạn */
+        }
+
+        .thong-so-ky-thuat table {
+            width: 100%; /* Bảng chiếm toàn bộ chiều rộng */
+            border-collapse: collapse; /* Gộp viền bảng */
+        }
+
+        .thong-so-ky-thuat table, .thong-so-ky-thuat th, .thong-so-ky-thuat td {
+            border: 1px solid #dee2e6; /* Viền nhẹ cho bảng */
+            padding: 8px; /* Khoảng cách trong ô bảng */
+        }
+</style>

@@ -1,0 +1,49 @@
+﻿.table-hover tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.card-header {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-custom {
+    min-width: 150px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+    .btn-custom:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+.text-center th, .text-center td {
+    vertical-align: middle;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.card-header {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-custom {
+    min-width: 120px; /* Giảm nhẹ để phù hợp với form */
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: all 0.3s ease;
+}
+
+    .btn-custom:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+.text-center th, .text-center td {
+    vertical-align: middle;
+}

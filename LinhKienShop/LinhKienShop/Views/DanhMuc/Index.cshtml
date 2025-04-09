@@ -1,0 +1,127 @@
+﻿@model LinhKienShop.Models.DanhMuc
+
+@{
+    ViewData["Title"] = "Quản Lý Danh Mục Sản Phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-4">
+    <div class="card shadow">
+        <div class="card-header">
+            <h2 class="mb-0 text-center"><i class="fas fa-list me-2"></i><b>QUẢN LÝ DANH MỤC SẢN PHẨM</b></h2>
+        </div>
+        <div class="card-body">
+            <!-- Thông báo thành công -->
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <a asp-action="Them" class="btn btn-warning btn-custom fw-bold text-dark shadow-sm">
+                    <i class="fas fa-plus-circle me-2"></i>Thêm danh mục mới
+                </a>
+                <div class="input-group" style="max-width: 400px;">
+                    <input type="text" class="form-control" placeholder="Tìm kiếm danh mục..." id="searchInput">
+                    <button class="btn btn-outline-secondary" type="button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th><label asp-for="MaDanhMuc" class="control-label">Mã Danh Mục</label></th>
+                            <th><label asp-for="TenDanhMuc" class="control-label">Tên Danh Mục</label></th>
+                            <th>Tác vụ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        @foreach (var item in ViewBag.dm)
+                        {
+                            <tr>
+                                <td>@item.MaDanhMuc</td>
+                                <td>@item.TenDanhMuc</td>
+                                <td>
+                                    <a asp-action="Sua" asp-route-id="@item.MaDanhMuc" class="btn btn-success btn-sm me-2">
+                                        <i class="fas fa-edit me-1"></i>Sửa
+                                    </a>
+                                    <a asp-action="Xoa" asp-route-id="@item.MaDanhMuc" class="btn btn-danger btn-sm">
+                                        <i class="fas fa-trash me-1"></i>Xóa
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Phân trang -->
+            <nav aria-label="Page navigation" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    @if (ViewBag.HasPrevious)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" asp-action="Index" asp-route-page="@(ViewBag.CurrentPage - 1)">Trước</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item disabled">
+                            <span class="page-link">Trước</span>
+                        </li>
+                    }
+
+                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                            <a class="page-link" asp-action="Index" asp-route-page="@i">@i</a>
+                        </li>
+                    }
+
+                    @if (ViewBag.HasNext)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" asp-action="Index" asp-route-page="@(ViewBag.CurrentPage + 1)">Sau</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item disabled">
+                            <span class="page-link">Sau</span>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<style>
+    .btn-custom {
+        transition: all 0.3s ease;
+    }
+
+        .btn-custom:hover {
+            transform: scale(1.05);
+        }
+</style>
+
+@section Scripts {
+    <!-- Script tìm kiếm đơn giản -->
+    <script>
+        $(document).ready(function () {
+            $("#searchInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#tableBody tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                });
+            });
+        });
+    </script>
+}

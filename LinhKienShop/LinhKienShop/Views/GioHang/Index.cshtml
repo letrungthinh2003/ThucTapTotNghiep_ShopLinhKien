@@ -1,0 +1,172 @@
+﻿@model List<LinhKienShop.Models.CartItem>
+
+@{
+    ViewData["Title"] = "Giỏ Hàng";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<div class="container py-5">
+    <h2 class="custom-title fw-bold mb-4"><i class="fas fa-shopping-cart me-2"></i>Giỏ Hàng Của Bạn</h2>
+
+    <div id="cart-content">
+        @if (Model.Any())
+        {
+            <div class="card shadow-lg border-0 rounded-4 p-4">
+                <table class="table table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th>Hình ảnh</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Giá</th>
+                            <th>Số lượng</th>
+                            <th>Thành tiền</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr data-id="@item.MaSanPham">
+                                <td>
+                                    <img src="@item.HinhSanPhamPath" alt="@item.TenSanPham" style="width: 80px; height: 80px; object-fit: cover;" class="rounded">
+                                </td>
+                                <td>@item.TenSanPham</td>
+                                <td>@item.GiaKhuyenMai.ToString("N0") VNĐ</td>
+                                <td>
+                                    <div class="custom-quantity d-flex align-items-center">
+                                        <button class="btn btn-outline-dark btn-sm quantity-btn decrease" type="button"><i class="fas fa-minus"></i></button>
+                                        <input type="number" class="form-control text-center mx-2 quantity" value="@item.SoLuong" min="1" max="@item.SoLuongTonKho" style="width: 70px;">
+                                        <button class="btn btn-outline-dark btn-sm quantity-btn increase" type="button"><i class="fas fa-plus"></i></button>
+                                    </div>
+                                </td>
+                                <td class="thanh-tien">@item.ThanhTien.ToString("N0") VNĐ</td>
+                                <td>
+                                    <button class="btn btn-danger btn-sm rounded-pill delete-item"><i class="fas fa-trash-alt"></i></button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <h4>Tổng tiền: <span id="total-amount" class="fw-bold text-danger">@Model.Sum(item => item.ThanhTien).ToString("N0") VNĐ</span></h4>
+                    <a href="#" class="btn btn-primary btn-lg rounded-pill transition-hover">Thanh toán</a>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="card shadow-lg border-0 rounded-4 p-4 text-center">
+                <h4 class="text-muted">Giỏ hàng của bạn đang trống!</h4>
+                <a asp-controller="TrangChu" asp-action="Index" class="btn btn-primary rounded-pill mt-3">Tiếp tục mua sắm</a>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Tăng số lượng
+            $('.increase').on('click', function () {
+                let row = $(this).closest('tr');
+                let input = row.find('.quantity');
+                let currentQty = parseInt(input.val());
+                let max = parseInt(input.attr('max'));
+                if (currentQty < max) {
+                    updateQuantity(row.data('id'), currentQty + 1, row);
+                }
+            });
+
+            // Giảm số lượng
+            $('.decrease').on('click', function () {
+                let row = $(this).closest('tr');
+                let input = row.find('.quantity');
+                let currentQty = parseInt(input.val());
+                if (currentQty > 1) {
+                    updateQuantity(row.data('id'), currentQty - 1, row);
+                }
+            });
+
+            // Xóa sản phẩm
+            $('.delete-item').on('click', function () {
+                let row = $(this).closest('tr');
+                deleteItem(row.data('id'), row);
+            });
+
+            // Cập nhật số lượng qua input
+            $('.quantity').on('change', function () {
+                let row = $(this).closest('tr');
+                let newQty = parseInt($(this).val());
+                let max = parseInt($(this).attr('max'));
+                if (newQty > max) {
+                    $(this).val(max);
+                    newQty = max;
+                    alert('Số lượng vượt quá tồn kho.');
+                }
+                if (newQty < 1) {
+                    $(this).val(1);
+                    newQty = 1;
+                }
+                updateQuantity(row.data('id'), newQty, row);
+            });
+        });
+
+        function updateQuantity(maSanPham, soLuong, row) {
+            $.ajax({
+                url: '/GioHang/CapNhatSoLuong',
+                type: 'POST',
+                data: { maSanPham: maSanPham, soLuong: soLuong },
+                success: function (response) {
+                    if (response.success) {
+                        if (soLuong === 0) {
+                            row.remove();
+                        } else {
+                            row.find('.quantity').val(soLuong);
+                            row.find('.thanh-tien').text(response.thanhTien.toLocaleString('vi-VN') + ' VNĐ');
+                        }
+                        $('#total-amount').text(response.total.toLocaleString('vi-VN') + ' VNĐ');
+                        $('.cart-count').text(response.cartCount);
+                        checkCartEmpty();
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function () {
+                    alert('Có lỗi xảy ra khi cập nhật số lượng.');
+                }
+            });
+        }
+
+        function deleteItem(maSanPham, row) {
+            $.ajax({
+                url: '/GioHang/XoaKhoiGio',
+                type: 'POST',
+                data: { maSanPham: maSanPham },
+                success: function (response) {
+                    if (response.success) {
+                        row.remove();
+                        $('#total-amount').text(response.total.toLocaleString('vi-VN') + ' VNĐ');
+                        $('.cart-count').text(response.cartCount);
+                        checkCartEmpty();
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function () {
+                    alert('Có lỗi xảy ra khi xóa sản phẩm.');
+                }
+            });
+        }
+
+        function checkCartEmpty() {
+            if ($('tbody tr').length === 0) {
+                $('#cart-content').html(`
+                    <div class="card shadow-lg border-0 rounded-4 p-4 text-center">
+                        <h4 class="text-muted">Giỏ hàng của bạn đang trống!</h4>
+                        <a href="@Url.Action("Index", "TrangChu")" class="btn btn-primary rounded-pill mt-3">Tiếp tục mua sắm</a>
+                    </div>
+                `);
+            }
+        }
+    </script>
+}

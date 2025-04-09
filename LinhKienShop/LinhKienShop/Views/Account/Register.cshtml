@@ -1,0 +1,124 @@
+﻿@model LinhKienShop.Models.NguoiDung
+@{
+    ViewData["Title"] = "Đăng Ký";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<style>
+    body {
+  /*       background-image: url('/images/bg_register.jpg') */; /* Đường dẫn đến ảnh nền */
+        background-size: cover; /* Phủ kín toàn bộ nền */
+        background-repeat: no-repeat; /* Không lặp lại ảnh */
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        min-height: 100vh; /* Đảm bảo body chiếm toàn bộ chiều cao màn hình */
+    }
+
+    .register-form {
+        max-width: 500px;
+        margin: 50px auto;
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 0.5s ease-in-out;
+    }
+
+        .register-form h2 {
+            margin-bottom: 25px;
+            font-weight: bold;
+            text-align: center;
+            color: #0d6efd;
+        }
+
+    .form-control {
+        border-radius: 30px;
+        padding-left: 40px;
+        transition: all 0.3s ease;
+    }
+
+        .form-control:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 10px rgba(13, 110, 253, 0.25);
+        }
+
+    .input-icon {
+        position: relative;
+    }
+
+        .input-icon i {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            color: #0d6efd;
+        }
+
+    .btn-primary {
+        width: 100%;
+        border-radius: 30px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: #0b5ed7;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(11, 94, 215, 0.4);
+        }
+
+    @@media (max-width: 576px) {
+        .register-form {
+            margin: 20px;
+            padding: 20px;
+        }
+    }
+</style>
+
+<div class="register-form">
+    <h2><i class="fas fa-user-plus me-2"></i>Đăng Ký</h2>
+    <form asp-action="Register" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <div class="form-group input-icon mb-3">
+            <i class="fas fa-user"></i>
+            <input asp-for="HoTen" class="form-control" placeholder="Họ và tên" required />
+            <span asp-validation-for="HoTen" class="text-danger"></span>
+        </div>
+
+        <div class="form-group input-icon mb-3">
+            <i class="fas fa-envelope"></i>
+            <input asp-for="Email" class="form-control" placeholder="Email" type="email" required />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-group input-icon mb-3">
+            <i class="fas fa-lock"></i>
+            <input asp-for="MatKhau" class="form-control" placeholder="Mật khẩu (>=8 ký tự)" type="password" required minlength="8" />
+            <span asp-validation-for="MatKhau" class="text-danger"></span>
+        </div>
+
+        <div class="form-group input-icon mb-3">
+            <i class="fas fa-phone"></i>
+            <input asp-for="SoDienThoai" class="form-control" placeholder="Số điện thoại" />
+            <span asp-validation-for="SoDienThoai" class="text-danger"></span>
+        </div>
+
+        <div class="form-group input-icon mb-4">
+            <i class="fas fa-map-marker-alt"></i>
+            <input asp-for="DiaChi" class="form-control" placeholder="Địa chỉ" required />
+            <span asp-validation-for="DiaChi" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary"><i class="fas fa-sign-in-alt me-2"></i>Đăng Ký</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
