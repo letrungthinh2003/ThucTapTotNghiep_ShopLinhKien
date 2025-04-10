@@ -340,6 +340,7 @@
         cursor: pointer;
     }
 </style>
+
 @section Scripts {
     <script>
         $(document).ready(function () {
@@ -373,11 +374,18 @@
             }
         }
 
+        function showModal(message, isSuccess) {
+            $('#modalMessage').text(message);
+            $('#modalHeader').removeClass('bg-success bg-danger bg-gradient');
+            $('#modalHeader').addClass(isSuccess ? 'bg-success' : 'bg-danger');
+            $('#customModal').modal('show');
+        }
+
         function addToCart(productId, quantity) {
         @if (!User.Identity.IsAuthenticated)
         {
-            @:alert('Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!');
-            @:window.location.href = '@Url.Action("Login", "Account")';
+            @:showModal('Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!', false);
+            @:setTimeout(() => { window.location.href = '@Url.Action("ChiTietSanPham", "TrangChu")'; }, 9000);
             @:return;
         }
             $.ajax({
@@ -386,14 +394,14 @@
                 data: { maSanPham: productId, soLuong: parseInt(quantity) },
                 success: function (response) {
                     if (response.success) {
-                        alert(response.message);
+                        showModal(response.message, true);
                         $('.cart-count').text(response.cartCount);
                     } else {
-                        alert(response.message);
+                        showModal(response.message, false);
                     }
                 },
                 error: function () {
-                    alert('Có lỗi xảy ra khi thêm vào giỏ hàng.');
+                    showModal('Có lỗi xảy ra khi thêm vào giỏ hàng.', false);
                 }
             });
         }
@@ -401,8 +409,8 @@
         function buyNow(productId, quantity) {
         @if (!User.Identity.IsAuthenticated)
         {
-            @:alert('Vui lòng đăng nhập để mua hàng!');
-            @:window.location.href = '@Url.Action("Login", "Account")';
+            @:showModal('Vui lòng đăng nhập để mua hàng!', false);
+            @:setTimeout(() => { window.location.href = '@Url.Action("Login", "Account")'; }, 9000);
             @:return;
         }
             addToCart(productId, quantity);

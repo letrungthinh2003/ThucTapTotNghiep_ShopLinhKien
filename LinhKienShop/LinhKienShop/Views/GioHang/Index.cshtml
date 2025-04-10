@@ -123,6 +123,13 @@
 
 @section Scripts {
     <script>
+        function showModal(message, isSuccess) {
+            $('#modalMessage').text(message);
+            $('#modalHeader').removeClass('bg-success bg-danger bg-gradient');
+            $('#modalHeader').addClass(isSuccess ? 'bg-success' : 'bg-danger');
+            $('#customModal').modal('show');
+        }
+
         $(document).ready(function () {
             // Tăng số lượng
             $('.increase').on('click', function () {
@@ -159,7 +166,7 @@
                 if (newQty > max) {
                     $(this).val(max);
                     newQty = max;
-                    alert('Số lượng vượt quá tồn kho.');
+                    showModal('Số lượng vượt quá tồn kho.', false);
                 }
                 if (newQty < 1) {
                     $(this).val(1);
@@ -178,19 +185,21 @@
                     if (response.success) {
                         if (soLuong === 0) {
                             row.remove();
+                            showModal(response.message, true);
                         } else {
                             row.find('.quantity').val(soLuong);
                             row.find('.thanh-tien').text(response.thanhTien.toLocaleString('vi-VN') + ' VNĐ');
+                            showModal(response.message, true);
                         }
                         $('#total-amount').text(response.total.toLocaleString('vi-VN') + ' VNĐ');
                         $('.cart-count').text(response.cartCount);
                         checkCartEmpty();
                     } else {
-                        alert(response.message);
+                        showModal(response.message, false);
                     }
                 },
                 error: function () {
-                    alert('Có lỗi xảy ra khi cập nhật số lượng.');
+                    showModal('Có lỗi xảy ra khi cập nhật số lượng.', false);
                 }
             });
         }
@@ -205,13 +214,14 @@
                         row.remove();
                         $('#total-amount').text(response.total.toLocaleString('vi-VN') + ' VNĐ');
                         $('.cart-count').text(response.cartCount);
+                        showModal(response.message, true);
                         checkCartEmpty();
                     } else {
-                        alert(response.message);
+                        showModal(response.message, false);
                     }
                 },
                 error: function () {
-                    alert('Có lỗi xảy ra khi xóa sản phẩm.');
+                    showModal('Có lỗi xảy ra khi xóa sản phẩm.', false);
                 }
             });
         }
