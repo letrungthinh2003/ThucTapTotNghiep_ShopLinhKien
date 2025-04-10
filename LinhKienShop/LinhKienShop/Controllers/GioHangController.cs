@@ -1,10 +1,9 @@
 ﻿using LinhKienShop.Models;
-using Microsoft.AspNetCore.Authorization; // Thêm để sử dụng Authorize
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
 namespace LinhKienShop.Controllers
@@ -34,7 +33,7 @@ namespace LinhKienShop.Controllers
 
         // Thêm sản phẩm vào giỏ hàng từ trang chi tiết sản phẩm
         [HttpPost]
-        [Authorize] // Yêu cầu đăng nhập
+        [Authorize]
         public IActionResult ThemVaoGio(int maSanPham, int soLuong)
         {
             var sanPham = _context.SanPhams.FirstOrDefault(s => s.MaSanPham == maSanPham);
@@ -82,7 +81,7 @@ namespace LinhKienShop.Controllers
         }
 
         // Hiển thị trang giỏ hàng
-        [Authorize] // Yêu cầu đăng nhập
+        [Authorize]
         public IActionResult Index()
         {
             var cart = GetCart();
@@ -91,7 +90,7 @@ namespace LinhKienShop.Controllers
 
         // Cập nhật số lượng sản phẩm trong giỏ hàng
         [HttpPost]
-        [Authorize] // Yêu cầu đăng nhập
+        [Authorize]
         public IActionResult CapNhatSoLuong(int maSanPham, int soLuong)
         {
             var cart = GetCart();
@@ -125,16 +124,15 @@ namespace LinhKienShop.Controllers
             return Json(new
             {
                 success = true,
-                message = "Cập nhật số lượng thành công!",
-                thanhTien = cartItem.ThanhTien,
-                total = cart.Sum(c => c.ThanhTien),
+                thanhTien = cartItem.ThanhTien, // Không cần ToString("N0") ở đây
+                total = cart.Sum(c => c.ThanhTien), // Không cần ToString("N0") ở đây
                 cartCount = cart.Count
             });
         }
 
         // Xóa sản phẩm khỏi giỏ hàng
         [HttpPost]
-        [Authorize] // Yêu cầu đăng nhập
+        [Authorize]
         public IActionResult XoaKhoiGio(int maSanPham)
         {
             var cart = GetCart();
@@ -148,12 +146,30 @@ namespace LinhKienShop.Controllers
                 {
                     success = true,
                     message = "Đã xóa sản phẩm khỏi giỏ hàng.",
-                    total = cart.Sum(c => c.ThanhTien),
+                    total = cart.Sum(c => c.ThanhTien), // Không cần ToString("N0") ở đây
                     cartCount = cart.Count
                 });
             }
 
             return Json(new { success = false, message = "Sản phẩm không tồn tại trong giỏ hàng." });
+        }
+
+        // Hiển thị trang thanh toán với các sản phẩm được chọn
+        [HttpPost]
+        [Authorize]
+        public IActionResult Checkout(string selectedItems)
+        {
+            var cart = GetCart();
+            var selectedIds = JsonConvert.DeserializeObject<List<int>>(selectedItems);
+            var selectedCartItems = cart.Where(c => selectedIds.Contains(c.MaSanPham)).ToList();
+
+            if (!selectedCartItems.Any())
+            {
+                return RedirectToAction("Index");
+            }
+
+            // Truyền danh sách sản phẩm được chọn sang view Checkout
+            return View(selectedCartItems);
         }
     }
 }
