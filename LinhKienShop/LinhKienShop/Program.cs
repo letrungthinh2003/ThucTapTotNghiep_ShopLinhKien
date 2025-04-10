@@ -8,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
 builder.Services.AddControllersWithViews()
-    .AddRazorRuntimeCompilation(); // Hỗ trợ runtime compilation cho Razor
+    .AddRazorRuntimeCompilation();
 
 // Cấu hình DbContext
 builder.Services.AddDbContext<ShopLinhKienContext>(options =>
@@ -18,21 +18,21 @@ builder.Services.AddDbContext<ShopLinhKienContext>(options =>
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Account/Login"; // Đường dẫn đăng nhập
-        options.LogoutPath = "/Account/Logout"; // Đường dẫn đăng xuất
-        options.AccessDeniedPath = "/Home/AccessDenied"; // Từ chối quyền truy cập
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Thời gian hết hạn cookie
-        options.SlidingExpiration = true; // Gia hạn thời gian khi người dùng hoạt động
-        options.Cookie.HttpOnly = true; // Ngăn truy cập cookie từ JavaScript
-        options.Cookie.SecurePolicy = CookieSecurePolicy.Always; // Chỉ dùng với HTTPS
-        options.Cookie.SameSite = SameSiteMode.Strict; // Ngăn CSRF
+        options.LoginPath = "/Account/Login";
+        options.LogoutPath = "/Account/Logout";
+        options.AccessDeniedPath = "/Home/AccessDenied";
+        options.ExpireTimeSpan = TimeSpan.FromHours(1); // Đồng bộ với UserRole
+        options.SlidingExpiration = true;
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        options.Cookie.SameSite = SameSiteMode.Strict;
     });
 
 // Cấu hình Session
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30); // Thời gian hết hạn session
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
@@ -43,7 +43,7 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 // Thêm HttpContextAccessor
 builder.Services.AddHttpContextAccessor();
 
-// Cấu hình logging (tùy chọn chi tiết hơn)
+// Cấu hình logging
 builder.Services.AddLogging(logging =>
 {
     logging.AddConsole();
@@ -65,16 +65,18 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseSession();
 
-// Thêm middleware Authentication và Authorization
-app.UseAuthentication(); // Phải trước UseAuthorization
+app.UseAuthentication();
 app.UseAuthorization();
 
-// Ngăn cache cho các trang nhạy cảm
+// Middleware ngăn cache cho trang nhạy cảm
 app.Use(async (context, next) =>
 {
-    context.Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
-    context.Response.Headers["Pragma"] = "no-cache";
-    context.Response.Headers["Expires"] = "0";
+    if (context.Request.Path.StartsWithSegments("/Account") || context.Request.Path.StartsWithSegments("/Dashboard"))
+    {
+        context.Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
+        context.Response.Headers["Pragma"] = "no-cache";
+        context.Response.Headers["Expires"] = "0";
+    }
     await next();
 });
 

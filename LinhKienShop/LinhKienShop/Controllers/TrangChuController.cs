@@ -3,6 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
+using System.Text;
+using System.Globalization;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 
 namespace LinhKienShop.Controllers
 {
@@ -15,15 +22,56 @@ namespace LinhKienShop.Controllers
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
+        private string RemoveDiacritics(string text)
+        {
+            if (string.IsNullOrEmpty(text)) return text;
+
+            string normalizedString = text.Normalize(NormalizationForm.FormD);
+            StringBuilder stringBuilder = new StringBuilder();
+
+            foreach (char c in normalizedString)
+            {
+                UnicodeCategory unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
+                if (unicodeCategory != UnicodeCategory.NonSpacingMark)
+                {
+                    stringBuilder.Append(c);
+                }
+            }
+
+            return stringBuilder.ToString().Normalize(NormalizationForm.FormC);
+        }
+
         public async Task<IActionResult> Index(string search = "", int? danhMucId = null, int? thuongHieuId = null, int? maxPrice = null)
         {
+            // Kiểm tra trạng thái đăng nhập và vai trò
+            if (User.Identity.IsAuthenticated)
+            {
+                if (!Request.Cookies.TryGetValue("UserRole", out string roleValue) || !int.TryParse(roleValue, out int maVaiTro))
+                {
+                    // Nếu cookie UserRole không tồn tại hoặc không hợp lệ, đăng xuất để tránh lỗi
+                    await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                    Response.Cookies.Delete("UserRole");
+                    return RedirectToAction("Login", "Account");
+                }
+
+                Console.WriteLine($"Khôi phục vai trò từ Cookie: MaVaiTro = {maVaiTro}");
+
+                // Chỉ cho phép Khách hàng (MaVaiTro = 2) ở lại trang chủ
+                if (maVaiTro != 2)
+                {
+                    switch (maVaiTro)
+                    {
+                        case 1: return RedirectToAction("Index", "Dashboard"); // Admin
+                        case 3: return RedirectToAction("Index", "NVQL"); // Nhân viên quản lý
+                        case 4: return RedirectToAction("Index", "NVCSKH"); // Nhân viên CSKH
+                        default: return RedirectToAction("Login", "Account"); // Vai trò không hợp lệ
+                    }
+                }
+            }
+
+            // Logic hiển thị trang chủ cho Khách hàng hoặc người chưa đăng nhập
             var sanPhams = _context.SanPhams.AsQueryable();
 
-            // Áp dụng các điều kiện lọc
-            if (!string.IsNullOrEmpty(search))
-            {
-                sanPhams = sanPhams.Where(s => s.TenSanPham.Contains(search));
-            }
             if (danhMucId.HasValue)
             {
                 sanPhams = sanPhams.Where(s => s.MaDanhMuc == danhMucId);
@@ -37,50 +85,121 @@ namespace LinhKienShop.Controllers
                 sanPhams = sanPhams.Where(s => s.GiaKhuyenMai <= maxPrice);
             }
 
-            // Gọi Include sau khi lọc
             sanPhams = sanPhams
                 .Include(s => s.MaDanhMucNavigation)
                 .Include(s => s.MaThuongHieuNavigation)
                 .Include(s => s.MaXuatXuNavigation);
 
-            // Lấy tất cả sản phẩm
-            var allSanPhams = await sanPhams
-                .OrderBy(s => s.MaSanPham)
-                .ToListAsync() ?? new List<SanPham>();
+            var sanPhamList = await sanPhams.ToListAsync();
 
-            // Truyền dữ liệu qua ViewBag
+            if (!string.IsNullOrEmpty(search))
+            {
+                search = search.Trim().ToLower();
+                string searchNoDiacritics = RemoveDiacritics(search);
+                sanPhamList = sanPhamList.Where(s => s.TenSanPham.ToLower().Contains(search) ||
+                                                    RemoveDiacritics(s.TenSanPham).ToLower().Contains(searchNoDiacritics))
+                                        .ToList();
+                SaveSearchHistory(search);
+            }
+
             ViewBag.DanhMucs = await _context.DanhMucs.ToListAsync() ?? new List<DanhMuc>();
             ViewBag.ThuongHieus = await _context.ThuongHieus.ToListAsync() ?? new List<ThuongHieu>();
+            ViewBag.SearchHistory = GetSearchHistory();
 
             ViewData["Title"] = "Trang Chủ";
-            return View(allSanPhams);
+            return View(sanPhamList.OrderBy(s => s.MaSanPham).ToList());
         }
 
-        // GET: Chi tiết sản phẩm
+        // Các action khác (Search, ChiTietSanPham, SaveSearchHistory, GetSearchHistory) giữ nguyên
+        public async Task<IActionResult> Search(string search = "", int? danhMucId = null, int? thuongHieuId = null, int? maxPrice = null)
+        {
+            var sanPhams = _context.SanPhams.AsQueryable();
+
+            if (danhMucId.HasValue)
+            {
+                sanPhams = sanPhams.Where(s => s.MaDanhMuc == danhMucId);
+            }
+            if (thuongHieuId.HasValue)
+            {
+                sanPhams = sanPhams.Where(s => s.MaThuongHieu == thuongHieuId);
+            }
+            if (maxPrice.HasValue)
+            {
+                sanPhams = sanPhams.Where(s => s.GiaKhuyenMai <= maxPrice);
+            }
+
+            sanPhams = sanPhams
+                .Include(s => s.MaDanhMucNavigation)
+                .Include(s => s.MaThuongHieuNavigation)
+                .Include(s => s.MaXuatXuNavigation);
+
+            var sanPhamList = await sanPhams.ToListAsync();
+
+            if (!string.IsNullOrEmpty(search))
+            {
+                search = search.Trim().ToLower();
+                string searchNoDiacritics = RemoveDiacritics(search);
+                sanPhamList = sanPhamList.Where(s => s.TenSanPham.ToLower().Contains(search) ||
+                                                    RemoveDiacritics(s.TenSanPham).ToLower().Contains(searchNoDiacritics))
+                                        .ToList();
+                SaveSearchHistory(search);
+            }
+
+            ViewBag.DanhMucs = await _context.DanhMucs.ToListAsync() ?? new List<DanhMuc>();
+            ViewBag.ThuongHieus = await _context.ThuongHieus.ToListAsync() ?? new List<ThuongHieu>();
+            ViewBag.SearchHistory = GetSearchHistory();
+
+            ViewData["Title"] = "Kết Quả Tìm Kiếm";
+            return View(sanPhamList.OrderBy(s => s.MaSanPham).ToList());
+        }
+
+        private void SaveSearchHistory(string searchTerm)
+        {
+            var historyJson = HttpContext.Session.GetString("SearchHistory");
+            var history = string.IsNullOrEmpty(historyJson)
+                ? new List<string>()
+                : JsonConvert.DeserializeObject<List<string>>(historyJson);
+
+            if (!history.Contains(searchTerm))
+            {
+                history.Insert(0, searchTerm);
+                if (history.Count > 5)
+                {
+                    history.RemoveAt(history.Count - 1);
+                }
+                HttpContext.Session.SetString("SearchHistory", JsonConvert.SerializeObject(history));
+            }
+        }
+
+        private List<string> GetSearchHistory()
+        {
+            var historyJson = HttpContext.Session.GetString("SearchHistory");
+            return string.IsNullOrEmpty(historyJson)
+                ? new List<string>()
+                : JsonConvert.DeserializeObject<List<string>>(historyJson);
+        }
+
         public async Task<IActionResult> ChiTietSanPham(int? id)
         {
             if (id == null) return NotFound();
 
-            // Lấy thông tin sản phẩm chi tiết
             var sanPham = await _context.SanPhams
                 .Include(s => s.MaDanhMucNavigation)
                 .Include(s => s.MaThuongHieuNavigation)
                 .Include(s => s.MaXuatXuNavigation)
-                .Include(s => s.HinhChiTietSliders) // Load danh sách hình ảnh chi tiết
+                .Include(s => s.HinhChiTietSliders)
                 .FirstOrDefaultAsync(m => m.MaSanPham == id);
 
             if (sanPham == null) return NotFound();
 
-            // Lấy danh sách sản phẩm tương tự
             var similarProducts = await _context.SanPhams
                 .Where(sp => sp.MaDanhMuc == sanPham.MaDanhMuc && sp.MaSanPham != sanPham.MaSanPham)
                 .Take(8)
                 .ToListAsync();
 
-            // Truyền danh sách sản phẩm tương tự qua ViewBag
             ViewBag.SimilarProducts = similarProducts ?? new List<SanPham>();
 
-            return View("ChiTietSanPham", sanPham); // Trả về view ChiTietSanPham.cshtml
+            return View("ChiTietSanPham", sanPham);
         }
     }
 }

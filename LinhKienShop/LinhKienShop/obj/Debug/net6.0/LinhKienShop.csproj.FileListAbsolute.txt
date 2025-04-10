@@ -805,3 +805,4 @@ E:\Luu Tru do an\Linh Kien\luu 08\LinhKienShop\LinhKienShop\obj\Debug\net6.0\ref
 E:\Luu Tru do an\Linh Kien\luu 08\LinhKienShop\LinhKienShop\obj\Debug\net6.0\LinhKienShop.pdb
 E:\Luu Tru do an\Linh Kien\luu 08\LinhKienShop\LinhKienShop\obj\Debug\net6.0\LinhKienShop.genruntimeconfig.cache
 E:\Luu Tru do an\Linh Kien\luu 08\LinhKienShop\LinhKienShop\obj\Debug\net6.0\ref\LinhKienShop.dll
+D:\THUC TAP TOT NGHIEP\Source_LinhKien\LinhKienShop\LinhKienShop\obj\Debug\net6.0\LinhKienShop.sourcelink.json

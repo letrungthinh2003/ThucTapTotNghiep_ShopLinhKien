@@ -70,14 +70,12 @@ namespace LinhKienShop.Controllers
             return View(users);
         }
 
-        // GET: /dang-nhap
         [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
 
-        // POST: /dang-nhap
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(string email, string matKhau)
@@ -92,77 +90,73 @@ namespace LinhKienShop.Controllers
                 .Include(u => u.MaVaiTroNavigation)
                 .FirstOrDefaultAsync(u => u.Email == email);
 
-            if (user != null && BCrypt.Net.BCrypt.Verify(matKhau, user.MatKhau))
+            if (user == null || !BCrypt.Net.BCrypt.Verify(matKhau, user.MatKhau))
             {
-                if (user.TrangThai == "BiKhoa")
-                {
-                    ModelState.AddModelError("", "Tài khoản của bạn đã bị khóa.");
-                    return View();
-                }
-
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, user.HoTen),
-                    new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Role, user.MaVaiTroNavigation.TenVaiTro),
-                    new Claim("MaVaiTro", user.MaVaiTro.ToString())
-                };
-
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                var authProperties = new AuthenticationProperties
-                {
-                    IsPersistent = true,
-                    ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30)
-                };
-
-                await HttpContext.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(claimsIdentity),
-                    authProperties);
-
-                // Redirect theo vai trò
-                switch (user.MaVaiTro)
-                {
-                    case 1: return RedirectToAction("Index", "Dashboard"); // Admin
-                    case 2: return RedirectToAction("Index", "TrangChu"); // Khách hàng
-                    case 3: return RedirectToAction("Index", "NVQL"); // Nhân viên quản lý
-                    case 4: return RedirectToAction("Index", "NVCSKH"); // Nhân viên CSKH
-                    default: return RedirectToAction("Index", "TrangChu");
-                }
+                ModelState.AddModelError("", "Email hoặc mật khẩu không đúng.");
+                return View();
             }
 
-            ModelState.AddModelError("", "Email hoặc mật khẩu không đúng.");
-            return View();
+            if (user.TrangThai == "BiKhoa")
+            {
+                ModelState.AddModelError("", "Tài khoản của bạn đã bị khóa.");
+                return View();
+            }
+
+            // Tạo cookie xác thực
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.HoTen),
+                new Claim(ClaimTypes.Email, user.Email)
+            };
+
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var authProperties = new AuthenticationProperties
+            {
+                IsPersistent = true,
+                ExpiresUtc = DateTimeOffset.UtcNow.AddHours(1)
+            };
+
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity),
+                authProperties);
+
+            // Lưu vai trò vào cookie riêng
+            Response.Cookies.Append("UserRole", user.MaVaiTro.ToString(), new CookieOptions
+            {
+                HttpOnly = true,
+                Expires = DateTimeOffset.UtcNow.AddHours(1),
+                IsEssential = true,
+                Secure = true, // Đảm bảo chỉ dùng HTTPS
+                SameSite = SameSiteMode.Strict // Ngăn CSRF
+            });
+
+            Console.WriteLine($"Đăng nhập: {user.HoTen}, MaVaiTro: {user.MaVaiTro}");
+
+            return RedirectToRolePage(user.MaVaiTro);
         }
 
-        // GET: /dang-xuat
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            HttpContext.Session.Clear();
+            Response.Cookies.Delete("UserRole");
             Response.Headers["Cache-Control"] = "no-cache, no-store, must-revalidate";
             Response.Headers["Pragma"] = "no-cache";
             Response.Headers["Expires"] = "0";
             return RedirectToAction("Index", "TrangChu");
         }
 
-        // POST: /toggle-trang-thai
-        [HttpPost]
-        [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> ToggleTrangThai(int id)
+        private IActionResult RedirectToRolePage(int maVaiTro)
         {
-            var nguoiDung = await _context.NguoiDungs.FindAsync(id);
-            if (nguoiDung == null)
+            switch (maVaiTro)
             {
-                return NotFound();
+                case 1: return RedirectToAction("Index", "Dashboard"); // Admin
+                case 2: return RedirectToAction("Index", "TrangChu"); // Khách hàng
+                case 3: return RedirectToAction("Index", "NVQL"); // Nhân viên quản lý
+                case 4: return RedirectToAction("Index", "NVCSKH"); // Nhân viên CSKH
+                default: return RedirectToAction("Index", "TrangChu");
             }
-
-            nguoiDung.TrangThai = nguoiDung.TrangThai == "HoatDong" ? "BiKhoa" : "HoatDong";
-            _context.Update(nguoiDung);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction("Index");
         }
     }
 }

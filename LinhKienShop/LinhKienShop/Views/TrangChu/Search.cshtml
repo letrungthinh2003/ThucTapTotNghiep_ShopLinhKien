@@ -1,0 +1,202 @@
+﻿@model List<LinhKienShop.Models.SanPham>
+
+@{
+    ViewData["Title"] = "Kết Quả Tìm Kiếm";
+    Layout = "~/Views/Shared/_LayoutUser.cshtml";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4 text-gradient fw-bold"><i class="fas fa-search me-2"></i>Kết Quả Tìm Kiếm</h2>
+
+    <div class="mb-3">
+        @if (Model != null && Model.Any())
+        {
+            <p>Tìm thấy <strong>@Model.Count()</strong> sản phẩm phù hợp.</p>
+        }
+        else
+        {
+            <p class="text-danger">Không tìm thấy sản phẩm phù hợp.</p>
+        }
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="title-gradient fw-bold"><i class="fas fa-shopping-bag me-2"></i>Sản Phẩm Tìm Thấy</h3>
+            <div class="view-toggle">
+                <button class="btn btn-outline-secondary btn-sm me-2 active" id="gridView"><i class="fas fa-th"></i></button>
+                <button class="btn btn-outline-secondary btn-sm" id="listView"><i class="fas fa-list"></i></button>
+            </div>
+        </div>
+
+        <div class="row g-4" id="productList">
+            @{
+                int index = 0;
+                foreach (var sanPham in Model)
+                {
+                    var discountPercentage = sanPham.GiaGoc > 0 ? Math.Round((1 - sanPham.GiaKhuyenMai / sanPham.GiaGoc) * 100m, 0) : 0;
+                    <div class="col-md-3 col-6 mb-4 product-item @(index >= 4 ? "d-none" : "")" data-index="@index">
+                        <!-- Grid View -->
+                        <div class="card product-card shadow-sm h-100 border-0 transition-hover grid-view">
+                            <div class="position-relative overflow-hidden rounded-top">
+                                <a asp-controller="TrangChu" asp-action="ChiTietSanPham" asp-route-id="@sanPham.MaSanPham">
+                                    <img src="@sanPham.HinhSanPhamPath" class="card-img-top transition-scale" alt="@sanPham.TenSanPham" style="height: 200px; object-fit: cover;">
+                                </a>
+                                @if (discountPercentage > 0)
+                                {
+                                    <span class="badge bg-danger position-absolute top-0 end-0 m-2">Giảm @discountPercentage%</span>
+                                }
+                            </div>
+                            <div class="card-body d-flex flex-column p-3">
+                                <h5 class="card-title fw-semibold" style="font-size: 1rem; line-height: 1.4;">@sanPham.TenSanPham</h5>
+                                <div class="price-info mt-2">
+                                    <p class="text-danger fw-bold mb-0">@sanPham.GiaKhuyenMai.ToString("N0") VNĐ</p>
+                                    @if (sanPham.GiaGoc > 0 && sanPham.GiaGoc > sanPham.GiaKhuyenMai)
+                                    {
+                                        <p class="text-muted mb-0" style="text-decoration: line-through; font-size: 0.9rem;">@sanPham.GiaGoc.ToString("N0") VNĐ</p>
+                                    }
+                                </div>
+                                <a asp-controller="TrangChu" asp-action="ChiTietSanPham" asp-route-id="@sanPham.MaSanPham" class="btn btn-outline-primary btn-sm rounded-pill mt-auto"><i class="fas fa-eye me-2"></i>Xem chi tiết</a>
+                            </div>
+                        </div>
+
+                        <!-- List View -->
+                        <div class="card product-card shadow-sm border-0 transition-hover list-view d-none">
+                            <div class="row g-0">
+                                <div class="col-4">
+                                    <a asp-controller="TrangChu" asp-action="ChiTietSanPham" asp-route-id="@sanPham.MaSanPham">
+                                        <img src="@sanPham.HinhSanPhamPath" class="img-fluid rounded-start transition-scale" alt="@sanPham.TenSanPham" style="height: 120px; object-fit: cover;">
+                                    </a>
+                                </div>
+                                <div class="col-8">
+                                    <div class="card-body p-3">
+                                        <h5 class="card-title fw-semibold" style="font-size: 1rem;">@sanPham.TenSanPham</h5>
+                                        <div class="price-info mt-2">
+                                            <p class="text-danger fw-bold mb-0">@sanPham.GiaKhuyenMai.ToString("N0") VNĐ</p>
+                                            @if (sanPham.GiaGoc > 0 && sanPham.GiaGoc > sanPham.GiaKhuyenMai)
+                                            {
+                                                <p class="text-muted mb-0" style="text-decoration: line-through; font-size: 0.9rem;">@sanPham.GiaGoc.ToString("N0") VNĐ</p>
+                                            }
+                                        </div>
+                                        <a asp-controller="TrangChu" asp-action="ChiTietSanPham" asp-route-id="@sanPham.MaSanPham" class="btn btn-outline-primary btn-sm rounded-pill mt-2"><i class="fas fa-eye me-2"></i>Xem chi tiết</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    index++;
+                }
+            }
+        </div>
+
+        @if (Model != null && Model.Count() > 4)
+        {
+            <div class="text-center mt-4">
+                <button class="btn btn-gradient btn-lg rounded-pill px-5 py-2" id="loadMoreBtn"><i class="fas fa-arrow-down me-2"></i>Xem Thêm</button>
+            </div>
+        }
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            const loadMoreBtn = $("#loadMoreBtn");
+            const productItems = $(".product-item");
+            const itemsPerLoad = 4;
+
+            loadMoreBtn.on("click", function () {
+                const hiddenItems = productItems.filter(".d-none");
+                const nextItems = hiddenItems.slice(0, itemsPerLoad);
+                nextItems.removeClass("d-none").find(".product-card").addClass("animate__animated animate__fadeInUp");
+                if (hiddenItems.length <= itemsPerLoad) loadMoreBtn.fadeOut(300);
+            });
+
+            $("#gridView").click(function () {
+                $(this).addClass("active");
+                $("#listView").removeClass("active");
+                productItems.each(function () {
+                    $(this).find(".grid-view").removeClass("d-none");
+                    $(this).find(".list-view").addClass("d-none");
+                    $(this).removeClass("col-md-12").addClass("col-md-3 col-6");
+                });
+            });
+
+            $("#listView").click(function () {
+                $(this).addClass("active");
+                $("#gridView").removeClass("active");
+                productItems.each(function () {
+                    $(this).find(".grid-view").addClass("d-none");
+                    $(this).find(".list-view").removeClass("d-none");
+                    $(this).removeClass("col-md-3 col-6").addClass("col-md-12");
+                });
+            });
+        });
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+}
+
+<style>
+    .product-card {
+        border-radius: 15px;
+        overflow: hidden;
+        background: #fff;
+        transition: all 0.3s ease;
+    }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .product-card img {
+            transition: transform 0.4s ease;
+        }
+
+        .product-card:hover img {
+            transform: scale(1.1);
+        }
+
+    .price-info {
+        line-height: 1.2;
+    }
+
+    .badge {
+        font-size: 0.85rem;
+        padding: 5px 10px;
+    }
+
+    .view-toggle .btn {
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+        .view-toggle .btn.active {
+            background: linear-gradient(45deg, #007bff, #00d4ff);
+            color: white;
+            border: none;
+        }
+
+    .text-gradient {
+        background: linear-gradient(45deg, #007bff, #00d4ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .btn-gradient {
+        background: linear-gradient(45deg, #007bff, #00d4ff);
+        border: none;
+        color: white;
+        transition: all 0.3s ease;
+    }
+
+        .btn-gradient:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,123,255,0.3);
+        }
+</style>

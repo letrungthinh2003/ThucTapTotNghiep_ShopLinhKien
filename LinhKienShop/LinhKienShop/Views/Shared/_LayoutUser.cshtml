@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
-        /* Font chữ mỏng hơn */
         body {
             font-family: 'Roboto', sans-serif;
             font-weight: 300;
@@ -17,7 +16,6 @@
             background-color: #f5f7fa;
         }
 
-        /* Navbar cải tiến */
         .navbar {
             background: linear-gradient(135deg, #ffffff, #e3f2fd);
             box-shadow: 0 3px 15px rgba(0,0,0,0.08);
@@ -36,7 +34,7 @@
             }
 
         .navbar-brand img {
-            max-height: 60px; /* Logo to hơn */
+            max-height: 60px;
             transition: transform 0.3s ease;
         }
 
@@ -90,9 +88,8 @@
                 width: 90%;
             }
 
-        /* Dropdown cải tiến */
         .nav-item.dropdown:hover .dropdown-menu {
-            display: flex;
+            display: block;
             opacity: 1;
             transform: translateY(0);
         }
@@ -106,11 +103,16 @@
             opacity: 0;
             transform: translateY(10px);
             transition: all 0.3s ease;
-            flex-direction: column;
-            width: 250px;
+            width: 450px; /* Tăng chiều rộng để hiển thị grid */
             position: absolute;
             top: 100%;
             left: 0;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
         }
 
         .dropdown-item {
@@ -120,7 +122,13 @@
             transition: all 0.3s ease;
             font-size: 0.95rem;
             color: #1e3a8a;
+            display: flex;
+            align-items: center;
         }
+
+            .dropdown-item i {
+                margin-right: 8px;
+            }
 
             .dropdown-item:hover {
                 background: linear-gradient(45deg, #007bff, #00d4ff);
@@ -128,42 +136,89 @@
                 transform: translateX(5px);
             }
 
-        /* Thanh tìm kiếm dài hơn, bo góc nhẹ */
         .search-form {
             display: flex;
             align-items: center;
             margin: 0 2rem;
+            position: relative;
+            transition: all 0.3s ease;
         }
 
             .search-form .form-control {
-                border-radius: 4px 0 0 4px; /* Bo góc nhẹ */
-                border: 1px solid #bfdbfe;
-                padding: 8px 15px;
-                font-size: 0.9rem;
-                width: 250px;
+                border-radius: 25px;
+                border: 1px solid #d1d5db;
+                padding: 10px 20px;
+                font-size: 0.95rem;
+                width: 260px;
+                background: #ffffff;
+                box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
                 transition: all 0.3s ease;
+                outline: none;
             }
 
                 .search-form .form-control:focus {
-                    border-color: #007bff;
-                    box-shadow: 0 0 5px rgba(0,123,255,0.3);
-                    width: 280px;
+                    border-color: #3b82f6;
+                    box-shadow: 0 0 10px rgba(59, 130, 246, 0.4);
+                    width: 300px;
                 }
 
             .search-form .btn {
-                border-radius: 0 4px 4px 0; /* Bo góc nhẹ */
-                padding: 8px 15px;
-                background: #60a5fa; /* Màu nền hài hòa hơn */
-                border-color: #60a5fa;
+                border-radius: 25px;
+                padding: 10px 20px;
+                background: linear-gradient(45deg, #3b82f6, #60a5fa);
+                border: none;
+                color: white;
+                font-weight: 500;
                 transition: all 0.3s ease;
+                position: absolute;
+                right: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                z-index: 1;
             }
 
                 .search-form .btn:hover {
-                    background: #3b82f6;
-                    border-color: #3b82f6;
+                    background: linear-gradient(45deg, #2563eb, #3b82f6);
+                    box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+                    transform: translateY(-50%) scale(1.05);
                 }
 
-        /* Giỏ hàng */
+                .search-form .btn i {
+                    font-size: 1.1rem;
+                }
+
+        .search-history {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            width: 260px;
+            background: #ffffff;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border-radius: 12px;
+            z-index: 1000;
+            display: none;
+            overflow: hidden;
+        }
+
+            .search-history ul {
+                list-style: none;
+                padding: 10px 0;
+                margin: 0;
+            }
+
+            .search-history .dropdown-item {
+                padding: 8px 20px;
+                font-size: 0.9rem;
+                color: #1e3a8a;
+                transition: all 0.3s ease;
+            }
+
+                .search-history .dropdown-item:hover {
+                    background: linear-gradient(90deg, #e0f2fe, #dbeafe);
+                    color: #3b82f6;
+                    transform: translateX(5px);
+                }
+
         .cart-wrapper {
             position: relative;
             margin: 0 2rem;
@@ -192,7 +247,6 @@
             font-weight: 500;
         }
 
-        /* Nút đăng nhập/đăng ký/đăng xuất */
         .auth-buttons {
             display: flex;
             align-items: center;
@@ -201,11 +255,11 @@
 
             .auth-buttons .btn {
                 padding: 8px 16px;
-                border-radius: 8px; /* Bo góc */
+                border-radius: 8px;
                 font-weight: 400;
                 font-size: 0.9rem;
                 transition: all 0.3s ease;
-                white-space: nowrap; /* Chữ không xuống hàng */
+                white-space: nowrap;
             }
 
                 .auth-buttons .btn:hover {
@@ -246,7 +300,6 @@
                 border-color: transparent;
             }
 
-        /* Footer */
         footer {
             background: linear-gradient(135deg, #1e3a8a, #3b82f6);
             color: white;
@@ -313,7 +366,6 @@
                     transform: scale(1.2);
                 }
 
-        /* Back to Top */
         #backToTop {
             background: linear-gradient(45deg, #007bff, #00d4ff);
             border-radius: 50%;
@@ -334,91 +386,118 @@
                 box-shadow: 0 8px 20px rgba(0,0,0,0.3);
             }
 
-        /* Responsive */
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .user-dropdown .dropdown-menu {
+            right: 0;
+            left: auto;
+            width: 220px;
+        }
+
         @@media (max-width: 991.98px) {
-            .navbar-nav
-
-        {
-            gap: 1rem;
-            padding: 15px 0;
-        }
-
-        .nav-link {
-            padding: 10px 15px;
-            font-size: 1rem;
-        }
-
-        .dropdown-menu {
-            width: 100%;
-            flex-direction: column;
-            position: static;
-            box-shadow: none;
-            border: 1px solid #e5e7eb;
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .search-form {
-            margin: 15px 0;
-            width: 100%;
-        }
-
-            .search-form .form-control {
-                width: 100%;
+            .navbar-nav {
+                gap: 1rem;
+                padding: 15px 0;
             }
 
-        .cart-wrapper {
-            margin: 15px 0;
-        }
-
-        .auth-buttons {
-            flex-direction: column;
-            gap: 1rem;
-            margin: 15px 0;
-        }
-
-            .auth-buttons .btn {
-                width: 100%;
-                text-align: center;
+            .nav-link {
+                padding: 10px 15px;
+                font-size: 1rem;
             }
 
+            .dropdown-menu {
+                width: 100%;
+                position: static;
+                box-shadow: none;
+                border: 1px solid #e5e7eb;
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            .category-grid {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            }
+
+            .search-form {
+                margin: 15px 0;
+                width: 100%;
+                max-width: 400px;
+            }
+
+                .search-form .form-control {
+                    width: 100%;
+                }
+
+                    .search-form .form-control:focus {
+                        width: 100%;
+                    }
+
+            .search-history {
+                width: 100%;
+                max-width: 400px;
+            }
+
+            .cart-wrapper {
+                margin: 15px 0;
+            }
+
+            .auth-buttons {
+                flex-direction: column;
+                gap: 1rem;
+                margin: 15px 0;
+            }
+
+                .auth-buttons .btn {
+                    width: 100%;
+                    text-align: center;
+                }
         }
 
         @@media (max-width: 576px) {
-            .navbar-brand img
+            .navbar-brand img {
+                max-height: 50px;
+            }
 
-        {
-            max-height: 50px; /* Giảm nhẹ trên mobile */
-        }
+            .nav-link {
+                font-size: 0.9rem;
+                padding: 8px 12px;
+            }
 
-        .nav-link {
-            font-size: 0.9rem;
-            padding: 8px 12px;
-        }
+            .search-form .form-control {
+                font-size: 0.85rem;
+                padding: 8px 15px;
+                width: 100%;
+            }
 
-        .search-form .form-control {
-            font-size: 0.85rem;
-            padding: 6px 12px;
-        }
+            .search-form .btn {
+                padding: 8px 15px;
+            }
 
-        .search-form .btn {
-            padding: 6px 12px;
-        }
+            .search-history {
+                width: 100%;
+            }
 
-        .cart-icon {
-            font-size: 1.4rem;
-        }
+            .cart-icon {
+                font-size: 1.4rem;
+            }
 
-        .auth-buttons .btn {
-            font-size: 0.85rem;
-            padding: 6px 14px;
-        }
+            .auth-buttons .btn {
+                font-size: 0.85rem;
+                padding: 6px 14px;
+            }
 
-        footer .social-icons a {
-            font-size: 1.5rem;
-            margin: 0 10px;
-        }
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
 
+            footer .social-icons a {
+                font-size: 1.5rem;
+                margin: 0 10px;
+            }
         }
     </style>
 </head>
@@ -442,67 +521,86 @@
                             <a class="nav-link active" asp-controller="TrangChu" asp-action="Index"><i class="fas fa-home"></i> Trang chủ</a>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link" href="#" id="danhMucDropdown"><i class="fas fa-list"></i> Danh mục</a>
+                            <a class="nav-link" href="#" id="danhMucDropdown" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-list"></i> Danh mục</a>
                             <ul class="dropdown-menu" aria-labelledby="danhMucDropdown">
-                                @if (ViewBag.DanhMucs != null)
-                                {
-                                    foreach (var dm in ViewBag.DanhMucs)
+                                <div class="category-grid">
+                                    @if (ViewBag.DanhMucs != null)
                                     {
+                                        foreach (var dm in ViewBag.DanhMucs)
+                                        {
                                         <li><a class="dropdown-item" asp-controller="TrangChu" asp-action="Index" asp-route-danhMucId="@dm.MaDanhMuc">@dm.TenDanhMuc</a></li>
+                                        }
                                     }
-                                }
-                                else
+                </div>
+                </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="News" asp-action="Index"><i class="fas fa-newspaper"></i> Tin tức</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Contact" asp-action="Index"><i class="fas fa-envelope"></i> Liên hệ</a>
+                </li>
+                </ul>
+
+                <div class="d-flex align-items-center ms-auto" style="gap: 2rem;">
+                    <form class="search-form" method="get" asp-controller="TrangChu" asp-action="Search">
+                        <input class="form-control" type="search" name="search" placeholder="Tìm kiếm sản phẩm..." aria-label="Search">
+                        <button class="btn" type="submit"><i class="fas fa-search"></i></button>
+                        <div class="search-history mt-2">
+                                @if (ViewBag.SearchHistory != null && ViewBag.SearchHistory.Count > 0)
                                 {
-                                    <li><a class="dropdown-item" href="#">Không có danh mục</a></li>
+                                <ul class="list-unstyled">
+                                        @foreach (var item in ViewBag.SearchHistory)
+                                        {
+                                        <li>
+                                            <a href="@Url.Action("Search", "TrangChu", new { search = item })" class="dropdown-item">@item</a>
+                                        </li>
+                                        }
+                                </ul>
                                 }
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="News" asp-action="Index"><i class="fas fa-newspaper"></i> Tin tức</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Contact" asp-action="Index"><i class="fas fa-envelope"></i> Liên hệ</a>
-                        </li>
-                    </ul>
-
-                    <div class="d-flex align-items-center ms-auto" style="gap: 2rem;">
-                        <form class="search-form" method="get" asp-controller="TrangChu" asp-action="Index">
-                            <input class="form-control" type="search" name="search" placeholder="Tìm kiếm sản phẩm..." aria-label="Search">
-                            <button class="btn" type="submit"><i class="fas fa-search"></i></button>
-                        </form>
-
-                        <!-- Giỏ hàng: Chuyển hướng đến trang giỏ hàng -->
-                        @{
-                            var cartJson = Context.Session.GetString("Cart");
-                            var cart = string.IsNullOrEmpty(cartJson) ? new List<CartItem>() : JsonConvert.DeserializeObject<List<CartItem>>(cartJson);
-                        }
-                        <div class="cart-wrapper">
-                            <a href="@Url.Action("Index", "GioHang")" class="cart-icon">
-                                <i class="fas fa-shopping-cart"></i>
-                                <span class="cart-count">@cart.Count</span>
-                            </a>
                         </div>
+                    </form>
 
-                        <div class="auth-buttons">
+                    <div class="cart-wrapper">
+                            @{
+                                var cartJson = Context.Session.GetString("Cart");
+                                var cart = string.IsNullOrEmpty(cartJson) ? new List<CartItem>() : JsonConvert.DeserializeObject<List<CartItem>>(cartJson);
+                            }
+                        <a href="@Url.Action("Index", "GioHang")" class="cart-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-count">@cart.Count</span>
+                        </a>
+                    </div>
+
+                    <div class="auth-buttons">
                             @if (User.Identity?.IsAuthenticated == true)
                             {
-                                <span class="me-3"><i class="fas fa-user-circle me-1"></i> @User.Identity.Name</span>
-                                <a asp-controller="Account" asp-action="Logout" class="btn btn-outline-danger">
-                                    <i class="fas fa-sign-out-alt me-1"></i> Đăng xuất
-                                </a>
+                            <div class="user-info">
+                                <span><i class="fas fa-user-circle me-1"></i> @User.Identity.Name</span>
+                                <div class="nav-item dropdown user-dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false"></a>
+                                    <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                                        <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile"><i class="fas fa-user me-2"></i> Thông tin cá nhân</a></li>
+                                        <li><a class="dropdown-item" asp-controller="Order" asp-action="Index"><i class="fas fa-shopping-bag me-2"></i> Đơn hàng của tôi</a></li>
+                                        <li><a class="dropdown-item" asp-controller="Address" asp-action="Index"><i class="fas fa-address-book me-2"></i> Sổ địa chỉ nhận hàng</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" asp-controller="Account" asp-action="Logout"><i class="fas fa-sign-out-alt me-2"></i> Đăng xuất</a></li>
+                                    </ul>
+                                </div>
+                            </div>
                             }
                             else
                             {
-                                <a asp-controller="Account" asp-action="Register" class="btn btn-outline-primary">
-                                    <i class="fas fa-user-plus me-1"></i> Đăng ký
-                                </a>
-                                <a asp-controller="Account" asp-action="Login" class="btn btn-outline-success">
-                                    <i class="fas fa-sign-in-alt me-1"></i> Đăng nhập
-                                </a>
+                            <a asp-controller="Account" asp-action="Register" class="btn btn-outline-primary">
+                                <i class="fas fa-user-plus me-1"></i> Đăng ký
+                            </a>
+                            <a asp-controller="Account" asp-action="Login" class="btn btn-outline-success">
+                                <i class="fas fa-sign-in-alt me-1"></i> Đăng nhập
+                            </a>
                             }
-                        </div>
                     </div>
                 </div>
+            </div>
             </div>
         </nav>
     </header>
@@ -555,8 +653,27 @@
             });
 
             $('#backToTop').click(function () {
-                $('html, body').animate({ scrollTop: 0 }, 500);
+                $('html, body').animate览: { scrollTop: 0 }, 500);
                 return false;
+            });
+
+            var $searchInput = $('.search-form .form-control');
+            var $searchHistory = $('.search-history');
+
+            $searchInput.on('focus', function () {
+                if ($searchHistory.find('li').length > 0) {
+                    $searchHistory.slideDown(200);
+                }
+            });
+
+            $(document).on('click', function (e) {
+                if (!$(e.target).closest('.search-form').length) {
+                    $searchHistory.slideUp(200);
+                }
+            });
+
+            $searchHistory.on('click', function (e) {
+                e.stopPropagation();
             });
         });
     </script>
