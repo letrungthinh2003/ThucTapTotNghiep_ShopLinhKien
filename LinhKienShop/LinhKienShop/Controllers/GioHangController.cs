@@ -1,4 +1,5 @@
 ﻿using LinhKienShop.Models;
+using Microsoft.AspNetCore.Authorization; // Thêm để sử dụng Authorize
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -21,11 +22,7 @@ namespace LinhKienShop.Controllers
         private List<CartItem> GetCart()
         {
             var cartJson = HttpContext.Session.GetString("Cart");
-            if (string.IsNullOrEmpty(cartJson))
-            {
-                return new List<CartItem>();
-            }
-            return JsonConvert.DeserializeObject<List<CartItem>>(cartJson);
+            return string.IsNullOrEmpty(cartJson) ? new List<CartItem>() : JsonConvert.DeserializeObject<List<CartItem>>(cartJson);
         }
 
         // Lưu giỏ hàng vào Session
@@ -37,6 +34,7 @@ namespace LinhKienShop.Controllers
 
         // Thêm sản phẩm vào giỏ hàng từ trang chi tiết sản phẩm
         [HttpPost]
+        [Authorize] // Yêu cầu đăng nhập
         public IActionResult ThemVaoGio(int maSanPham, int soLuong)
         {
             var sanPham = _context.SanPhams.FirstOrDefault(s => s.MaSanPham == maSanPham);
@@ -50,7 +48,6 @@ namespace LinhKienShop.Controllers
 
             if (cartItem != null)
             {
-                // Kiểm tra số lượng tồn kho
                 if (sanPham.SoLuong == null || cartItem.SoLuong + soLuong > sanPham.SoLuong)
                 {
                     return Json(new { success = false, message = "Số lượng vượt quá tồn kho." });
@@ -80,11 +77,12 @@ namespace LinhKienShop.Controllers
                 success = true,
                 message = "Đã thêm sản phẩm vào giỏ hàng thành công!",
                 cartCount = cart.Count,
-                redirectUrl = Url.Action("Index", "GioHang") // Thêm URL chuyển hướng
+                redirectUrl = Url.Action("Index", "GioHang")
             });
         }
 
         // Hiển thị trang giỏ hàng
+        [Authorize] // Yêu cầu đăng nhập
         public IActionResult Index()
         {
             var cart = GetCart();
@@ -93,6 +91,7 @@ namespace LinhKienShop.Controllers
 
         // Cập nhật số lượng sản phẩm trong giỏ hàng
         [HttpPost]
+        [Authorize] // Yêu cầu đăng nhập
         public IActionResult CapNhatSoLuong(int maSanPham, int soLuong)
         {
             var cart = GetCart();
@@ -135,6 +134,7 @@ namespace LinhKienShop.Controllers
 
         // Xóa sản phẩm khỏi giỏ hàng
         [HttpPost]
+        [Authorize] // Yêu cầu đăng nhập
         public IActionResult XoaKhoiGio(int maSanPham)
         {
             var cart = GetCart();

@@ -340,7 +340,6 @@
         cursor: pointer;
     }
 </style>
-
 @section Scripts {
     <script>
         $(document).ready(function () {
@@ -375,17 +374,22 @@
         }
 
         function addToCart(productId, quantity) {
+        @if (!User.Identity.IsAuthenticated)
+        {
+            @:alert('Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!');
+            @:window.location.href = '@Url.Action("Login", "Account")';
+            @:return;
+        }
             $.ajax({
                 url: '/GioHang/ThemVaoGio',
                 type: 'POST',
                 data: { maSanPham: productId, soLuong: parseInt(quantity) },
                 success: function (response) {
                     if (response.success) {
-                        alert(response.message); // Thông báo thêm thành công
-                        $('.cart-count').text(response.cartCount); // Cập nhật số lượng trên biểu tượng giỏ hàng
-                        // Không chuyển hướng ngay, để người dùng nhấp vào biểu tượng giỏ
+                        alert(response.message);
+                        $('.cart-count').text(response.cartCount);
                     } else {
-                        alert(response.message); // Thông báo lỗi nếu có
+                        alert(response.message);
                     }
                 },
                 error: function () {
@@ -395,11 +399,16 @@
         }
 
         function buyNow(productId, quantity) {
-            // Logic cho "Mua ngay" (có thể thêm vào giỏ và chuyển hướng đến trang thanh toán)
-            addToCart(productId, quantity); // Gọi addToCart trước
+        @if (!User.Identity.IsAuthenticated)
+        {
+            @:alert('Vui lòng đăng nhập để mua hàng!');
+            @:window.location.href = '@Url.Action("Login", "Account")';
+            @:return;
+        }
+            addToCart(productId, quantity);
             setTimeout(() => {
-                window.location.href = '/GioHang/Index'; // Chuyển hướng đến trang giỏ hàng
-            }, 500); // Delay nhẹ để đảm bảo thêm vào giỏ hoàn tất
+                window.location.href = '/GioHang/Index';
+            }, 500);
         }
 
         function viewProduct(productId) {

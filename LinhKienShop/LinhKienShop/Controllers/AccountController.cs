@@ -158,5 +158,23 @@ namespace LinhKienShop.Controllers
                 default: return RedirectToAction("Index", "TrangChu");
             }
         }
+        // POST: /toggle-trang-thai
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ToggleTrangThai(int id)
+        {
+            var nguoiDung = await _context.NguoiDungs.FindAsync(id);
+            if (nguoiDung == null)
+            {
+                return NotFound();
+            }
+
+            nguoiDung.TrangThai = nguoiDung.TrangThai == "HoatDong" ? "BiKhoa" : "HoatDong";
+            _context.Update(nguoiDung);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index");
+        }
+
     }
 }

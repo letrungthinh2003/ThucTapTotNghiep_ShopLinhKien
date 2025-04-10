@@ -3,6 +3,34 @@
   "WorkspaceRootPath": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\LinhKienShop\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{82D302C3-9362-464A-AEDA-A42F93764F3F}|LinhKienShop\\LinhKienShop.csproj|d:\\thuc tap tot nghiep\\source_linhkien\\linhkienshop\\linhkienshop\\views\\trangchu\\chitietsanpham.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{82D302C3-9362-464A-AEDA-A42F93764F3F}|LinhKienShop\\LinhKienShop.csproj|solutionrelative:linhkienshop\\views\\trangchu\\chitietsanpham.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{82D302C3-9362-464A-AEDA-A42F93764F3F}|LinhKienShop\\LinhKienShop.csproj|d:\\thuc tap tot nghiep\\source_linhkien\\linhkienshop\\linhkienshop\\views\\giohang\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{82D302C3-9362-464A-AEDA-A42F93764F3F}|LinhKienShop\\LinhKienShop.csproj|solutionrelative:linhkienshop\\views\\giohang\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{82D302C3-9362-464A-AEDA-A42F93764F3F}|LinhKienShop\\LinhKienShop.csproj|d:\\thuc tap tot nghiep\\source_linhkien\\linhkienshop\\linhkienshop\\controllers\\giohangcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{82D302C3-9362-464A-AEDA-A42F93764F3F}|LinhKienShop\\LinhKienShop.csproj|solutionrelative:linhkienshop\\controllers\\giohangcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{82D302C3-9362-464A-AEDA-A42F93764F3F}|LinhKienShop\\LinhKienShop.csproj|d:\\thuc tap tot nghiep\\source_linhkien\\linhkienshop\\linhkienshop\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{82D302C3-9362-464A-AEDA-A42F93764F3F}|LinhKienShop\\LinhKienShop.csproj|solutionrelative:linhkienshop\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{82D302C3-9362-464A-AEDA-A42F93764F3F}|LinhKienShop\\LinhKienShop.csproj|d:\\thuc tap tot nghiep\\source_linhkien\\linhkienshop\\linhkienshop\\views\\account\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{82D302C3-9362-464A-AEDA-A42F93764F3F}|LinhKienShop\\LinhKienShop.csproj|solutionrelative:linhkienshop\\views\\account\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{82D302C3-9362-464A-AEDA-A42F93764F3F}|LinhKienShop\\LinhKienShop.csproj|d:\\thuc tap tot nghiep\\source_linhkien\\linhkienshop\\linhkienshop\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{82D302C3-9362-464A-AEDA-A42F93764F3F}|LinhKienShop\\LinhKienShop.csproj|solutionrelative:linhkienshop\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{82D302C3-9362-464A-AEDA-A42F93764F3F}|LinhKienShop\\LinhKienShop.csproj|d:\\thuc tap tot nghiep\\source_linhkien\\linhkienshop\\linhkienshop\\views\\account\\register.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{82D302C3-9362-464A-AEDA-A42F93764F3F}|LinhKienShop\\LinhKienShop.csproj|solutionrelative:linhkienshop\\views\\account\\register.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{82D302C3-9362-464A-AEDA-A42F93764F3F}|LinhKienShop\\LinhKienShop.csproj|d:\\thuc tap tot nghiep\\source_linhkien\\linhkienshop\\linhkienshop\\views\\shared\\_layoutuser.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{82D302C3-9362-464A-AEDA-A42F93764F3F}|LinhKienShop\\LinhKienShop.csproj|solutionrelative:linhkienshop\\views\\shared\\_layoutuser.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
@@ -13,14 +41,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{82D302C3-9362-464A-AEDA-A42F93764F3F}|LinhKienShop\\LinhKienShop.csproj|d:\\thuc tap tot nghiep\\source_linhkien\\linhkienshop\\linhkienshop\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{82D302C3-9362-464A-AEDA-A42F93764F3F}|LinhKienShop\\LinhKienShop.csproj|solutionrelative:linhkienshop\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{82D302C3-9362-464A-AEDA-A42F93764F3F}|LinhKienShop\\LinhKienShop.csproj|d:\\thuc tap tot nghiep\\source_linhkien\\linhkienshop\\linhkienshop\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{82D302C3-9362-464A-AEDA-A42F93764F3F}|LinhKienShop\\LinhKienShop.csproj|solutionrelative:linhkienshop\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{82D302C3-9362-464A-AEDA-A42F93764F3F}|LinhKienShop\\LinhKienShop.csproj|d:\\thuc tap tot nghiep\\source_linhkien\\linhkienshop\\linhkienshop\\views\\account\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{82D302C3-9362-464A-AEDA-A42F93764F3F}|LinhKienShop\\LinhKienShop.csproj|solutionrelative:linhkienshop\\views\\account\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{82D302C3-9362-464A-AEDA-A42F93764F3F}|LinhKienShop\\LinhKienShop.csproj|d:\\thuc tap tot nghiep\\source_linhkien\\linhkienshop\\linhkienshop\\views\\trangchu\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -41,14 +61,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{82D302C3-9362-464A-AEDA-A42F93764F3F}|LinhKienShop\\LinhKienShop.csproj|d:\\thuc tap tot nghiep\\source_linhkien\\linhkienshop\\linhkienshop\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{82D302C3-9362-464A-AEDA-A42F93764F3F}|LinhKienShop\\LinhKienShop.csproj|solutionrelative:linhkienshop\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{82D302C3-9362-464A-AEDA-A42F93764F3F}|LinhKienShop\\LinhKienShop.csproj|d:\\thuc tap tot nghiep\\source_linhkien\\linhkienshop\\linhkienshop\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{82D302C3-9362-464A-AEDA-A42F93764F3F}|LinhKienShop\\LinhKienShop.csproj|solutionrelative:linhkienshop\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{82D302C3-9362-464A-AEDA-A42F93764F3F}|LinhKienShop\\LinhKienShop.csproj|d:\\thuc tap tot nghiep\\source_linhkien\\linhkienshop\\linhkienshop\\views\\trangchu\\chitietsanpham.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{82D302C3-9362-464A-AEDA-A42F93764F3F}|LinhKienShop\\LinhKienShop.csproj|solutionrelative:linhkienshop\\views\\trangchu\\chitietsanpham.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -58,8 +70,47 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 12,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\Views\\GioHang\\Index.cshtml",
+              "RelativeDocumentMoniker": "LinhKienShop\\Views\\GioHang\\Index.cshtml",
+              "ToolTip": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\Views\\GioHang\\Index.cshtml",
+              "RelativeToolTip": "LinhKienShop\\Views\\GioHang\\Index.cshtml",
+              "ViewState": "AgIAAM8AAAAAAAAAAAAxwOUAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T08:41:31.311Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "GioHangController.cs",
+              "DocumentMoniker": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\Controllers\\GioHangController.cs",
+              "RelativeDocumentMoniker": "LinhKienShop\\Controllers\\GioHangController.cs",
+              "ToolTip": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\Controllers\\GioHangController.cs",
+              "RelativeToolTip": "LinhKienShop\\Controllers\\GioHangController.cs",
+              "ViewState": "AgIAAJUAAAAAAAAAAAAiwJ4AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-10T08:40:57.77Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Register.cshtml",
+              "DocumentMoniker": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\Views\\Account\\Register.cshtml",
+              "RelativeDocumentMoniker": "LinhKienShop\\Views\\Account\\Register.cshtml",
+              "ToolTip": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\Views\\Account\\Register.cshtml",
+              "RelativeToolTip": "LinhKienShop\\Views\\Account\\Register.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-04-10T08:31:39.73Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 4,
@@ -68,7 +119,7 @@
               "RelativeDocumentMoniker": "LinhKienShop\\Views\\Account\\Index.cshtml",
               "ToolTip": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\Views\\Account\\Index.cshtml",
               "RelativeToolTip": "LinhKienShop\\Views\\Account\\Index.cshtml",
-              "ViewState": "AgIAAFQAAAAAAAAAAAAIwF8AAAAKAAAAAAAAAA==",
+              "ViewState": "AgIAADwAAAAAAAAAAAAAAFkAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-04-10T06:20:00.603Z",
               "EditorCaption": ""
@@ -81,14 +132,14 @@
               "RelativeDocumentMoniker": "LinhKienShop\\Controllers\\AccountController.cs",
               "ToolTip": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\Controllers\\AccountController.cs",
               "RelativeToolTip": "LinhKienShop\\Controllers\\AccountController.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAgwJ8AAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAJkAAAAAAAAAAAAUwLMAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-10T05:51:28.356Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 12,
               "Title": "SanPhamController.cs",
               "DocumentMoniker": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\Controllers\\SanPhamController.cs",
               "RelativeDocumentMoniker": "LinhKienShop\\Controllers\\SanPhamController.cs",
@@ -96,12 +147,11 @@
               "RelativeToolTip": "LinhKienShop\\Controllers\\SanPhamController.cs",
               "ViewState": "AgIAAF0AAAAAAAAAAAAowAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-10T05:03:32.886Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-10T05:03:32.886Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 13,
               "Title": "SanPham.cs",
               "DocumentMoniker": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\Models\\SanPham.cs",
               "RelativeDocumentMoniker": "LinhKienShop\\Models\\SanPham.cs",
@@ -109,12 +159,11 @@
               "RelativeToolTip": "LinhKienShop\\Models\\SanPham.cs",
               "ViewState": "AgIAADsAAAAAAAAAAAAwwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-10T04:59:45.764Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-10T04:59:45.764Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 11,
               "Title": "Search.cshtml",
               "DocumentMoniker": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\Views\\TrangChu\\Search.cshtml",
               "RelativeDocumentMoniker": "LinhKienShop\\Views\\TrangChu\\Search.cshtml",
@@ -122,12 +171,11 @@
               "RelativeToolTip": "LinhKienShop\\Views\\TrangChu\\Search.cshtml",
               "ViewState": "AgIAACEAAAAAAAAAAAAYwGIAAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-04-10T04:39:54.958Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-10T04:39:54.958Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 14,
               "Title": "appsettings.json",
               "DocumentMoniker": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\appsettings.json",
               "RelativeDocumentMoniker": "LinhKienShop\\appsettings.json",
@@ -135,12 +183,11 @@
               "RelativeToolTip": "LinhKienShop\\appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-04-10T04:21:10.954Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-10T04:21:10.954Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 9,
               "Title": "Program.cs",
               "DocumentMoniker": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\Program.cs",
               "RelativeDocumentMoniker": "LinhKienShop\\Program.cs",
@@ -148,51 +195,50 @@
               "RelativeToolTip": "LinhKienShop\\Program.cs",
               "ViewState": "AgIAAEMAAAAAAAAAAAAswFYAAAAKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-10T04:20:19.3Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-10T04:20:19.3Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 5,
               "Title": "_Layout.cshtml",
               "DocumentMoniker": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\Views\\Shared\\_Layout.cshtml",
               "RelativeDocumentMoniker": "LinhKienShop\\Views\\Shared\\_Layout.cshtml",
               "ToolTip": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\Views\\Shared\\_Layout.cshtml",
               "RelativeToolTip": "LinhKienShop\\Views\\Shared\\_Layout.cshtml",
-              "ViewState": "AgIAADgAAAAAAAAAAAAAAEcAAAAgAAAAAAAAAA==",
+              "ViewState": "AgIAAIcAAAAAAAAAAAAcwJgAAAAHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-04-10T04:16:18.707Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 7,
               "Title": "_LayoutUser.cshtml",
               "DocumentMoniker": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\Views\\Shared\\_LayoutUser.cshtml",
               "RelativeDocumentMoniker": "LinhKienShop\\Views\\Shared\\_LayoutUser.cshtml",
-              "ToolTip": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\Views\\Shared\\_LayoutUser.cshtml*",
-              "RelativeToolTip": "LinhKienShop\\Views\\Shared\\_LayoutUser.cshtml*",
-              "ViewState": "AgIAAJQCAAAAAAAAAAAIwKkCAAAHAAAAAAAAAA==",
+              "ToolTip": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\Views\\Shared\\_LayoutUser.cshtml",
+              "RelativeToolTip": "LinhKienShop\\Views\\Shared\\_LayoutUser.cshtml",
+              "ViewState": "AgIAAJgCAAAAAAAAAAAAAKECAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-04-10T04:10:15.07Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 0,
               "Title": "ChiTietSanPham.cshtml",
               "DocumentMoniker": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\Views\\TrangChu\\ChiTietSanPham.cshtml",
               "RelativeDocumentMoniker": "LinhKienShop\\Views\\TrangChu\\ChiTietSanPham.cshtml",
-              "ToolTip": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\Views\\TrangChu\\ChiTietSanPham.cshtml",
-              "RelativeToolTip": "LinhKienShop\\Views\\TrangChu\\ChiTietSanPham.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ToolTip": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\Views\\TrangChu\\ChiTietSanPham.cshtml*",
+              "RelativeToolTip": "LinhKienShop\\Views\\TrangChu\\ChiTietSanPham.cshtml*",
+              "ViewState": "AgIAAIwBAAAAAAAAAAAYwKEBAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2025-04-10T04:09:51.163Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 10,
               "Title": "Index.cshtml",
               "DocumentMoniker": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\Views\\TrangChu\\Index.cshtml",
               "RelativeDocumentMoniker": "LinhKienShop\\Views\\TrangChu\\Index.cshtml",
@@ -200,12 +246,11 @@
               "RelativeToolTip": "LinhKienShop\\Views\\TrangChu\\Index.cshtml",
               "ViewState": "AgIAACQAAAAAAAAAAAAAAAgAAAATAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-04-10T04:09:48.353Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-10T04:09:48.353Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 8,
               "Title": "TrangChuController.cs",
               "DocumentMoniker": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\Controllers\\TrangChuController.cs",
               "RelativeDocumentMoniker": "LinhKienShop\\Controllers\\TrangChuController.cs",
@@ -213,8 +258,7 @@
               "RelativeToolTip": "LinhKienShop\\Controllers\\TrangChuController.cs",
               "ViewState": "AgIAAEIAAAAAAAAAAAAowBwAAABOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-10T04:09:24.09Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-10T04:09:24.09Z"
             }
           ]
         }
