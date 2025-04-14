@@ -291,15 +291,13 @@ namespace LinhKienShop.Models
 
                 entity.Property(e => e.GiaTriGiam).HasColumnType("decimal(10, 2)");
 
-                entity.Property(e => e.MaCode).HasMaxLength(20);
+                entity.Property(e => e.GiaTriGiamToiDa).HasColumnType("decimal(15, 2)");
 
-                entity.Property(e => e.MoTa).HasMaxLength(255);
+                entity.Property(e => e.MaCode).HasMaxLength(20);
 
                 entity.Property(e => e.NgayBatDau).HasColumnType("datetime");
 
                 entity.Property(e => e.NgayHetHan).HasColumnType("datetime");
-
-                entity.Property(e => e.SoLanSuDungHienTai).HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.TrangThai).HasDefaultValueSql("((1))");
 

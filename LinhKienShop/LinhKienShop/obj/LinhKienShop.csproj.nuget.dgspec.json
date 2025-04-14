@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\LinhKienShop.csproj": {}
+    "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\LinhKienShop.csproj": {}
   },
   "projects": {
-    "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\LinhKienShop.csproj": {
+    "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\LinhKienShop.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\LinhKienShop.csproj",
+        "projectUniqueName": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\LinhKienShop.csproj",
         "projectName": "LinhKienShop",
-        "projectPath": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\LinhKienShop.csproj",
+        "projectPath": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\LinhKienShop.csproj",
         "packagesPath": "C:\\Users\\MSI\\.nuget\\packages\\",
-        "outputPath": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\obj\\",
+        "outputPath": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
