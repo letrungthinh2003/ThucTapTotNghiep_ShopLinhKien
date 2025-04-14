@@ -6,16 +6,18 @@
 }
 
 <div class="container py-5">
-    <h2 class="custom-title fw-bold mb-4 text-center"><i class="fas fa-shopping-cart me-2 text-primary"></i>Giỏ Hàng Của Bạn</h2>
+    <h2 class="custom-title fw-bold mb-5 text-center">
+        <i class="fas fa-shopping-cart me-2 text-primary"></i>Giỏ Hàng Của Bạn
+    </h2>
 
     <div id="cart-content">
         @if (Model.Any())
         {
-            <div class="card shadow-lg border-0 rounded-4 p-4 bg-light">
+            <div class="card shadow-lg border-0 rounded-4 p-4 bg-light animate__animated animate__fadeIn">
                 <table class="table table-hover table-bordered align-middle text-center">
-                    <thead class="table-dark">
+                    <thead class="table-dark bg-gradient">
                         <tr>
-                            <th><input type="checkbox" id="selectAll" checked></th> <!-- Checkbox chọn tất cả -->
+                            <th><input type="checkbox" id="selectAll" checked></th>
                             <th>Hình ảnh</th>
                             <th>Tên sản phẩm</th>
                             <th>Giá</th>
@@ -27,7 +29,7 @@
                     <tbody>
                         @foreach (var item in Model)
                         {
-                            <tr data-id="@item.MaSanPham">
+                            <tr data-id="@item.MaSanPham" class="animate__animated animate__fadeInUp">
                                 <td>
                                     <input type="checkbox" class="select-item" data-id="@item.MaSanPham" checked>
                                 </td>
@@ -38,12 +40,12 @@
                                 <td class="text-danger fw-bold">@item.GiaKhuyenMai.ToString("N0") VNĐ</td>
                                 <td>
                                     <div class="custom-quantity d-flex align-items-center justify-content-center">
-                                        <button class="btn btn-outline-dark btn-sm quantity-btn decrease" type="button"><i class="fas fa-minus"></i></button>
-                                        <input type="number" class="form-control text-center mx-2 quantity" value="@item.SoLuong" min="1" max="@item.SoLuongTonKho" style="width: 50px; border-radius: 5px;">
-                                        <button class="btn btn-outline-dark btn-sm quantity-btn increase" type="button"><i class="fas fa-plus"></i></button>
+                                        <button class="btn btn-outline-dark btn-sm quantity-btn decrease rounded-circle"><i class="fas fa-minus"></i></button>
+                                        <input type="number" class="form-control text-center mx-2 quantity" value="@item.SoLuong" min="1" max="@item.SoLuongTonKho" style="width: 60px; border-radius: 8px;">
+                                        <button class="btn btn-outline-dark btn-sm quantity-btn increase rounded-circle"><i class="fas fa-plus"></i></button>
                                     </div>
                                 </td>
-                                <td class="thanh-tien text-success fw-bold" data-thanh-tien="@item.ThanhTien">@item.ThanhTien.ToString("N0")</td>
+                                <td class="thanh-tien text-success fw-bold" data-thanh-tien="@item.ThanhTien">@item.ThanhTien.ToString("N0") VNĐ</td>
                                 <td>
                                     <button class="btn btn-danger btn-sm rounded-pill delete-item transition-hover"><i class="fas fa-trash-alt"></i></button>
                                 </td>
@@ -51,15 +53,19 @@
                         }
                     </tbody>
                 </table>
-                <div class="d-flex justify-content-between align-items-center mt-4 p-3 bg-white rounded-3 shadow-sm">
-                    <h4 class="mb-0">Tạm tính: <span id="total-amount" class="fw-bold text-danger" data-total="@Model.Where(item => true).Sum(item => item.ThanhTien)">@Model.Where(item => true).Sum(item => item.ThanhTien).ToString("N0")</span></h4>
-                    <button id="checkoutBtn" class="btn btn-primary btn-lg rounded-pill transition-hover px-5">Thanh toán</button>
+                <div class="d-flex justify-content-between align-items-center mt-4 p-4 bg-white rounded-3 shadow-sm">
+                    <h4 class="mb-0">
+                        Tạm tính: <span id="total-amount" class="fw-bold text-danger" data-total="@Model.Sum(item => item.ThanhTien)">@Model.Sum(item => item.ThanhTien).ToString("N0") VNĐ</span>
+                    </h4>
+                    <a asp-controller="GioHang" asp-action="Checkout" class="btn btn-primary btn-lg rounded-pill checkout-btn px-5 py-2">
+                        <i class="fas fa-credit-card me-2"></i>Thanh Toán
+                    </a>
                 </div>
             </div>
         }
         else
         {
-            <div class="card shadow-lg border-0 rounded-4 p-5 text-center bg-light">
+            <div class="card shadow-lg border-0 rounded-4 p-5 text-center bg-light animate__animated animate__fadeIn">
                 <h4 class="text-muted mb-4"><i class="fas fa-shopping-cart me-2"></i>Giỏ hàng của bạn đang trống!</h4>
                 <a asp-controller="TrangChu" asp-action="Index" class="btn btn-primary rounded-pill px-5 py-2 transition-hover">Tiếp tục mua sắm</a>
             </div>
@@ -68,64 +74,154 @@
 </div>
 
 <style>
+    /* Gradient nền và hiệu ứng card */
     .card {
-        background: linear-gradient(135deg, #ffffff, #f8f9fa);
-        transition: all 0.3s ease;
+        background: linear-gradient(145deg, #ffffff, #f1f5f9);
+        border-radius: 12px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
         }
 
+    /* Tiêu đề */
     .custom-title {
-        color: #1e3a8a;
-        font-style: italic;
+        color: #1e40af;
+        font-size: 2.5rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        background: linear-gradient(to right, #1e40af, #3b82f6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
 
-    .table th, .table td {
-        vertical-align: middle;
+    /* Bảng */
+    .table {
+        border-radius: 8px;
+        overflow: hidden;
     }
 
+        .table th, .table td {
+            vertical-align: middle;
+            padding: 1rem;
+        }
+
+    .table-dark {
+        background: linear-gradient(45deg, #1e3a8a, #3b82f6);
+        color: #fff;
+    }
+
+    /* Nút số lượng */
     .quantity-btn {
-        border-radius: 50%;
-        width: 32px;
-        height: 32px;
-        padding: 0;
+        width: 36px;
+        height: 36px;
         display: flex;
         align-items: center;
         justify-content: center;
         transition: all 0.3s ease;
+        background: #f1f5f9;
+        border: 1px solid #d1d5db;
     }
 
         .quantity-btn:hover {
-            background-color: #007bff;
+            background: #3b82f6;
             color: #fff;
-            border-color: #007bff;
+            border-color: #3b82f6;
+            transform: scale(1.1);
         }
 
     .custom-quantity input {
+        border: 1px solid #d1d5db;
         border-radius: 8px;
-        height: 38px;
-        font-weight: bold;
+        height: 40px;
+        font-weight: 600;
+        transition: border-color 0.3s ease;
     }
 
-    .transition-hover:hover {
-        transform: scale(1.05);
-        box-shadow: 0 5px 15px rgba(0,123,255,0.4);
-    }
-
-    .btn-primary {
-        background: linear-gradient(45deg, #007bff, #00d4ff);
-        border: none;
-    }
-
-        .btn-primary:hover {
-            background: linear-gradient(45deg, #0056b3, #0099cc);
+        .custom-quantity input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 8px rgba(59, 130, 246, 0.3);
         }
+
+    /* Nút xóa */
+    .delete-item {
+        background: linear-gradient(45deg, #ef4444, #f87171);
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+        .delete-item:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+        }
+
+    /* Nút thanh toán */
+    .checkout-btn {
+        background: linear-gradient(45deg, #3b82f6, #60a5fa);
+        border: none;
+        font-size: 1.1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+        .checkout-btn:hover {
+            background: linear-gradient(45deg, #2563eb, #3b82f6);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(59, 130, 246, 0.4);
+        }
+
+        .checkout-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: rgba(255, 255, 255, 0.15);
+            transform: translate(-50%, -50%) rotate(45deg);
+            transition: all 0.5s ease;
+            opacity: 0;
+        }
+
+        .checkout-btn:hover::before {
+            opacity: 1;
+            width: 0;
+            height: 0;
+        }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .custom-title
+
+    {
+        font-size: 1.8rem;
+    }
+
+    .table th, .table td {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .custom-quantity input {
+        width: 50px;
+    }
+
+    .checkout-btn {
+        padding: 0.5rem 1.5rem;
+        font-size: 1rem;
+    }
+
+    }
 </style>
 
 @section Scripts {
+    <!-- Giữ nguyên JavaScript hiện có -->
     <script>
         function showModal(message, isSuccess) {
             $('#modalMessage').text(message);
@@ -134,8 +230,6 @@
             $('#customModal').modal('show');
         }
 
-        // Hàm tính tổng tiền dựa trên các sản phẩm được chọn
-             // Cập nhật hàm updateTotalAmount
         function updateTotalAmount() {
             let total = 0;
             $('.select-item:checked').each(function () {
@@ -144,17 +238,15 @@
                 total += thanhTien;
             });
             $('#total-amount').text(total.toLocaleString('vi-VN') + ' VNĐ');
-            $('#total-amount').data('total', total); // Lưu giá trị số để sử dụng sau này
+            $('#total-amount').data('total', total);
         }
 
         $(document).ready(function () {
-            // Chọn/bỏ chọn tất cả
             $('#selectAll').on('change', function () {
                 $('.select-item').prop('checked', this.checked);
                 updateTotalAmount();
             });
 
-            // Khi thay đổi checkbox của từng sản phẩm
             $('.select-item').on('change', function () {
                 if (!this.checked && $('#selectAll').is(':checked')) {
                     $('#selectAll').prop('checked', false);
@@ -164,7 +256,6 @@
                 updateTotalAmount();
             });
 
-            // Tăng số lượng
             $('.increase').on('click', function () {
                 let row = $(this).closest('tr');
                 let input = row.find('.quantity');
@@ -175,7 +266,6 @@
                 }
             });
 
-            // Giảm số lượng
             $('.decrease').on('click', function () {
                 let row = $(this).closest('tr');
                 let input = row.find('.quantity');
@@ -185,13 +275,11 @@
                 }
             });
 
-            // Xóa sản phẩm
             $('.delete-item').on('click', function () {
                 let row = $(this).closest('tr');
                 deleteItem(row.data('id'), row);
             });
 
-            // Cập nhật số lượng qua input
             $('.quantity').on('change', function () {
                 let row = $(this).closest('tr');
                 let newQty = parseInt($(this).val());
@@ -207,32 +295,8 @@
                 }
                 updateQuantity(row.data('id'), newQty, row);
             });
-
-            // Xử lý nút thanh toán
-            $('#checkoutBtn').on('click', function () {
-                let selectedItems = [];
-                $('.select-item:checked').each(function () {
-                    selectedItems.push($(this).data('id'));
-                });
-
-                if (selectedItems.length === 0) {
-                    showModal('Vui lòng chọn ít nhất một sản phẩm để thanh toán.', false);
-                    return;
-                }
-
-                // Gửi danh sách sản phẩm được chọn qua form ẩn
-                let form = $('<form>', {
-                    action: '@Url.Action("Checkout", "GioHang")',
-                    method: 'POST'
-                }).append($('<input>', {
-                    type: 'hidden',
-                    name: 'selectedItems',
-                    value: JSON.stringify(selectedItems)
-                })).appendTo('body').submit();
-            });
         });
 
-                // Trong hàm updateQuantity
         function updateQuantity(maSanPham, soLuong, row) {
             $.ajax({
                 url: '/GioHang/CapNhatSoLuong',
@@ -252,7 +316,7 @@
                         $('#total-amount').text(response.total.toLocaleString('vi-VN') + ' VNĐ');
                         $('#total-amount').data('total', response.total);
                         $('.cart-count').text(response.cartCount);
-                        updateTotalAmount(); // Cập nhật tổng tiền dựa trên checkbox
+                        updateTotalAmount();
                         checkCartEmpty();
                     } else {
                         showModal(response.message, false);
@@ -264,7 +328,6 @@
             });
         }
 
-               // Trong hàm deleteItem
         function deleteItem(maSanPham, row) {
             $.ajax({
                 url: '/GioHang/XoaKhoiGio',
@@ -277,7 +340,7 @@
                         $('#total-amount').data('total', response.total);
                         $('.cart-count').text(response.cartCount);
                         showModal(response.message, true);
-                        updateTotalAmount(); // Cập nhật tổng tiền dựa trên checkbox
+                        updateTotalAmount();
                         checkCartEmpty();
                     } else {
                         showModal(response.message, false);
@@ -292,7 +355,7 @@
         function checkCartEmpty() {
             if ($('tbody tr').length === 0) {
                 $('#cart-content').html(`
-                    <div class="card shadow-lg border-0 rounded-4 p-5 text-center bg-light">
+                    <div class="card shadow-lg border-0 rounded-4 p-5 text-center bg-light animate__animated animate__fadeIn">
                         <h4 class="text-muted mb-4"><i class="fas fa-shopping-cart me-2"></i>Giỏ hàng của bạn đang trống!</h4>
                         <a href="@Url.Action("Index", "TrangChu")" class="btn btn-primary rounded-pill px-5 py-2 transition-hover">Tiếp tục mua sắm</a>
                     </div>

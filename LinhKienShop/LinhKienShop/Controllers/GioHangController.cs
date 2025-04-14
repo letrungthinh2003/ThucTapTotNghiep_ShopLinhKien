@@ -154,22 +154,6 @@ namespace LinhKienShop.Controllers
             return Json(new { success = false, message = "Sản phẩm không tồn tại trong giỏ hàng." });
         }
 
-        // Hiển thị trang thanh toán với các sản phẩm được chọn
-        [HttpPost]
-        [Authorize]
-        public IActionResult Checkout(string selectedItems)
-        {
-            var cart = GetCart();
-            var selectedIds = JsonConvert.DeserializeObject<List<int>>(selectedItems);
-            var selectedCartItems = cart.Where(c => selectedIds.Contains(c.MaSanPham)).ToList();
-
-            if (!selectedCartItems.Any())
-            {
-                return RedirectToAction("Index");
-            }
-
-            // Truyền danh sách sản phẩm được chọn sang view Checkout
-            return View(selectedCartItems);
-        }
+      
     }
 }

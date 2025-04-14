@@ -6,98 +6,216 @@
     <title>Admin - @ViewData["Title"]</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="~/css/admin.css" rel="stylesheet">
-    <link href="~/css/DanhMucStyle.css" rel="stylesheet">
-    <link href="~/css/XuatXuStyle.css" rel="stylesheet">
-    <link href="~/css/ThuongHieuStyle.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f7fa;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            height: 100vh;
+            background: linear-gradient(180deg, #1e3a8a, #3b82f6);
+            transition: all 0.3s;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 250px;
+            overflow-y: auto;
+        }
+
+            .sidebar .nav-link {
+                color: #fff;
+                padding: 12px 20px;
+                border-radius: 8px;
+                margin: 5px 10px;
+                transition: all 0.3s;
+                display: flex;
+                align-items: center;
+            }
+
+                .sidebar .nav-link:hover {
+                    background: rgba(255, 255, 255, 0.2);
+                    transform: translateX(5px);
+                }
+
+                .sidebar .nav-link i {
+                    margin-right: 10px;
+                    font-size: 1.2em;
+                }
+
+            .sidebar .logo {
+                padding: 20px;
+                text-align: center;
+            }
+
+        /* Main content */
+        main {
+            margin-left: 250px;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 10px 20px;
+        }
+
+            .navbar .dropdown-menu {
+                border-radius: 8px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .navbar .dropdown-item:hover {
+                background: #e9ecef;
+            }
+
+        /* Responsive */
+        @@media (max-width: 768px) {
+            .sidebar
+
+        {
+            width: 70px;
+            transition: width 0.3s;
+        }
+
+        .sidebar:hover {
+            width: 250px;
+        }
+
+        .sidebar .nav-link span {
+            display: none;
+        }
+
+        .sidebar:hover .nav-link span {
+            display: inline;
+        }
+
+        main {
+            margin-left: 70px;
+        }
+
+        }
+
+        /* Custom styles */
+        .navbar-brand {
+            font-weight: bold;
+            color: #1e3a8a;
+        }
+
+        .nav-item .btn-logout {
+            color: #dc3545;
+            font-weight: 500;
+        }
+
+            .nav-item .btn-logout:hover {
+                background: #dc3545;
+                color: #fff;
+                border-radius: 8px;
+            }
+    </style>
 </head>
 <body>
     @using System.Security.Claims
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
-            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-dark sidebar">
+            <nav id="sidebar" class="sidebar">
                 <div class="position-sticky pt-3">
-                    <div class="text-center mb-4">
-                        <img src="~/images/logo_shop.jpg" alt="Logo" class="img-fluid" style="max-width: 150px;">
+                    <div class="logo">
+                        <img src="~/images/logo_shop.jpg" alt="Logo" class="img-fluid" style="max-width: 120px;">
                     </div>
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-controller="Dashboard" asp-action="Index">
-                                <i class="fas fa-tachometer-alt me-2 text-primary"></i>
-                                Dashboard
+                            <a class="nav-link" asp-controller="Dashboard" asp-action="Index">
+                                <i class="fas fa-tachometer-alt text-primary"></i>
+                                <span>Dashboard</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-controller="SanPham" asp-action="Index">
-                                <i class="fas fa-box me-2 text-success"></i>
-                                Quản lý sản phẩm
+                            <a class="nav-link" asp-controller="SanPham" asp-action="Index">
+                                <i class="fas fa-box-open text-success"></i>
+                                <span>Quản lý sản phẩm</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-controller="DanhMuc" asp-action="Index">
-                                <i class="fas fa-folder me-2 text-warning"></i>
-                                Quản lý danh mục
+                            <a class="nav-link" asp-controller="DanhMuc" asp-action="Index">
+                                <i class="fas fa-folder-open text-warning"></i>
+                                <span>Quản lý danh mục</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-controller="XuatXu" asp-action="Index">
-                                <i class="fas fa-globe me-2 text-info"></i>
-                                Xuất xứ
+                            <a class="nav-link" asp-controller="XuatXu" asp-action="Index">
+                                <i class="fas fa-globe-americas text-info"></i>
+                                <span>Xuất xứ</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-controller="ThuongHieu" asp-action="Index">
-                                <i class="fas fa-tag me-2 text-info"></i>
-                                Thương hiệu
+                            <a class="nav-link" asp-controller="ThuongHieu" asp-action="Index">
+                                <i class="fas fa-copyright text-secondary"></i>
+                                <span>Thương hiệu</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-controller="Orders" asp-action="Index">
-                                <i class="fas fa-shopping-cart me-2 text-danger"></i>
-                                Quản lý đơn hàng
+                            <a class="nav-link" asp-controller="MaGiamGia" asp-action="Index">
+                                <i class="fas fa-ticket-alt text-purple"></i>
+                                <span>Quản lý mã giảm giá</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-controller="VaiTro" asp-action="Index">
-                                <i class="fas fa-user-friends me-2 text-primary"></i>
-                                Quản lý vai trò
+                            <a class="nav-link" asp-controller="LoaiGiamGia" asp-action="Index">
+                                <i class="fas fa-ticket-alt text-purple"></i>
+                                <span>Quản lý loại giảm giá</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-controller="Account" asp-action="Index">
-                                <i class="fas fa-user-friends me-2 text-primary"></i>
-                                Quản lý khách hàng
+                            <a class="nav-link" asp-controller="Orders" asp-action="Index">
+                                <i class="fas fa-shopping-bag text-danger"></i>
+                                <span>Quản lý đơn hàng</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-controller="NguoiDung" asp-action="Index">
-                                <i class="fas fa-users me-2 text-success"></i>
-                                Quản lý người dùng
+                            <a class="nav-link" asp-controller="VaiTro" asp-action="Index">
+                                <i class="fas fa-user-shield text-primary"></i>
+                                <span>Quản lý vai trò</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-controller="Banners" asp-action="Index">
-                                <i class="fas fa-image me-2 text-warning"></i>
-                                Quản lý banner
+                            <a class="nav-link" asp-controller="Account" asp-action="Index">
+                                <i class="fas fa-user-tie text-success"></i>
+                                <span>Quản lý khách hàng</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-controller="News" asp-action="Index">
-                                <i class="fas fa-newspaper me-2 text-info"></i>
-                                Quản lý tin tức
+                            <a class="nav-link" asp-controller="NguoiDung" asp-action="Index">
+                                <i class="fas fa-users-cog text-info"></i>
+                                <span>Quản lý người dùng</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-controller="Feedbacks" asp-action="Index">
-                                <i class="fas fa-comment me-2 text-primary"></i>
-                                Quản lý phản hồi
+                            <a class="nav-link" asp-controller="Banners" asp-action="Index">
+                                <i class="fas fa-images text-warning"></i>
+                                <span>Quản lý banner</span>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-controller="Reviews" asp-action="Index">
-                                <i class="fas fa-star me-2 text-warning"></i>
-                                Quản lý đánh giá
+                            <a class="nav-link" asp-controller="News" asp-action="Index">
+                                <i class="fas fa-newspaper text-secondary"></i>
+                                <span>Quản lý tin tức</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Feedbacks" asp-action="Index">
+                                <i class="fas fa-comments text-primary"></i>
+                                <span>Quản lý phản hồi</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Reviews" asp-action="Index">
+                                <i class="fas fa-star-half-alt text-warning"></i>
+                                <span>Quản lý đánh giá</span>
                             </a>
                         </li>
                     </ul>
@@ -106,31 +224,39 @@
 
             <!-- Main content -->
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+                <nav class="navbar navbar-expand-lg bg-white mb-4">
                     <div class="container-fluid">
+                        <a class="navbar-brand" href="#">Admin Panel</a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#navbarNav" aria-controls="navbarNav">
+                                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false">
                             <span class="navbar-toggler-icon"></span>
                         </button>
                         <div class="collapse navbar-collapse" id="navbarNav">
                             <ul class="navbar-nav ms-auto align-items-center">
                                 <li class="nav-item dropdown me-3">
                                     <a class="nav-link dropdown-toggle" href="#" role="button"
-                                       data-bs-toggle="dropdown">
+                                       data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="fas fa-user-circle me-2"></i>
                                         @User.Identity.Name (@User.FindFirst(ClaimTypes.Role)?.Value)
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-end">
                                         <li>
-                                            <a class="dropdown-item" asp-controller="Account" asp-action="Profile">Profile</a>
+                                            <a class="dropdown-item" asp-controller="Account" asp-action="Profile">
+                                                <i class="fas fa-user me-2"></i>Profile
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" asp-controller="Account" asp-action="Settings">
+                                                <i class="fas fa-cog me-2"></i>Settings
+                                            </a>
+                                        </li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li>
+                                            <a class="dropdown-item btn-logout" asp-controller="Account" asp-action="Logout">
+                                                <i class="fas fa-sign-out-alt me-2"></i>Đăng xuất
+                                            </a>
                                         </li>
                                     </ul>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Account" asp-action="Logout">
-                                        <i class="fas fa-sign-out-alt me-2 text-danger"></i>
-                                        Đăng xuất
-                                    </a>
                                 </li>
                             </ul>
                         </div>
@@ -140,14 +266,19 @@
             </main>
         </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-    <script src="~/js/admin.js"></script>
-    <script src="~/js/DanhMucScript.js"></script>
-    <script src="~/js/XuatXuScript.js"></script>
-    <script src="~/js/ThuongHieuScript.js"></script>
+    <script>
+        // Toggle sidebar on mobile
+        $(document).ready(function () {
+            $('.navbar-toggler').on('click', function () {
+                $('#sidebar').toggleClass('active');
+            });
+        });
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

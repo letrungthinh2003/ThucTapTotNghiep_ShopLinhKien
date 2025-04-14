@@ -1,0 +1,76 @@
+﻿@model LinhKienShop.Models.LoaiGiamGium
+@{
+    ViewData["Title"] = "Xóa Loại Giảm Giá";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-danger text-white rounded-top">
+            <h2 class="mb-0"><i class="fas fa-trash me-2"></i>Xóa Loại Giảm Giá</h2>
+        </div>
+        <div class="card-body">
+            <h4 class="mb-4">Bạn có chắc chắn muốn xóa loại giảm giá này?</h4>
+            <dl class="row mb-4">
+                <dt class="col-sm-3 fw-bold">Mã Loại Giảm Giá</dt>
+                <dd class="col-sm-9">@Model.MaLoaiGiamGia</dd>
+                <dt class="col-sm-3 fw-bold">Tên Loại Giảm Giá</dt>
+                <dd class="col-sm-9">@Model.TenLoaiGiamGia</dd>
+                <dt class="col-sm-3 fw-bold">Mô Tả</dt>
+                <dd class="col-sm-9">@(Model.MoTa ?? "Không có mô tả")</dd>
+            </dl>
+
+            @if (ViewBag.DiscountCount > 0)
+            {
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    Loại giảm giá này đang được sử dụng bởi @ViewBag.DiscountCount mã giảm giá. Không thể xóa.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            <form asp-action="Xoa" method="post">
+                <input type="hidden" asp-for="MaLoaiGiamGia" />
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-danger btn-sm" @(ViewBag.DiscountCount > 0 ? "disabled" : "")>
+                        <i class="fas fa-trash me-2"></i>Xóa
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary btn-sm">
+                        <i class="fas fa-arrow-left me-2"></i>Quay Lại
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border-radius: 10px;
+        transition: transform 0.3s;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+        }
+
+    .card-header {
+        background: linear-gradient(45deg, #b91c1c, #ef4444);
+        border-radius: 10px 10px 0 0 !important;
+    }
+
+    .btn-sm {
+        padding: 8px 16px;
+        border-radius: 6px;
+        transition: all 0.3s;
+    }
+
+        .btn-sm:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+    .row dt, .row dd {
+        padding: 8px 0;
+    }
+</style>
