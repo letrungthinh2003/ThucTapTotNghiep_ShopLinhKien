@@ -15,8 +15,10 @@ namespace LinhKienShop.Models
         [Required(ErrorMessage = "Mã loại giảm giá không được để trống")]
         [DisplayName("Mã loại giảm giá")]
         public int MaLoaiGiamGia { get; set; }
-        [DisplayName("Tên loại giảm giá")]
-        public string TenLoaiGiamGia { get; set; } = null!;
+
+        [Required(ErrorMessage = "Tên loại giảm giá là bắt buộc.")]
+        [StringLength(20, ErrorMessage = "Tên loại giảm giá không được vượt quá 20 ký tự.")]
+        public string TenLoaiGiamGia { get; set; } = string.Empty;
         [DisplayName("Mô tả")]
         public string? MoTa { get; set; }
 

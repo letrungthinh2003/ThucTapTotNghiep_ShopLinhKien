@@ -8,69 +8,129 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f4f7fa;
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            color: #1f2937;
         }
 
         /* Sidebar */
         .sidebar {
             height: 100vh;
-            background: linear-gradient(180deg, #1e3a8a, #3b82f6);
-            transition: all 0.3s;
-            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(180deg, #0d9488, #2dd4bf);
+            transition: all 0.3s ease;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.08);
             position: fixed;
-            width: 250px;
+            width: 280px;
             overflow-y: auto;
+            z-index: 1000;
         }
 
             .sidebar .nav-link {
-                color: #fff;
+                color: #ffffff;
                 padding: 12px 20px;
-                border-radius: 8px;
-                margin: 5px 10px;
-                transition: all 0.3s;
+                border-radius: 10px;
+                margin: 6px 12px;
+                transition: all 0.3s ease;
                 display: flex;
                 align-items: center;
+                font-size: 0.95rem;
+                font-weight: 500;
             }
 
                 .sidebar .nav-link:hover {
-                    background: rgba(255, 255, 255, 0.2);
-                    transform: translateX(5px);
+                    background: rgba(255, 255, 255, 0.15);
+                    transform: translateX(6px);
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
                 }
 
                 .sidebar .nav-link i {
-                    margin-right: 10px;
-                    font-size: 1.2em;
+                    margin-right: 12px;
+                    font-size: 1.4rem;
                 }
 
             .sidebar .logo {
-                padding: 20px;
+                padding: 25px 20px;
                 text-align: center;
             }
 
+                .sidebar .logo img {
+                    transition: transform 0.3s ease;
+                }
+
+                    .sidebar .logo img:hover {
+                        transform: scale(1.05);
+                    }
+
+            .sidebar .dropdown-menu {
+                background: #ffffff;
+                border: none;
+                box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+                margin-left: 12px;
+                border-radius: 10px;
+                padding: 8px 0;
+            }
+
+                .sidebar .dropdown-menu .dropdown-item {
+                    color: #1f2937;
+                    padding: 10px 20px;
+                    font-size: 0.9rem;
+                    transition: all 0.2s ease;
+                }
+
+                    .sidebar .dropdown-menu .dropdown-item:hover {
+                        background: #f1f5f9;
+                        color: #0d9488;
+                        transform: translateX(4px);
+                    }
+
         /* Main content */
         main {
-            margin-left: 250px;
-            padding: 20px;
+            margin-left: 260px;
+            padding: 30px;
             min-height: 100vh;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: margin-left 0.3s ease;
         }
 
         /* Navbar */
         .navbar {
-            background: #fff;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
-            padding: 10px 20px;
+            background: #ffffff;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border-radius: 12px;
+            padding: 12px 30px;
+            transition: all 0.3s ease;
         }
 
-            .navbar .dropdown-menu {
-                border-radius: 8px;
-                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            .navbar .navbar-brand {
+                font-weight: 700;
+                color: #0d9488;
+                font-size: 1.6rem;
+                transition: color 0.2s ease;
             }
 
-            .navbar .dropdown-item:hover {
-                background: #e9ecef;
+                .navbar .navbar-brand:hover {
+                    color: #2dd4bf;
+                }
+
+            .navbar .dropdown-menu {
+                border-radius: 10px;
+                box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+                border: none;
+                padding: 8px 0;
             }
+
+            .navbar .dropdown-item {
+                font-size: 0.9rem;
+                padding: 8px 20px;
+                transition: all 0.2s ease;
+            }
+
+                .navbar .dropdown-item:hover {
+                    background: #f1f5f9;
+                    color: #0d9488;
+                }
 
         /* Responsive */
         @@media (max-width: 768px) {
@@ -78,11 +138,11 @@
 
         {
             width: 70px;
-            transition: width 0.3s;
+            transition: width 0.3s ease;
         }
 
         .sidebar:hover {
-            width: 250px;
+            width: 260px;
         }
 
         .sidebar .nav-link span {
@@ -93,28 +153,61 @@
             display: inline;
         }
 
+        .sidebar .dropdown-menu {
+            display: none;
+        }
+
+        .sidebar:hover .dropdown-menu {
+            display: block;
+            position: absolute;
+            left: 70px;
+            top: 0;
+            width: 200px;
+        }
+
+        .sidebar .logo img {
+            max-width: 50px;
+        }
+
+        .sidebar:hover .logo img {
+            max-width: 130px;
+        }
+
         main {
             margin-left: 70px;
+            padding: 20px;
+        }
+
+        .navbar {
+            padding: 10px 20px;
         }
 
         }
 
         /* Custom styles */
-        .navbar-brand {
-            font-weight: bold;
-            color: #1e3a8a;
-        }
-
         .nav-item .btn-logout {
-            color: #dc3545;
+            color: #dc2626;
             font-weight: 500;
+            transition: all 0.2s ease;
         }
 
             .nav-item .btn-logout:hover {
-                background: #dc3545;
-                color: #fff;
+                background: #dc2626;
+                color: #ffffff;
                 border-radius: 8px;
+                transform: translateY(-2px);
             }
+
+        /* Active state for nav-link */
+        .sidebar .nav-link.active {
+            background: rgba(255, 255, 255, 0.2);
+            font-weight: 600;
+        }
+
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
     </style>
 </head>
 <body>
@@ -125,96 +218,109 @@
             <nav id="sidebar" class="sidebar">
                 <div class="position-sticky pt-3">
                     <div class="logo">
-                        <img src="~/images/logo_shop.jpg" alt="Logo" class="img-fluid" style="max-width: 120px;">
+                        <img src="~/images/logo_shop.jpg" alt="Logo" class="img-fluid" style="max-width: 160px;max-height:auto;">
                     </div>
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Dashboard" asp-action="Index">
-                                <i class="fas fa-tachometer-alt text-primary"></i>
+                                <i class="fas fa-tachometer-alt" style="color: #fef08a;"></i>
                                 <span>Dashboard</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="SanPham" asp-action="Index">
-                                <i class="fas fa-box-open text-success"></i>
+                                <i class="fas fa-box-open" style="color: #22d3ee;"></i>
                                 <span>Quản lý sản phẩm</span>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="DanhMuc" asp-action="Index">
-                                <i class="fas fa-folder-open text-warning"></i>
+                        <!-- Dropdown cho Quản lý danh mục -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-folder-open" style="color: #facc15;"></i>
                                 <span>Quản lý danh mục</span>
                             </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" asp-controller="DanhMuc" asp-action="Index">
+                                        <i class="fas fa-list-ul me-2"></i>Danh mục chính
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-controller="ThuongHieu" asp-action="Index">
+                                        <i class="fas fa-copyright me-2"></i>Thương hiệu
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-controller="XuatXu" asp-action="Index">
+                                        <i class="fas fa-globe me-2"></i>Xuất xứ
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="XuatXu" asp-action="Index">
-                                <i class="fas fa-globe-americas text-info"></i>
-                                <span>Xuất xứ</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="ThuongHieu" asp-action="Index">
-                                <i class="fas fa-copyright text-secondary"></i>
-                                <span>Thương hiệu</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="MaGiamGia" asp-action="Index">
-                                <i class="fas fa-ticket-alt text-purple"></i>
+                        <!-- Dropdown cho Quản lý mã giảm giá -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-ticket-alt" style="color: #a855f7;"></i>
                                 <span>Quản lý mã giảm giá</span>
                             </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="LoaiGiamGia" asp-action="Index">
-                                <i class="fas fa-ticket-alt text-purple"></i>
-                                <span>Quản lý loại giảm giá</span>
-                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" asp-controller="MaGiamGia" asp-action="Index">
+                                        <i class="fas fa-tags me-2"></i>Mã giảm giá
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" asp-controller="LoaiGiamGia" asp-action="Index">
+                                        <i class="fas fa-percent me-2"></i>Loại giảm giá
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Orders" asp-action="Index">
-                                <i class="fas fa-shopping-bag text-danger"></i>
+                                <i class="fas fa-shopping-bag" style="color: #f87171;"></i>
                                 <span>Quản lý đơn hàng</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="VaiTro" asp-action="Index">
-                                <i class="fas fa-user-shield text-primary"></i>
+                                <i class="fas fa-user-shield" style="color: #38bdf8;"></i>
                                 <span>Quản lý vai trò</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Account" asp-action="Index">
-                                <i class="fas fa-user-tie text-success"></i>
+                                <i class="fas fa-user-tie" style="color: #4ade80;"></i>
                                 <span>Quản lý khách hàng</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="NguoiDung" asp-action="Index">
-                                <i class="fas fa-users-cog text-info"></i>
+                                <i class="fas fa-users-cog" style="color: #22d3ee;"></i>
                                 <span>Quản lý người dùng</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Banners" asp-action="Index">
-                                <i class="fas fa-images text-warning"></i>
+                                <i class="fas fa-images" style="color: #eab308;"></i>
                                 <span>Quản lý banner</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="News" asp-action="Index">
-                                <i class="fas fa-newspaper text-secondary"></i>
+                                <i class="fas fa-newspaper" style="color: #6b7280;"></i>
                                 <span>Quản lý tin tức</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Feedbacks" asp-action="Index">
-                                <i class="fas fa-comments text-primary"></i>
+                                <i class="fas fa-comments" style="color: #3b82f6;"></i>
                                 <span>Quản lý phản hồi</span>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Reviews" asp-action="Index">
-                                <i class="fas fa-star-half-alt text-warning"></i>
+                                <i class="fas fa-star-half-alt" style="color: #f59e0b;"></i>
                                 <span>Quản lý đánh giá</span>
                             </a>
                         </li>
@@ -226,9 +332,10 @@
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <nav class="navbar navbar-expand-lg bg-white mb-4">
                     <div class="container-fluid">
-                        <a class="navbar-brand" href="#">Admin Panel</a>
+                        <a class="navbar-brand" href="#">Bảng Điều Khiển Admin</a>
                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false">
+                                data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                                aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
                         </button>
                         <div class="collapse navbar-collapse" id="navbarNav">
@@ -242,12 +349,7 @@
                                     <ul class="dropdown-menu dropdown-menu-end">
                                         <li>
                                             <a class="dropdown-item" asp-controller="Account" asp-action="Profile">
-                                                <i class="fas fa-user me-2"></i>Profile
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" asp-controller="Account" asp-action="Settings">
-                                                <i class="fas fa-cog me-2"></i>Settings
+                                                <i class="fas fa-user me-2"></i>Hồ sơ
                                             </a>
                                         </li>
                                         <li><hr class="dropdown-divider"></li>
@@ -272,10 +374,33 @@
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script>
-        // Toggle sidebar on mobile
         $(document).ready(function () {
+            // Toggle sidebar on mobile
             $('.navbar-toggler').on('click', function () {
                 $('#sidebar').toggleClass('active');
+                if ($('#sidebar').hasClass('active')) {
+                    $('main').css('margin-left', '260px');
+                } else {
+                    $('main').css('margin-left', '70px');
+                }
+            });
+
+            // Highlight active nav link
+            const currentPath = window.location.pathname.toLowerCase();
+            $('.sidebar .nav-link').each(function () {
+                const linkPath = $(this).attr('href').toLowerCase();
+                if (currentPath.includes(linkPath)) {
+                    $(this).addClass('active');
+                }
+            });
+
+            // Smooth dropdown animation
+            $('.dropdown').on('show.bs.dropdown', function () {
+                $(this).find('.dropdown-menu').first().stop(true, true).slideDown(200);
+            });
+
+            $('.dropdown').on('hide.bs.dropdown', function () {
+                $(this).find('.dropdown-menu').first().stop(true, true).slideUp(200);
             });
         });
     </script>
