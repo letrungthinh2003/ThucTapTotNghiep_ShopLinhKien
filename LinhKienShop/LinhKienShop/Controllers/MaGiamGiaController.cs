@@ -30,7 +30,7 @@ namespace LinhKienShop.Controllers
                     DonHangToiThieu = m.DonHangToiThieu,
                     NgayBatDau = m.NgayBatDau,
                     NgayHetHan = m.NgayHetHan,
-                    TrangThai = m.TrangThai // Không cần ép kiểu vì cả hai đều là bool
+                    TrangThai = m.TrangThai
                 })
                 .ToListAsync();
 

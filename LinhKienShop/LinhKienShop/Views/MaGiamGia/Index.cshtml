@@ -58,10 +58,20 @@
                     <tbody id="tableBody">
                         @foreach (var item in Model)
                         {
+                            var loaiGiamGia = ((List<LinhKienShop.Models.LoaiGiamGium>)ViewBag.LoaiGiamGias).FirstOrDefault(l => l.MaLoaiGiamGia == item.MaLoaiGiamGia);
+                            var tenLoai = loaiGiamGia != null ? loaiGiamGia.TenLoaiGiamGia switch
+                            {
+                                "GiamTheoTienCoDinh" => "Tiền cố định",
+                                "GiamTheoPhanTram" => "Phần trăm",
+                                "GiamTheoThoiGian" => "Theo thời gian",
+                                _ => "Không xác định"
+                            } : "Không xác định";
+                            var giaTriGiamDisplay = loaiGiamGia != null && loaiGiamGia.TenLoaiGiamGia == "GiamTheoPhanTram" ? $"{item.GiaTriGiam:F0}%" : $"{item.GiaTriGiam:N0} VNĐ";
+
                             <tr>
                                 <td>@item.MaCode</td>
-                                <td>@(((List<LinhKienShop.Models.LoaiGiamGium>)ViewBag.LoaiGiamGias).FirstOrDefault(l => l.MaLoaiGiamGia == item.MaLoaiGiamGia)?.TenLoaiGiamGia ?? "Không xác định")</td>
-                                <td>@item.GiaTriGiam.ToString("N0") VNĐ</td>
+                                <td>@tenLoai</td>
+                                <td>@giaTriGiamDisplay</td>
                                 <td>@(item.GiaTriGiamToiDa?.ToString("N0") ?? "Không có") VNĐ</td>
                                 <td>@(item.DonHangToiThieu?.ToString("N0") ?? "Không có") VNĐ</td>
                                 <td>@item.NgayBatDau.ToString("dd/MM/yyyy")</td>

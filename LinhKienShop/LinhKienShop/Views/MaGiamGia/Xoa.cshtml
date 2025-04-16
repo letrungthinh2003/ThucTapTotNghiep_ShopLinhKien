@@ -15,9 +15,26 @@
                 <dt class="col-sm-4 fw-bold">Mã Code:</dt>
                 <dd class="col-sm-8">@Model.MaCode</dd>
                 <dt class="col-sm-4 fw-bold">Loại Giảm Giá:</dt>
-                <dd class="col-sm-8">@(((List<LinhKienShop.Models.LoaiGiamGium>)ViewBag.LoaiGiamGias).FirstOrDefault(l => l.MaLoaiGiamGia == Model.MaLoaiGiamGia)?.TenLoaiGiamGia ?? "Không xác định")</dd>
+                <dd class="col-sm-8">
+                    @{
+                        var loaiGiamGia = ((List<LinhKienShop.Models.LoaiGiamGium>)ViewBag.LoaiGiamGias).FirstOrDefault(l => l.MaLoaiGiamGia == Model.MaLoaiGiamGia);
+                        var tenLoai = loaiGiamGia != null ? loaiGiamGia.TenLoaiGiamGia switch
+                        {
+                            "GiamTheoTienCoDinh" => "Tiền cố định",
+                            "GiamTheoPhanTram" => "Phần trăm",
+                            "GiamTheoThoiGian" => "Theo thời gian",
+                            _ => "Không xác định"
+                        } : "Không xác định";
+                        @tenLoai
+                    }
+                </dd>
                 <dt class="col-sm-4 fw-bold">Giá Trị Giảm:</dt>
-                <dd class="col-sm-8">@Model.GiaTriGiam.ToString("N0") VNĐ</dd>
+                <dd class="col-sm-8">
+                    @{
+                        var giaTriGiamDisplay = loaiGiamGia != null && loaiGiamGia.TenLoaiGiamGia == "GiamTheoPhanTram" ? $"{Model.GiaTriGiam:F0}%" : $"{Model.GiaTriGiam:N0} VNĐ";
+                        @giaTriGiamDisplay
+                    }
+                </dd>
                 <dt class="col-sm-4 fw-bold">Giảm Tối Đa:</dt>
                 <dd class="col-sm-8">@(Model.GiaTriGiamToiDa?.ToString("N0") ?? "Không có") VNĐ</dd>
                 <dt class="col-sm-4 fw-bold">Đơn Tối Thiểu:</dt>
@@ -33,10 +50,10 @@
                 <input type="hidden" asp-for="MaGiamGiaId" />
                 <div class="d-flex justify-content-end mt-4">
                     <a asp-action="Index" class="btn btn-secondary btn-sm me-2">
-                        <i class="fas fa-arrow-left me-2"></i>Hủy
+                        <i class="fas fa-arrow-left me-2"></i>Trờ về
                     </a>
                     <button type="submit" class="btn btn-danger btn-sm">
-                        <i class="fas fa-trash me-2"></i>Xóa
+                        <i class="fas fa-trash me-2"></i>Xóa mã giảm giá
                     </button>
                 </div>
             </form>

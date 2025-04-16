@@ -15,48 +15,64 @@
                 <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label asp-for="MaCode" class="form-label fw-bold"></label>
+                        <label asp-for="MaCode" class="form-label fw-bold">Mã Code</label>
                         <input asp-for="MaCode" class="form-control" placeholder="Nhập mã code" />
                         <span asp-validation-for="MaCode" class="text-danger"></span>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label asp-for="MaLoaiGiamGia" class="form-label fw-bold"></label>
-                        <select asp-for="MaLoaiGiamGia" class="form-select">
+                        <label asp-for="GiaTriGiam" class="form-label fw-bold">Giá Trị Giảm</label>
+                        <div class="input-group">
+                            <input asp-for="GiaTriGiam" class="form-control" type="number" step="0.01" placeholder="Nhập giá trị giảm" />
+                            <span class="input-group-text" id="giaTriGiamUnit">
+                                @{
+                                    var loaiGiamGia = ((List<LinhKienShop.Models.LoaiGiamGium>)ViewBag.LoaiGiamGias).FirstOrDefault(l => l.MaLoaiGiamGia == Model.MaLoaiGiamGia);
+                                    @((loaiGiamGia != null && loaiGiamGia.TenLoaiGiamGia == "GiamTheoPhanTram") ? "%" : "VNĐ")
+                                }
+                            </span>
+                        </div>
+                        <span asp-validation-for="GiaTriGiam" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="MaLoaiGiamGia" class="form-label fw-bold">Loại Giảm Giá</label>
+                        <select asp-for="MaLoaiGiamGia" class="form-select" id="MaLoaiGiamGia">
                             <option value="">Chọn loại giảm giá</option>
                             @foreach (var loai in ViewBag.LoaiGiamGias)
                             {
-                                <option value="@loai.MaLoaiGiamGia" selected="@(loai.MaLoaiGiamGia == Model.MaLoaiGiamGia)">@loai.TenLoaiGiamGia</option>
+                                var description = loai.TenLoaiGiamGia switch
+                                {
+                                    "GiamTheoTienCoDinh" => "Tiền cố định (VD: Giảm 50.000 VNĐ)",
+                                    "GiamTheoPhanTram" => "Phần trăm (VD: Giảm 10%, tối đa 150.000 VNĐ)",
+                                    "GiamTheoThoiGian" => "Theo thời gian (VD: Giảm 20.000 VNĐ)",
+                                    _ => loai.TenLoaiGiamGia
+                                };
+                                <option value="@loai.MaLoaiGiamGia" selected="@(loai.MaLoaiGiamGia == Model.MaLoaiGiamGia)">@description</option>
                             }
                         </select>
                         <span asp-validation-for="MaLoaiGiamGia" class="text-danger"></span>
                     </div>
+                    
                     <div class="col-md-6 mb-3">
-                        <label asp-for="GiaTriGiam" class="form-label fw-bold"></label>
-                        <input asp-for="GiaTriGiam" class="form-control" type="number" step="0.01" placeholder="Nhập giá trị giảm" />
-                        <span asp-validation-for="GiaTriGiam" class="text-danger"></span>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label asp-for="GiaTriGiamToiDa" class="form-label fw-bold"></label>
+                        <label asp-for="GiaTriGiamToiDa" class="form-label fw-bold">Giảm Tối Đa</label>
                         <input asp-for="GiaTriGiamToiDa" class="form-control" type="number" step="0.01" placeholder="Nhập giá trị tối đa (nếu có)" />
                         <span asp-validation-for="GiaTriGiamToiDa" class="text-danger"></span>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label asp-for="DonHangToiThieu" class="form-label fw-bold"></label>
+                        <label asp-for="DonHangToiThieu" class="form-label fw-bold">Đơn Tối Thiểu</label>
                         <input asp-for="DonHangToiThieu" class="form-control" type="number" step="0.01" placeholder="Nhập đơn tối thiểu (nếu có)" />
                         <span asp-validation-for="DonHangToiThieu" class="text-danger"></span>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label asp-for="NgayBatDau" class="form-label fw-bold"></label>
+                        <label asp-for="NgayBatDau" class="form-label fw-bold">Ngày Bắt Đầu</label>
                         <input asp-for="NgayBatDau" class="form-control" type="datetime-local" />
                         <span asp-validation-for="NgayBatDau" class="text-danger"></span>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label asp-for="NgayHetHan" class="form-label fw-bold"></label>
+                        <label asp-for="NgayHetHan" class="form-label fw-bold">Ngày Hết Hạn</label>
                         <input asp-for="NgayHetHan" class="form-control" type="datetime-local" />
                         <span asp-validation-for="NgayHetHan" class="text-danger"></span>
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label asp-for="TrangThai" class="form-label fw-bold"></label>
+                        <label asp-for="TrangThai" class="form-label fw-bold">Trạng Thái</label>
                         <div class="form-check form-switch">
                             <input asp-for="TrangThai" class="form-check-input" type="checkbox" checked="@Model.TrangThai" />
                             <label class="form-check-label">@(Model.TrangThai ? "Hoạt động" : "Bị khóa")</label>
@@ -117,4 +133,17 @@
 @section Scripts {
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Cập nhật đơn vị cho GiaTriGiam dựa trên Loại Giảm Giá
+            $("#MaLoaiGiamGia").on("change", function () {
+                var selectedOption = $(this).find("option:selected").text();
+                if (selectedOption.includes("Phần trăm")) {
+                    $("#giaTriGiamUnit").text("%");
+                } else {
+                    $("#giaTriGiamUnit").text("VNĐ");
+                }
+            });
+        });
+    </script>
 }
