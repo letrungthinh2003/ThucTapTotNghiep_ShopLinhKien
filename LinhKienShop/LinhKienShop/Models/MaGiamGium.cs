@@ -17,10 +17,11 @@ namespace LinhKienShop.Models
         public decimal? DonHangToiThieu { get; set; }
         public DateTime NgayBatDau { get; set; }
         public DateTime NgayHetHan { get; set; }
-        public bool? TrangThai { get; set; }
+        //public bool? TrangThai { get; set; }
+        public bool TrangThai { get; set; } = true; // Sửa từ bool? thành bool, mặc định true
         public decimal? GiaTriGiamToiDa { get; set; }
 
-        public virtual LoaiGiamGium MaLoaiGiamGiaNavigation { get; set; } = null!;
+        public virtual LoaiGiamGium MaLoaiGiamGiaNavigation { get; set; } 
         public virtual ICollection<DonHangMaGiamGium> DonHangMaGiamGia { get; set; }
     }
 }

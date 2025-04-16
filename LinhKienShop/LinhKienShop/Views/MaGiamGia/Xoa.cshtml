@@ -1,0 +1,77 @@
+﻿@model LinhKienShop.Models.MaGiamGiaViewModel
+@{
+    ViewData["Title"] = "Xóa Mã Giảm Giá";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-danger text-white rounded-top">
+            <h2 class="mb-0 text-center"><i class="fas fa-trash me-2"></i>Xóa Mã Giảm Giá</h2>
+        </div>
+        <div class="card-body">
+            <h4 class="text-center mb-4">Bạn có chắc chắn muốn xóa mã giảm giá <strong>@Model.MaCode</strong>?</h4>
+            <dl class="row">
+                <dt class="col-sm-4 fw-bold">Mã Code:</dt>
+                <dd class="col-sm-8">@Model.MaCode</dd>
+                <dt class="col-sm-4 fw-bold">Loại Giảm Giá:</dt>
+                <dd class="col-sm-8">@(((List<LinhKienShop.Models.LoaiGiamGium>)ViewBag.LoaiGiamGias).FirstOrDefault(l => l.MaLoaiGiamGia == Model.MaLoaiGiamGia)?.TenLoaiGiamGia ?? "Không xác định")</dd>
+                <dt class="col-sm-4 fw-bold">Giá Trị Giảm:</dt>
+                <dd class="col-sm-8">@Model.GiaTriGiam.ToString("N0") VNĐ</dd>
+                <dt class="col-sm-4 fw-bold">Giảm Tối Đa:</dt>
+                <dd class="col-sm-8">@(Model.GiaTriGiamToiDa?.ToString("N0") ?? "Không có") VNĐ</dd>
+                <dt class="col-sm-4 fw-bold">Đơn Tối Thiểu:</dt>
+                <dd class="col-sm-8">@(Model.DonHangToiThieu?.ToString("N0") ?? "Không có") VNĐ</dd>
+                <dt class="col-sm-4 fw-bold">Ngày Bắt Đầu:</dt>
+                <dd class="col-sm-8">@Model.NgayBatDau.ToString("dd/MM/yyyy")</dd>
+                <dt class="col-sm-4 fw-bold">Ngày Hết Hạn:</dt>
+                <dd class="col-sm-8">@Model.NgayHetHan.ToString("dd/MM/yyyy")</dd>
+                <dt class="col-sm-4 fw-bold">Trạng Thái:</dt>
+                <dd class="col-sm-8">@Model.TrangThaiText</dd>
+            </dl>
+            <form asp-action="Xoa" method="post">
+                <input type="hidden" asp-for="MaGiamGiaId" />
+                <div class="d-flex justify-content-end mt-4">
+                    <a asp-action="Index" class="btn btn-secondary btn-sm me-2">
+                        <i class="fas fa-arrow-left me-2"></i>Hủy
+                    </a>
+                    <button type="submit" class="btn btn-danger btn-sm">
+                        <i class="fas fa-trash me-2"></i>Xóa
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card {
+        border-radius: 10px;
+        transition: transform 0.3s;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+        }
+
+    .card-header {
+        background: linear-gradient(45deg, #dc3545, #f87171);
+        border-radius: 10px 10px 0 0 !important;
+    }
+
+    .btn-sm {
+        padding: 6px 12px;
+        border-radius: 6px;
+        transition: all 0.3s;
+    }
+
+        .btn-sm:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+    dl dt, dl dd {
+        margin-bottom: 0.5rem;
+    }
+</style>
