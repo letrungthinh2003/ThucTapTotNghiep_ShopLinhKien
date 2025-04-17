@@ -20,7 +20,6 @@ namespace LinhKienShop.Models
         public decimal PhiVanChuyen { get; set; }
         public decimal TongTienSauGiam { get; set; }
         public int MaTrangThaiDonHang { get; set; }
-        public string DiaChiGiaoHang { get; set; } = null!;
         public string? GhiChu { get; set; }
 
         public virtual NguoiDung MaNguoiDungNavigation { get; set; } = null!;

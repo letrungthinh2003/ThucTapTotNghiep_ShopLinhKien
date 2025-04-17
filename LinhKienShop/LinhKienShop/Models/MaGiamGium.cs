@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 
 namespace LinhKienShop.Models
@@ -21,7 +22,7 @@ namespace LinhKienShop.Models
         public bool TrangThai { get; set; } = true; // Sửa từ bool? thành bool, mặc định true
         public decimal? GiaTriGiamToiDa { get; set; }
 
-        public virtual LoaiGiamGium MaLoaiGiamGiaNavigation { get; set; } 
+        public virtual LoaiGiamGium MaLoaiGiamGiaNavigation { get; set; }
         public virtual ICollection<DonHangMaGiamGium> DonHangMaGiamGia { get; set; }
     }
 }

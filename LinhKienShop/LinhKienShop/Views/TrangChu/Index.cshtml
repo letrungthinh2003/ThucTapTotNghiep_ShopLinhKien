@@ -8,7 +8,6 @@
 <div class="row g-4">
     <!-- Banner -->
     <section class="banner" style="margin-top: 60px;">
-        <!-- Margin so với thanh menu -->
         <div id="carouselBanner" class="carousel slide" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
@@ -44,12 +43,13 @@
     <!-- Bộ lọc -->
     <div class="col-md-3">
         <div class="filter-section p-4 rounded-3 bg-white shadow-sm">
-            <h5 class="mb-4 fw-bold text-gradient"><i class="fas fa-filter me-2"></i>Bộ Lọc</h5>
-            <form method="get" asp-controller="TrangChu" asp-action="Index">
+            <h5 class="mb-4 fw-bold text-gradient"><i class="fas fa-filter me-2"></i>Bộ Lọc Sản Phẩm</h5>
+            <form method="get" asp-controller="TrangChu" asp-action="Index" id="filterForm">
+                <!-- Danh mục -->
                 <div class="mb-3">
                     <label class="form-label fw-bold text-muted">Danh Mục</label>
                     <select class="form-select border-0 shadow-sm" name="danhMucId">
-                        <option value="">Tất cả</option>
+                        <option value="">Tất cả danh mục</option>
                         @if (ViewBag.DanhMucs != null)
                         {
                             foreach (var dm in ViewBag.DanhMucs)
@@ -59,10 +59,12 @@
                         }
                     </select>
                 </div>
+
+                <!-- Thương hiệu -->
                 <div class="mb-3">
                     <label class="form-label fw-bold text-muted">Thương Hiệu</label>
                     <select class="form-select border-0 shadow-sm" name="thuongHieuId">
-                        <option value="">Tất cả</option>
+                        <option value="">Tất cả thương hiệu</option>
                         @if (ViewBag.ThuongHieus != null)
                         {
                             foreach (var th in ViewBag.ThuongHieus)
@@ -72,12 +74,26 @@
                         }
                     </select>
                 </div>
-                <div class="mb-4">
+
+                <!-- Giá tối đa -->
+                <div class="mb-3">
                     <label class="form-label fw-bold text-muted">Giá Tối Đa</label>
                     <input type="range" class="form-range" min="0" max="10000000" step="100000" value="5000000" name="maxPrice" id="priceRange">
                     <small class="text-muted d-block mt-2" id="priceValue">0 - 5,000,000 VNĐ</small>
                 </div>
-                <button class="btn btn-gradient w-100 rounded-pill" type="submit"><i class="fas fa-check me-2"></i>Áp Dụng</button>
+
+                <!-- Sắp xếp theo giá -->
+                <div class="mb-4">
+                    <label class="form-label fw-bold text-muted">Sắp Xếp Theo Giá</label>
+                    <select class="form-select border-0 shadow-sm" name="sortOrder" id="sortOrder">
+                        <option value="" selected="@(ViewBag.SelectedSortOrder == "" ? "true" : "false")">Mặc định</option>
+                        <option value="price_asc" selected="@(ViewBag.SelectedSortOrder == "price_asc" ? "true" : "false")">Giá: Thấp đến Cao</option>
+                        <option value="price_desc" selected="@(ViewBag.SelectedSortOrder == "price_desc" ? "true" : "false")">Giá: Cao đến Thấp</option>
+                    </select>
+                </div>
+
+                <!-- Nút áp dụng -->
+                <button class="btn btn-gradient w-100 rounded-pill" type="submit"><i class="fas fa-check me-2"></i>Áp Dụng Bộ Lọc</button>
             </form>
         </div>
     </div>
@@ -168,6 +184,7 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
+            // Cập nhật giá trị giá tối đa
             const priceRange = $("#priceRange");
             const priceValue = $("#priceValue");
             priceRange.on("input", function () {
@@ -175,6 +192,7 @@
                 priceValue.text(`0 - ${Number(value).toLocaleString()} VNĐ`);
             });
 
+            // Xử lý nút Xem Thêm
             const loadMoreBtn = $("#loadMoreBtn");
             const productItems = $(".product-item");
             const itemsPerLoad = 4;
@@ -185,6 +203,7 @@
                 if (hiddenItems.length <= itemsPerLoad) loadMoreBtn.fadeOut(300);
             });
 
+            // Xử lý chuyển đổi chế độ xem
             $("#gridView").click(function () {
                 $(this).addClass("active");
                 $("#listView").removeClass("active");
@@ -246,7 +265,31 @@
         box-shadow: 0 5px 20px rgba(0,0,0,0.05);
         position: sticky;
         top: 100px;
+        transition: all 0.3s ease;
     }
+
+        .filter-section:hover {
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .filter-section .form-select,
+        .filter-section .form-range {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 10px;
+            transition: all 0.3s ease;
+        }
+
+            .filter-section .form-select:focus,
+            .filter-section .form-range:focus {
+                background-color: #fff;
+                box-shadow: 0 0 10px rgba(0,123,255,0.2);
+            }
+
+        .filter-section .form-label {
+            font-size: 0.9rem;
+            color: #555;
+        }
 
     .text-gradient {
         background: linear-gradient(45deg, #007bff, #00d4ff);
@@ -259,6 +302,8 @@
         border: none;
         color: white;
         transition: all 0.3s ease;
+        padding: 12px;
+        font-size: 1rem;
     }
 
         .btn-gradient:hover {

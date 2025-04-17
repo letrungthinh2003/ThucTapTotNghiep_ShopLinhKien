@@ -36,10 +36,20 @@ namespace LinhKienShop.Controllers
         [Authorize]
         public IActionResult ThemVaoGio(int maSanPham, int soLuong)
         {
+            if (soLuong <= 0)
+            {
+                return Json(new { success = false, message = "Số lượng phải lớn hơn 0." });
+            }
+
             var sanPham = _context.SanPhams.FirstOrDefault(s => s.MaSanPham == maSanPham);
             if (sanPham == null)
             {
                 return Json(new { success = false, message = "Sản phẩm không tồn tại." });
+            }
+
+            if (sanPham.SoLuong == null || sanPham.SoLuong <= 0)
+            {
+                return Json(new { success = false, message = "Sản phẩm hiện không có sẵn trong kho." });
             }
 
             var cart = GetCart();
@@ -47,17 +57,17 @@ namespace LinhKienShop.Controllers
 
             if (cartItem != null)
             {
-                if (sanPham.SoLuong == null || cartItem.SoLuong + soLuong > sanPham.SoLuong)
+                if (cartItem.SoLuong + soLuong > sanPham.SoLuong)
                 {
-                    return Json(new { success = false, message = "Số lượng vượt quá tồn kho." });
+                    return Json(new { success = false, message = $"Số lượng vượt quá tồn kho. Chỉ còn {sanPham.SoLuong} sản phẩm." });
                 }
                 cartItem.SoLuong += soLuong;
             }
             else
             {
-                if (sanPham.SoLuong == null || soLuong > sanPham.SoLuong)
+                if (soLuong > sanPham.SoLuong)
                 {
-                    return Json(new { success = false, message = "Số lượng vượt quá tồn kho." });
+                    return Json(new { success = false, message = $"Số lượng vượt quá tồn kho. Chỉ còn {sanPham.SoLuong} sản phẩm." });
                 }
                 cart.Add(new CartItem
                 {
@@ -101,6 +111,11 @@ namespace LinhKienShop.Controllers
                 return Json(new { success = false, message = "Sản phẩm không tồn tại trong giỏ hàng." });
             }
 
+            if (cartItem.SoLuongTonKho == null || cartItem.SoLuongTonKho <= 0)
+            {
+                return Json(new { success = false, message = "Sản phẩm hiện không có sẵn trong kho." });
+            }
+
             if (soLuong <= 0)
             {
                 cart.Remove(cartItem);
@@ -116,7 +131,7 @@ namespace LinhKienShop.Controllers
 
             if (soLuong > cartItem.SoLuongTonKho)
             {
-                return Json(new { success = false, message = "Số lượng vượt quá tồn kho." });
+                return Json(new { success = false, message = $"Số lượng vượt quá tồn kho. Chỉ còn {cartItem.SoLuongTonKho} sản phẩm." });
             }
 
             cartItem.SoLuong = soLuong;
@@ -124,12 +139,11 @@ namespace LinhKienShop.Controllers
             return Json(new
             {
                 success = true,
-                thanhTien = cartItem.ThanhTien, // Không cần ToString("N0") ở đây
-                total = cart.Sum(c => c.ThanhTien), // Không cần ToString("N0") ở đây
+                thanhTien = cartItem.ThanhTien,
+                total = cart.Sum(c => c.ThanhTien),
                 cartCount = cart.Count
             });
         }
-
         // Xóa sản phẩm khỏi giỏ hàng
         [HttpPost]
         [Authorize]
@@ -153,7 +167,5 @@ namespace LinhKienShop.Controllers
 
             return Json(new { success = false, message = "Sản phẩm không tồn tại trong giỏ hàng." });
         }
-
-      
     }
 }

@@ -20,6 +20,7 @@ namespace LinhKienShop.Models
         public virtual DbSet<ChiTietDonHang> ChiTietDonHangs { get; set; } = null!;
         public virtual DbSet<DanhGiaSanPham> DanhGiaSanPhams { get; set; } = null!;
         public virtual DbSet<DanhMuc> DanhMucs { get; set; } = null!;
+        public virtual DbSet<DiaChiGiaoHang> DiaChiGiaoHangs { get; set; } = null!;
         public virtual DbSet<DonHang> DonHangs { get; set; } = null!;
         public virtual DbSet<DonHangMaGiamGium> DonHangMaGiamGia { get; set; } = null!;
         public virtual DbSet<HinhChiTietSlider> HinhChiTietSliders { get; set; } = null!;
@@ -144,6 +145,38 @@ namespace LinhKienShop.Models
                 entity.Property(e => e.TenDanhMuc).HasMaxLength(100);
             });
 
+            modelBuilder.Entity<DiaChiGiaoHang>(entity =>
+            {
+                entity.HasKey(e => e.MaDiaChiGiaoHang)
+                    .HasName("PK__DiaChiGi__2F156EA832105AD2");
+
+                entity.ToTable("DiaChiGiaoHang");
+
+                entity.Property(e => e.DiaChiChiTiet).HasMaxLength(255);
+
+                entity.Property(e => e.HoTenNguoiNhan).HasMaxLength(100);
+
+                entity.Property(e => e.LaMacDinh).HasDefaultValueSql("((0))");
+
+                entity.Property(e => e.NgayTao)
+                    .HasColumnType("datetime")
+                    .HasDefaultValueSql("(getdate())");
+
+                entity.Property(e => e.PhuongXa).HasMaxLength(100);
+
+                entity.Property(e => e.QuanHuyen).HasMaxLength(100);
+
+                entity.Property(e => e.SoDienThoai).HasMaxLength(20);
+
+                entity.Property(e => e.ThanhPho).HasMaxLength(100);
+
+                entity.HasOne(d => d.MaNguoiDungNavigation)
+                    .WithMany(p => p.DiaChiGiaoHangs)
+                    .HasForeignKey(d => d.MaNguoiDung)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__DiaChiGia__MaNgu__2B0A656D");
+            });
+
             modelBuilder.Entity<DonHang>(entity =>
             {
                 entity.HasKey(e => e.MaDonHang)
@@ -157,8 +190,6 @@ namespace LinhKienShop.Models
 
                 entity.HasIndex(e => e.MaDonHangText, "UQ__DonHang__B5D177806852D989")
                     .IsUnique();
-
-                entity.Property(e => e.DiaChiGiaoHang).HasMaxLength(200);
 
                 entity.Property(e => e.GhiChu).HasMaxLength(200);
 
@@ -384,6 +415,7 @@ namespace LinhKienShop.Models
                 entity.Property(e => e.HinhSanPhamPath)
                     .HasColumnName("HinhSanPham") // Ánh xạ với cột HinhSanPham trong database
                     .HasMaxLength(255);
+
 
                 entity.Property(e => e.NgayTao)
                     .HasColumnType("datetime")

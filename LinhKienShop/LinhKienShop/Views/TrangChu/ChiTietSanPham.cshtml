@@ -102,7 +102,7 @@
             </div>
         </div>
 
-        <!-- Thông số kỹ thuật và tin tức (7/3) -->
+        <!-- Thông số kỹ thuật và tin tức -->
         <div class="col-12 mt-5">
             <div class="row">
                 <div class="col-lg-8">
@@ -253,6 +253,25 @@
     </div>
 </div>
 
+<!-- Modal thông báo thêm giỏ hàng -->
+<div class="modal fade" id="customModal" tabindex="-1" aria-labelledby="customModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 shadow-lg">
+            <div class="modal-header" id="modalHeader">
+                <h5 class="modal-title fw-bold" id="customModalLabel"><i class="fas fa-info-circle me-2"></i>Thông báo</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <p id="modalMessage" class="mb-4"></p>
+                <div class="d-flex gap-2 justify-content-center">
+                    <button type="button" class="btn btn-primary rounded-pill" data-bs-dismiss="modal">Tiếp tục mua sắm</button>
+                    <a href="@Url.Action("Index", "GioHang")" class="btn btn-success rounded-pill">Xem giỏ hàng</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <style>
     .card {
         background: linear-gradient(135deg, #ffffff, #f8f9fa);
@@ -385,7 +404,7 @@
         @if (!User.Identity.IsAuthenticated)
         {
             @:showModal('Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!', false);
-            @:setTimeout(() => { window.location.href = '@Url.Action("ChiTietSanPham", "TrangChu")'; }, 9000);
+            @:setTimeout(() => { window.location.href = '@Url.Action("Login", "Account")'; }, 2000);
             @:return;
         }
             $.ajax({
@@ -410,13 +429,24 @@
         @if (!User.Identity.IsAuthenticated)
         {
             @:showModal('Vui lòng đăng nhập để mua hàng!', false);
-            @:setTimeout(() => { window.location.href = '@Url.Action("Login", "Account")'; }, 9000);
+            @:setTimeout(() => { window.location.href = '@Url.Action("Login", "Account")'; }, 2000);
             @:return;
         }
-            addToCart(productId, quantity);
-            setTimeout(() => {
-                window.location.href = '/GioHang/Index';
-            }, 500);
+            $.ajax({
+                url: '/GioHang/ThemVaoGio',
+                type: 'POST',
+                data: { maSanPham: productId, soLuong: parseInt(quantity) },
+                success: function (response) {
+                    if (response.success) {
+                        window.location.href = '/GioHang/Index';
+                    } else {
+                        showModal(response.message, false);
+                    }
+                },
+                error: function () {
+                    showModal('Có lỗi xảy ra khi thêm vào giỏ hàng.', false);
+                }
+            });
         }
 
         function viewProduct(productId) {

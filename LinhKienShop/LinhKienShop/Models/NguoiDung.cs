@@ -65,5 +65,6 @@ namespace LinhKienShop.Models
         public virtual ICollection<LichSuGuiEmail> LichSuGuiEmails { get; set; }
         public virtual ICollection<TinTuc> TinTucs { get; set; }
         public virtual ICollection<XacThucQuenMatKhau> XacThucQuenMatKhaus { get; set; }
+        public virtual ICollection<DiaChiGiaoHang> DiaChiGiaoHangs { get; set; } // Thêm thuộc tính này
     }
 }
