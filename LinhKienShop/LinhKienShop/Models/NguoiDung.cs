@@ -16,6 +16,7 @@ namespace LinhKienShop.Models
             LichSuGuiEmails = new HashSet<LichSuGuiEmail>();
             TinTucs = new HashSet<TinTuc>();
             XacThucQuenMatKhaus = new HashSet<XacThucQuenMatKhau>();
+            DiaChiGiaoHangs = new HashSet<DiaChiGiaoHang>(); // thêm lại trường này sau khi chỉnh database
             TrangThai = "HoatDong";
         }
 
@@ -31,6 +32,8 @@ namespace LinhKienShop.Models
 
         [Required(ErrorMessage = "Mật khẩu không được để trống")]
         [MinLength(8, ErrorMessage = "Mật khẩu phải có ít nhất 8 ký tự")]
+        [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$",
+            ErrorMessage = "Mật khẩu phải chứa ít nhất một chữ hoa, một chữ thường, một số và một ký tự đặc biệt")]
         [DisplayName("Mật khẩu")]
         public string MatKhau { get; set; } = null!;
 
@@ -48,16 +51,17 @@ namespace LinhKienShop.Models
 
         [Required(ErrorMessage = "Vai trò không được để trống")]
         [DisplayName("Vai trò")]
-        [ForeignKey("MaVaiTroNavigation")] // Liên kết với MaVaiTroNavigation
+        [ForeignKey("MaVaiTroNavigation")]
         public int MaVaiTro { get; set; }
 
+        [Required(ErrorMessage = "Trạng thái không được để trống")]
         [DisplayName("Trạng thái")]
         public string TrangThai { get; set; } = null!;
 
         [DisplayName("Ngày tạo")]
         public DateTime NgayTao { get; set; }
 
-        public virtual VaiTro? MaVaiTroNavigation { get; set; } // Đánh dấu là nullable (tùy chọn)
+        public virtual VaiTro? MaVaiTroNavigation { get; set; }
 
         public virtual ICollection<DanhGiaSanPham> DanhGiaSanPhamMaNguoiDungNavigations { get; set; }
         public virtual ICollection<DanhGiaSanPham> DanhGiaSanPhamMaNguoiPheDuyetNavigations { get; set; }
@@ -65,6 +69,6 @@ namespace LinhKienShop.Models
         public virtual ICollection<LichSuGuiEmail> LichSuGuiEmails { get; set; }
         public virtual ICollection<TinTuc> TinTucs { get; set; }
         public virtual ICollection<XacThucQuenMatKhau> XacThucQuenMatKhaus { get; set; }
-        public virtual ICollection<DiaChiGiaoHang> DiaChiGiaoHangs { get; set; } // Thêm thuộc tính này
+        public virtual ICollection<DiaChiGiaoHang> DiaChiGiaoHangs { get; set; }
     }
 }

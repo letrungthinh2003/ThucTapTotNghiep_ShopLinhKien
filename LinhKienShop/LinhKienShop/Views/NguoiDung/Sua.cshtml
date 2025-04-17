@@ -1,77 +1,179 @@
 ﻿@model LinhKienShop.Models.NguoiDung
-
 @{
     ViewData["Title"] = "Sửa người dùng";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Sửa thông tin người dùng</h2>
+<style>
+    .form-container {
+        max-width: 600px;
+        margin: 50px auto;
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 0.5s ease-in-out;
+    }
 
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        @TempData["SuccessMessage"]
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-}
+        .form-container h2 {
+            margin-bottom: 25px;
+            font-weight: bold;
+            text-align: center;
+            color: #0d6efd;
+        }
 
-<form asp-action="Sua" method="post">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input type="hidden" asp-for="MaNguoiDung" />
+    .form-control {
+        border-radius: 30px;
+        padding-left: 40px;
+        transition: all 0.3s ease;
+    }
 
-    <div class="form-group">
-        <label asp-for="Email" class="control-label"></label>
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
+        .form-control:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 10px rgba(13, 110, 253, 0.25);
+        }
 
-    <div class="form-group">
-        <label asp-for="MatKhau" class="control-label"></label>
-        <input asp-for="MatKhau" type="password" class="form-control" placeholder="Để trống nếu không muốn thay đổi" />
-        <span asp-validation-for="MatKhau" class="text-danger"></span>
-    </div>
+    .input-icon {
+        position: relative;
+    }
 
-    <div class="form-group">
-        <label asp-for="HoTen" class="control-label"></label>
-        <input asp-for="HoTen" class="form-control" />
-        <span asp-validation-for="HoTen" class="text-danger"></span>
-    </div>
+        .input-icon i {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            color: #0d6efd;
+        }
 
-    <div class="form-group">
-        <label asp-for="SoDienThoai" class="control-label"></label>
-        <input asp-for="SoDienThoai" class="form-control" />
-        <span asp-validation-for="SoDienThoai" class="text-danger"></span>
-    </div>
+    .toggle-password {
+        position: absolute;
+        top: 50%;
+        right: 15px;
+        transform: translateY(-50%);
+        cursor: pointer;
+        color: #0d6efd;
+    }
 
-    <div class="form-group">
-        <label asp-for="DiaChi" class="control-label"></label>
-        <input asp-for="DiaChi" class="form-control" />
-        <span asp-validation-for="DiaChi" class="text-danger"></span>
-    </div>
+    .btn-primary, .btn-secondary {
+        border-radius: 30px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        padding: 10px 20px;
+    }
 
-    <div class="form-group">
-        <label asp-for="MaVaiTro" class="control-label">Vai trò</label>
-        <select asp-for="MaVaiTro" class="form-control" asp-items="@(new SelectList(ViewBag.VaiTros, "MaVaiTro", "TenVaiTro"))"></select>
-        <span asp-validation-for="MaVaiTro" class="text-danger"></span>
-    </div>
+        .btn-primary:hover, .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
 
-    <div class="form-group">
-        <label asp-for="TrangThai" class="control-label"></label>
-        <select asp-for="TrangThai" class="form-control">
-            <option value="HoatDong">Hoạt động</option>
-            <option value="BiKhoa">Bị khóa</option>
-        </select>
-        <span asp-validation-for="TrangThai" class="text-danger"></span>
-    </div>
+    @@media (max-width: 576px) {
+        .form-container {
+            margin: 20px;
+            padding: 20px;
+        }
+    }
+</style>
 
-    <div class="form-group">
-        <input type="submit" value="Lưu" class="btn btn-primary" />
-        <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
-    </div>
-</form>
+<div class="form-container">
+    <h2><i class="fas fa-user-edit me-2"></i>Sửa người dùng</h2>
+    <form asp-action="Sua" method="post" id="suaForm">
+        <input type="hidden" asp-for="MaNguoiDung" />
+        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+        <div class="form-group input-icon mb-3">
+            <i class="fas fa-envelope"></i>
+            <input asp-for="Email" class="form-control" placeholder="Email" required />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-group input-icon mb-3">
+            <i class="fas fa-lock"></i>
+            <input asp-for="MatKhau" class="form-control" id="password" type="password" placeholder="Mật khẩu mới (tùy chọn, >=8 ký tự)" minlength="8" />
+            <i class="fas fa-eye toggle-password"></i>
+            <span asp-validation-for="MatKhau" class="text-danger"></span>
+        </div>
+
+        <div class="form-group input-icon mb-3">
+            <i class="fas fa-user"></i>
+            <input asp-for="HoTen" class="form-control" placeholder="Họ và tên" required />
+            <span asp-validation-for="HoTen" class="text-danger"></span>
+        </div>
+
+        <div class="form-group input-icon mb-3">
+            <i class="fas fa-phone"></i>
+            <input asp-for="SoDienThoai" class="form-control" placeholder="Số điện thoại (tùy chọn)" />
+            <span asp-validation-for="SoDienThoai" class="text-danger"></span>
+        </div>
+
+        <div class="form-group input-icon mb-3">
+            <i class="fas fa-map-marker-alt"></i>
+            <input asp-for="DiaChi" class="form-control" placeholder="Địa chỉ (tùy chọn)" />
+            <span asp-validation-for="DiaChi" class="text-danger"></span>
+        </div>
+
+        <div class="form-group input-icon mb-3">
+            <i class="fas fa-user-tag"></i>
+            <select asp-for="MaVaiTro" class="form-control" asp-items="@(new SelectList(ViewBag.VaiTros, "MaVaiTro", "TenVaiTro"))" required>
+                <option value="">Chọn vai trò</option>
+            </select>
+            <span asp-validation-for="MaVaiTro" class="text-danger"></span>
+        </div>
+
+        <div class="form-group input-icon mb-3">
+            <i class="fas fa-toggle-on"></i>
+            <select asp-for="TrangThai" class="form-control" required>
+                <option value="HoatDong">Hoạt động</option>
+                <option value="BiKhoa">Bị khóa</option>
+            </select>
+            <span asp-validation-for="TrangThai" class="text-danger"></span>
+        </div>
+
+        <div class="form-group d-flex gap-3">
+            <button type="submit" class="btn btn-primary" id="submitButton">
+                <i class="fas fa-save me-2"></i>Lưu
+                <span class="spinner-border spinner-border-sm d-none" id="spinner"></span>
+            </button>
+            <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-arrow-left me-2"></i>Quay lại</a>
+        </div>
+    </form>
+</div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".toggle-password").click(function () {
+                var input = $(this).prev("input");
+                var icon = $(this);
+                if (input.attr("type") === "password") {
+                    input.attr("type", "text");
+                    icon.removeClass("fa-eye").addClass("fa-eye-slash");
+                } else {
+                    input.attr("type", "password");
+                    icon.removeClass("fa-eye-slash").addClass("fa-eye");
+                }
+            });
+
+            $("#suaForm").on("submit", function () {
+                $("#submitButton").prop("disabled", true);
+                $("#spinner").removeClass("d-none");
+            });
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <text>
+                    $("#modalMessage").text("@TempData["SuccessMessage"]");
+                    $("#customModal").modal("show");
+            </text>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <text>
+                    $("#modalMessage").text("@TempData["ErrorMessage"]");
+                    $("#customModal").modal("show");
+            </text>
+        }
+        });
+    </script>
 }

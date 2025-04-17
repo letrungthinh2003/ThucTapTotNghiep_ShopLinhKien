@@ -80,12 +80,11 @@
                     .sidebar .dropdown-menu .dropdown-item:hover {
                         background: #f1f5f9;
                         color: #0d9488;
-                        transform: translateX(4px);
                     }
 
         /* Main content */
         main {
-            margin-left: 260px;
+            margin-left: 280px;
             padding: 30px;
             min-height: 100vh;
             background: #ffffff;
@@ -142,7 +141,7 @@
         }
 
         .sidebar:hover {
-            width: 260px;
+            width: 280px;
         }
 
         .sidebar .nav-link span {
@@ -218,7 +217,7 @@
             <nav id="sidebar" class="sidebar">
                 <div class="position-sticky pt-3">
                     <div class="logo">
-                        <img src="~/images/logo_shop.jpg" alt="Logo" class="img-fluid" style="max-width: 160px;max-height:auto;">
+                        <img src="~/images/logo_shop.jpg" alt="Logo" class="img-fluid" style="max-width: 160px; max-height: auto;">
                     </div>
                     <ul class="nav flex-column">
                         <li class="nav-item">
@@ -344,7 +343,7 @@
                                     <a class="nav-link dropdown-toggle" href="#" role="button"
                                        data-bs-toggle="dropdown" aria-expanded="false">
                                         <i class="fas fa-user-circle me-2"></i>
-                                        @User.Identity.Name (@User.FindFirst(ClaimTypes.Role)?.Value)
+                                        @User.Identity.Name
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-end">
                                         <li>
@@ -369,6 +368,23 @@
         </div>
     </div>
 
+    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 shadow-lg">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title fw-bold" id="errorModalLabel"><i class="fas fa-exclamation-circle me-2"></i>Lỗi</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 text-center">
+                    <p id="errorMessage"></p>
+                </div>
+                <div class="modal-footer justify-content-center border-0">
+                    <button type="button" class="btn btn-primary rounded-pill px-4" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
@@ -379,7 +395,7 @@
             $('.navbar-toggler').on('click', function () {
                 $('#sidebar').toggleClass('active');
                 if ($('#sidebar').hasClass('active')) {
-                    $('main').css('margin-left', '260px');
+                    $('main').css('margin-left', '280px');
                 } else {
                     $('main').css('margin-left', '70px');
                 }
@@ -389,7 +405,7 @@
             const currentPath = window.location.pathname.toLowerCase();
             $('.sidebar .nav-link').each(function () {
                 const linkPath = $(this).attr('href').toLowerCase();
-                if (currentPath.includes(linkPath)) {
+                if (linkPath && (currentPath === linkPath || currentPath.startsWith(linkPath + '/'))) {
                     $(this).addClass('active');
                 }
             });
@@ -402,6 +418,15 @@
             $('.dropdown').on('hide.bs.dropdown', function () {
                 $(this).find('.dropdown-menu').first().stop(true, true).slideUp(200);
             });
+
+            // Handle access denied or errors
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <text>
+                    $("#errorMessage").text("@TempData["ErrorMessage"]");
+                    $("#errorModal").modal("show");
+            </text>
+        }
         });
     </script>
     @RenderSection("Scripts", required: false)

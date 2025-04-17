@@ -23,41 +23,50 @@ namespace LinhKienShop.Controllers
         [HttpGet]
         public IActionResult Register()
         {
-            Console.WriteLine("Register GET action called");
-            return View();
+            return View(new RegisterViewModel());
         }
 
         // POST: /dang-ky
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(NguoiDung model)
+        public async Task<IActionResult> Register(RegisterViewModel model)
         {
-            Console.WriteLine($"MatKhau received: '{model.MatKhau}'");
             if (!ModelState.IsValid)
             {
-                foreach (var error in ModelState)
-                {
-                    Console.WriteLine($"Key: {error.Key}, Error: {string.Join(", ", error.Value.Errors.Select(e => e.ErrorMessage))}");
-                }
                 return View(model);
             }
 
-            if (await _context.NguoiDungs.AnyAsync(u => u.Email == model.Email))
+            try
             {
-                ModelState.AddModelError("Email", "Email đã được sử dụng.");
+                if (await _context.NguoiDungs.AnyAsync(u => u.Email == model.Email))
+                {
+                    ModelState.AddModelError("Email", "Email đã được sử dụng.");
+                    return View(model);
+                }
+
+                var nguoiDung = new NguoiDung
+                {
+                    HoTen = model.HoTen,
+                    Email = model.Email,
+                    MatKhau = BCrypt.Net.BCrypt.HashPassword(model.MatKhau),
+                    SoDienThoai = model.SoDienThoai,
+                    DiaChi = model.DiaChi,
+                    MaVaiTro = 2, // Vai trò mặc định là khách hàng
+                    NgayTao = DateTime.Now,
+                    TrangThai = "HoatDong"
+                };
+
+                _context.NguoiDungs.Add(nguoiDung);
+                await _context.SaveChangesAsync();
+
+                // Xóa TempData["SuccessMessage"] để không hiển thị thông báo
+                return RedirectToAction("Login");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Đã xảy ra lỗi khi đăng ký. Vui lòng thử lại.");
                 return View(model);
             }
-
-            model.MatKhau = BCrypt.Net.BCrypt.HashPassword(model.MatKhau);
-            model.MaVaiTro = 2; // Vai trò mặc định là khách hàng
-            model.NgayTao = DateTime.Now;
-            model.TrangThai = "HoatDong";
-
-            _context.NguoiDungs.Add(model);
-            await _context.SaveChangesAsync();
-
-            TempData["SuccessMessage"] = "Đăng ký tài khoản thành công!";
-            return RedirectToAction("Login");
         }
 
         // GET: /account/index - Hiển thị danh sách người dùng
@@ -70,36 +79,37 @@ namespace LinhKienShop.Controllers
             return View(users);
         }
 
+        // GET: /dang-nhap
         [HttpGet]
         public IActionResult Login()
         {
-            return View();
+            return View(new LoginViewModel());
         }
 
+        // POST: /dang-nhap
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(string email, string matKhau)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
-            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(matKhau))
+            if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("", "Email và mật khẩu không được để trống.");
-                return View();
+                return View(model);
             }
 
             var user = await _context.NguoiDungs
                 .Include(u => u.MaVaiTroNavigation)
-                .FirstOrDefaultAsync(u => u.Email == email);
+                .FirstOrDefaultAsync(u => u.Email == model.Email);
 
-            if (user == null || !BCrypt.Net.BCrypt.Verify(matKhau, user.MatKhau))
+            if (user == null || !BCrypt.Net.BCrypt.Verify(model.MatKhau, user.MatKhau))
             {
                 ModelState.AddModelError("", "Email hoặc mật khẩu không đúng.");
-                return View();
+                return View(model);
             }
 
             if (user.TrangThai == "BiKhoa")
             {
                 ModelState.AddModelError("", "Tài khoản của bạn đã bị khóa.");
-                return View();
+                return View(model);
             }
 
             // Tạo cookie xác thực
@@ -107,7 +117,7 @@ namespace LinhKienShop.Controllers
             {
                 new Claim(ClaimTypes.Name, user.HoTen),
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.NameIdentifier, user.MaNguoiDung.ToString()) // Thêm NameIdentifier với MaNguoiDung
+                new Claim(ClaimTypes.NameIdentifier, user.MaNguoiDung.ToString())
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -128,15 +138,14 @@ namespace LinhKienShop.Controllers
                 HttpOnly = true,
                 Expires = DateTimeOffset.UtcNow.AddHours(1),
                 IsEssential = true,
-                Secure = true, // Đảm bảo chỉ dùng HTTPS
-                SameSite = SameSiteMode.Strict // Ngăn CSRF
+                Secure = true,
+                SameSite = SameSiteMode.Strict
             });
-
-            Console.WriteLine($"Đăng nhập: {user.HoTen}, MaVaiTro: {user.MaVaiTro}, MaNguoiDung: {user.MaNguoiDung}");
 
             return RedirectToRolePage(user.MaVaiTro);
         }
 
+        // GET: /dang-xuat
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
@@ -146,18 +155,6 @@ namespace LinhKienShop.Controllers
             Response.Headers["Pragma"] = "no-cache";
             Response.Headers["Expires"] = "0";
             return RedirectToAction("Index", "TrangChu");
-        }
-
-        private IActionResult RedirectToRolePage(int maVaiTro)
-        {
-            switch (maVaiTro)
-            {
-                case 1: return RedirectToAction("Index", "Dashboard"); // Admin
-                case 2: return RedirectToAction("Index", "TrangChu"); // Khách hàng
-                case 3: return RedirectToAction("Index", "NVQL"); // Nhân viên quản lý
-                case 4: return RedirectToAction("Index", "NVCSKH"); // Nhân viên CSKH
-                default: return RedirectToAction("Index", "TrangChu");
-            }
         }
 
         // POST: /toggle-trang-thai
@@ -176,6 +173,18 @@ namespace LinhKienShop.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index");
+        }
+
+        private IActionResult RedirectToRolePage(int maVaiTro)
+        {
+            switch (maVaiTro)
+            {
+                case 1: return RedirectToAction("Index", "Dashboard"); // Admin
+                case 2: return RedirectToAction("Index", "TrangChu"); // Khách hàng
+                case 3: return RedirectToAction("Index", "NVQL"); // Nhân viên quản lý
+                case 4: return RedirectToAction("Index", "NVCSKH"); // Nhân viên CSKH
+                default: return RedirectToAction("Index", "TrangChu");
+            }
         }
     }
 }

@@ -1,68 +1,211 @@
 ﻿@model IEnumerable<LinhKienShop.Models.NguoiDung>
-
 @{
-    ViewData["Title"] = "Danh sách người dùng";
+    ViewData["Title"] = "Quản lý người dùng";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Danh sách người dùng</h2>
+<style>
+    .card-container {
+        max-width: 1400px;
+        margin: 40px auto;
+        background: #ffffff;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }
 
-@if (TempData["SuccessMessage"] != null)
-{
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        @TempData["SuccessMessage"]
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-}
-
-<p>
-    <a asp-action="Them" class="btn btn-primary">Thêm người dùng mới</a>
-</p>
-
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.MaNguoiDung)</th>
-            <th>@Html.DisplayNameFor(model => model.Email)</th>
-            <th>@Html.DisplayNameFor(model => model.HoTen)</th>
-            <th>@Html.DisplayNameFor(model => model.SoDienThoai)</th>
-            <th>@Html.DisplayNameFor(model => model.DiaChi)</th>
-            <th>@Html.DisplayNameFor(model => model.MaVaiTroNavigation.TenVaiTro)</th>
-            <th>@Html.DisplayNameFor(model => model.NgayTao)</th>
-            <th>@Html.DisplayNameFor(model => model.TrangThai)</th>
-            <th>Hành động</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@Html.DisplayFor(modelItem => item.MaNguoiDung)</td>
-                <td>@Html.DisplayFor(modelItem => item.Email)</td>
-                <td>@Html.DisplayFor(modelItem => item.HoTen)</td>
-                <td>@Html.DisplayFor(modelItem => item.SoDienThoai)</td>
-                <td>@Html.DisplayFor(modelItem => item.DiaChi)</td>
-                <td>@Html.DisplayFor(modelItem => item.MaVaiTroNavigation.TenVaiTro)</td>
-                <td>@Html.DisplayFor(modelItem => item.NgayTao, "{0:dd/MM/yyyy HH:mm}")</td>
-                <td>
-                    <form asp-action="ToggleTrangThai" method="post" style="display:inline;">
-                        <input type="hidden" name="id" value="@item.MaNguoiDung" />
-                        <button type="submit" class="btn @(item.TrangThai == "HoatDong" ? "btn-success" : "btn-danger")">
-                            @item.TrangThai
-                        </button>
-                    </form>
-                </td>
-                <td>
-                    <a asp-action="Sua" asp-route-id="@item.MaNguoiDung" class="btn btn-warning">Sửa</a>
-                    <a asp-action="Xoa" asp-route-id="@item.MaNguoiDung" class="btn btn-danger">Xóa</a>
-                </td>
-            </tr>
+        .card-container h2 {
+            color: #0d6efd;
+            font-weight: 700;
+            margin-bottom: 25px;
+            text-align: center;
         }
-    </tbody>
-</table>
+
+    .search-bar {
+        max-width: 400px;
+        margin-bottom: 20px;
+    }
+
+    .table th, .table td {
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    .table th {
+        background: #e9ecef;
+        color: #495057;
+        font-weight: 600;
+    }
+
+    .table tbody tr:hover {
+        background: #f8f9fa;
+        transition: background 0.2s ease;
+    }
+
+    .badge-status {
+        font-size: 0.9rem;
+        padding: 6px 12px;
+        border-radius: 12px;
+    }
+
+    .btn-action {
+        border-radius: 50px;
+        padding: 6px 12px;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+    }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+    .action-group {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+    }
+
+    @@media (max-width: 768px) {
+        .card-container {
+            margin: 20px;
+            padding: 20px;
+        }
+
+        .search-bar {
+            max-width: 100%;
+        }
+
+        .btn-action {
+            padding: 4px 8px;
+            font-size: 0.8rem;
+        }
+
+        .action-group {
+            flex-wrap: wrap;
+        }
+    }
+</style>
+
+<div class="card-container">
+    <h2><i class="fas fa-users me-2"></i>Quản lý người dùng</h2>
+
+    <!-- Search Bar -->
+    <div class="search-bar input-group mb-4">
+        <span class="input-group-text bg-light"><i class="fas fa-search"></i></span>
+        <input type="text" class="form-control" id="searchInput" placeholder="Tìm theo tên hoặc email..." />
+    </div>
+
+    <!-- Add User Button -->
+    <div class="mb-4 text-end">
+        <a asp-action="Them" class="btn btn-primary btn-action">
+            <i class="fas fa-user-plus me-2"></i>Thêm người dùng
+        </a>
+    </div>
+
+    <!-- Table -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.HoTen)</th>
+                    <th>@Html.DisplayNameFor(model => model.Email)</th>
+                    <th class="d-none d-md-table-cell">@Html.DisplayNameFor(model => model.SoDienThoai)</th>
+                    <th class="d-none d-md-table-cell">@Html.DisplayNameFor(model => model.DiaChi)</th>
+                    <th>@Html.DisplayNameFor(model => model.MaVaiTroNavigation.TenVaiTro)</th>
+                    <th>Trạng thái</th>
+                    <th>Tác vụ</th>
+                </tr>
+            </thead>
+            <tbody id="userTable">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.HoTen)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                        <td class="d-none d-md-table-cell">@Html.DisplayFor(modelItem => item.SoDienThoai)</td>
+                        <td class="d-none d-md-table-cell">@Html.DisplayFor(modelItem => item.DiaChi)</td>
+                        <td>@Html.DisplayFor(modelItem => item.MaVaiTroNavigation.TenVaiTro)</td>
+                        <td>
+                            <span class="badge-status @(item.TrangThai == "HoatDong" ? "bg-success" : "bg-danger") text-white">
+                                @(item.TrangThai == "HoatDong" ? "Hoạt động" : "Bị khóa")
+                            </span>
+                        </td>
+                        <td>
+                            <div class="action-group">
+                                <a asp-action="Sua" asp-route-id="@item.MaNguoiDung" class="btn btn-warning btn-action" data-bs-toggle="tooltip" title="Sửa">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a asp-action="Xoa" asp-route-id="@item.MaNguoiDung" class="btn btn-danger btn-action" data-bs-toggle="tooltip" title="Xóa">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                                <form asp-action="ToggleTrangThai" method="post" class="d-inline" id="toggleForm-@item.MaNguoiDung">
+                                    <input type="hidden" name="id" value="@item.MaNguoiDung" />
+                                    <button type="submit" class="btn btn-action @(item.TrangThai == "HoatDong" ? "btn-danger" : "btn-success")" data-bs-toggle="tooltip" title="@(item.TrangThai == "HoatDong" ? "Khóa" : "Mở khóa")">
+                                        <i class="fas @(item.TrangThai == "HoatDong" ? "fa-lock" : "fa-unlock")"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination -->
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Trước</a>
+            </li>
+            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#">Sau</a>
+            </li>
+        </ul>
+    </nav>
+</div>
 
 @section Scripts {
-    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Initialize tooltips
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+
+            // Disable button on form submit
+            $("form[id^='toggleForm']").on("submit", function () {
+                $(this).find("button[type='submit']").prop("disabled", true).addClass("disabled");
+            });
+
+            // Search functionality
+            $("#searchInput").on("keyup", function () {
+                const value = $(this).val().toLowerCase();
+                $("#userTable tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                });
+            });
+
+            // Show success/error modal
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <text>
+                    $("#modalMessage").text("@TempData["SuccessMessage"]");
+                    $("#customModal").modal("show");
+            </text>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <text>
+                    $("#errorMessage").text("@TempData["ErrorMessage"]");
+                    $("#errorModal").modal("show");
+            </text>
+        }
+        });
+    </script>
 }
