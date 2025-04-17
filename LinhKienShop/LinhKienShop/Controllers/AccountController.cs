@@ -106,7 +106,8 @@ namespace LinhKienShop.Controllers
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, user.HoTen),
-                new Claim(ClaimTypes.Email, user.Email)
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.MaNguoiDung.ToString()) // Thêm NameIdentifier với MaNguoiDung
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -131,7 +132,7 @@ namespace LinhKienShop.Controllers
                 SameSite = SameSiteMode.Strict // Ngăn CSRF
             });
 
-            Console.WriteLine($"Đăng nhập: {user.HoTen}, MaVaiTro: {user.MaVaiTro}");
+            Console.WriteLine($"Đăng nhập: {user.HoTen}, MaVaiTro: {user.MaVaiTro}, MaNguoiDung: {user.MaNguoiDung}");
 
             return RedirectToRolePage(user.MaVaiTro);
         }
@@ -158,6 +159,7 @@ namespace LinhKienShop.Controllers
                 default: return RedirectToAction("Index", "TrangChu");
             }
         }
+
         // POST: /toggle-trang-thai
         [HttpPost]
         [Authorize(Roles = "Admin")]
@@ -175,6 +177,5 @@ namespace LinhKienShop.Controllers
 
             return RedirectToAction("Index");
         }
-
     }
 }

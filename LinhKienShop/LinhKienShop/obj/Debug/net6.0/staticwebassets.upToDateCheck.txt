@@ -49,6 +49,7 @@ wwwroot\images\f20c6d44-4cca-40ff-b6dd-fe272ddfcea7.jpg
 wwwroot\images\f27b0f32-8057-40b3-9a20-51b2f09ca759.jpg
 wwwroot\images\logo_shop.jpg
 wwwroot\images\tainghe.jpg
+wwwroot\js\address.js
 wwwroot\js\admin.js
 wwwroot\js\DanhMucScript.js
 wwwroot\js\ThuongHieuScript.js

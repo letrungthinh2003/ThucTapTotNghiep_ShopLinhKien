@@ -13,7 +13,7 @@ namespace LinhKienShop.Models
         public string? ThanhPho { get; set; }
         public string? QuanHuyen { get; set; }
         public string? PhuongXa { get; set; }
-        public bool? LaMacDinh { get; set; }
+        public bool LaMacDinh { get; set; } = false; // Sửa từ bool? thành bool, mặc định là false
         public DateTime? NgayTao { get; set; }
 
         public virtual NguoiDung MaNguoiDungNavigation { get; set; } = null!;

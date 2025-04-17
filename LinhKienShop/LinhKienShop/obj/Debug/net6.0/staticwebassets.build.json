@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "OrDEIJhLK8oxjGKzEobcR7sndjdo2ZZnoOdoMPG41EA=",
+  "Hash": "o6XfTP76Ln3hAwrsC3Pzx0cOy2qKxGswuv8cnODYwqA=",
   "Source": "LinhKienShop",
   "BasePath": "_content/LinhKienShop",
   "Mode": "Default",
@@ -1128,6 +1128,27 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\tainghe.jpg"
+    },
+    {
+      "Identity": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\wwwroot\\js\\address.js",
+      "SourceId": "LinhKienShop",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\wwwroot\\",
+      "BasePath": "_content/LinhKienShop",
+      "RelativePath": "js/address#[.{fingerprint}]?.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "0ozy3lgyoe",
+      "Integrity": "EMA6vtBZozNrbk5u2RX7ys5N2XuAnL8xCGtFQFy0CMA=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\address.js"
     },
     {
       "Identity": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\wwwroot\\js\\admin.js",
@@ -6591,6 +6612,88 @@
         {
           "Name": "integrity",
           "Value": "sha256-PhVoXX5N94/BA17lx5bJTHwF7EW3cCc2KKYFx5nnmCI="
+        }
+      ]
+    },
+    {
+      "Route": "js/address.0ozy3lgyoe.js",
+      "AssetFile": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\wwwroot\\js\\address.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3494"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"EMA6vtBZozNrbk5u2RX7ys5N2XuAnL8xCGtFQFy0CMA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 17 Apr 2025 07:15:41 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "0ozy3lgyoe"
+        },
+        {
+          "Name": "label",
+          "Value": "js/address.js"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-EMA6vtBZozNrbk5u2RX7ys5N2XuAnL8xCGtFQFy0CMA="
+        }
+      ]
+    },
+    {
+      "Route": "js/address.js",
+      "AssetFile": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\wwwroot\\js\\address.js",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "3494"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/javascript"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"EMA6vtBZozNrbk5u2RX7ys5N2XuAnL8xCGtFQFy0CMA=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Thu, 17 Apr 2025 07:15:41 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-EMA6vtBZozNrbk5u2RX7ys5N2XuAnL8xCGtFQFy0CMA="
         }
       ]
     },

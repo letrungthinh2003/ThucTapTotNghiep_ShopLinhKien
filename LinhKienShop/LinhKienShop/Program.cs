@@ -36,7 +36,8 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
-
+// Đăng ký HttpClient
+builder.Services.AddHttpClient(); // Thêm dòng này để đăng ký IHttpClientFactory
 // Cấu hình dịch vụ gửi email
 builder.Services.AddScoped<IEmailService, EmailService>();
 

@@ -221,6 +221,10 @@
       "PackagePath": "staticwebassets\\js\\XuatXuScript.js"
     },
     {
+      "Id": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\wwwroot\\js\\address.js",
+      "PackagePath": "staticwebassets\\js\\address.js"
+    },
+    {
       "Id": "D:\\THUC TAP TOT NGHIEP\\Source_LinhKien\\LinhKienShop\\LinhKienShop\\wwwroot\\js\\admin.js",
       "PackagePath": "staticwebassets\\js\\admin.js"
     },
