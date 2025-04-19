@@ -1,0 +1,36 @@
+﻿@model LinhKienShop.Models.PhuongThucThanhToan
+
+@{
+    ViewData["Title"] = "Xóa Phương Thức Thanh Toán";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-4">
+    <div class="card shadow">
+        <div class="card-header bg-danger text-white">
+            <h2 class="mb-0 text-center"><i class="fas fa-trash me-2"></i><b>XÓA PHƯƠNG THỨC THANH TOÁN</b></h2>
+        </div>
+        <div class="card-body">
+            <h4 class="text-center mb-4">Bạn có chắc chắn muốn xóa phương thức thanh toán "<strong>@Model.TenPhuongThucThanhToan</strong>"?</h4>
+            <dl class="row">
+                <dt class="col-sm-4"><label asp-for="MaPhuongThucThanhToan" class="control-label"></label></dt>
+                <dd class="col-sm-8">@Model.MaPhuongThucThanhToan</dd>
+                <dt class="col-sm-4"><label asp-for="TenPhuongThucThanhToan" class="control-label"></label></dt>
+                <dd class="col-sm-8">@Model.TenPhuongThucThanhToan</dd>
+                <dt class="col-sm-4"><label asp-for="MoTa" class="control-label"></label></dt>
+                <dd class="col-sm-8">@Model.MoTa</dd>
+            </dl>
+            <form asp-action="Xoa" method="post">
+                <input type="hidden" asp-for="MaPhuongThucThanhToan" />
+                <div class="d-flex justify-content-start gap-2">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash me-1"></i>Xóa
+                    </button>
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left me-1"></i>Quay lại
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

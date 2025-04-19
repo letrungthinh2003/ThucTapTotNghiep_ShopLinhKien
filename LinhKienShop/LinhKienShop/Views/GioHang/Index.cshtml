@@ -57,7 +57,7 @@
                     <h4 class="mb-0">
                         Tạm tính: <span id="total-amount" class="fw-bold text-danger" data-total="@Model.Sum(item => item.ThanhTien)">@Model.Sum(item => item.ThanhTien).ToString("N0") VNĐ</span>
                     </h4>
-                    <a asp-controller="GioHang" asp-action="Checkout" class="btn btn-primary btn-lg rounded-pill checkout-btn px-5 py-2">
+                    <a asp-controller="MaGiamGia" asp-action="ThanhToan" class="btn btn-primary btn-lg rounded-pill checkout-btn px-5 py-2">
                         <i class="fas fa-credit-card me-2"></i>Thanh Toán
                     </a>
                 </div>

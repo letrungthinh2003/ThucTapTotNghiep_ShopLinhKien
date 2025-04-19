@@ -8,7 +8,7 @@ namespace LinhKienShop.Models
     {
         public MaGiamGium()
         {
-            DonHangMaGiamGia = new HashSet<DonHangMaGiamGium>();
+            DonHangs = new HashSet<DonHang>();
         }
 
         public int MaGiamGiaId { get; set; }
@@ -23,6 +23,6 @@ namespace LinhKienShop.Models
         public decimal? GiaTriGiamToiDa { get; set; }
 
         public virtual LoaiGiamGium MaLoaiGiamGiaNavigation { get; set; }
-        public virtual ICollection<DonHangMaGiamGium> DonHangMaGiamGia { get; set; }
+        public virtual ICollection<DonHang> DonHangs { get; set; }
     }
 }

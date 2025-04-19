@@ -17,5 +17,6 @@ namespace LinhKienShop.Models
         public DateTime? NgayTao { get; set; }
 
         public virtual NguoiDung MaNguoiDungNavigation { get; set; } = null!;
+        public virtual ICollection<DonHang> DonHangs { get; set; }
     }
 }
